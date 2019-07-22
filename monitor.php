@@ -22,12 +22,14 @@ class monitor
    public function getHeader()
    {
        $this->header=get_headers($this->url);
-       debug($this->header);
+     //  debug($this->header);
       
    }
    public function getResponse()
    {
+       $this->getHeader();
        $response=$this->header[0];
+     //  debug($response);
        $responseNum= mb_strcut($response,9,3,"UTF-8");
        return $responseNum;
    }
@@ -76,7 +78,8 @@ class monitor
 
         return $data;
    }
-   public function getMetaPage(){
+   public function getMetaPage()// получить мета данные старницы h1, title, keywords, description
+    {
         $html = $this->file_get_contents_curl($this->url);
 
         //parsing begins here:
@@ -104,7 +107,7 @@ class monitor
 //        echo "Title: $title". '<br/><br/>';
 //        echo "Description: $description". '<br/><br/>';
 //        echo "Keywords: $keywords"."<br>";
-        $this->meta=["h1"=>$h1,"title"=>$title,"keywords"=>$keywords,
+        $this->meta=["url"=>$this->url, "h1"=>$h1,"title"=>$title,"keywords"=>$keywords,
             "description"=>$description];
         return $this->meta;
    }
@@ -125,16 +128,34 @@ class monitor
    {
        if ($this->meta['description']==$this->description) return true; else return false;
    }
-   
+   public function getDataMonitorPage()
+   {
+       $response=$this->getResponse();
+       if ($response==200) $sizePage=$this->getPageSize(); else $sizepage=0;
+       if ($this->meta['url']!=$this->url)$this->getMetaPage();
+       $data=["url"=>$this->url,
+              "response"=>$this->getResponse(),
+              "size_page"=> $sizePage,
+              "h1"=>$this->meta['h1'],
+              "title"=>$this->meta['title'],
+              "keywords"=>$this->meta['keywords'],
+              "descrtiption"=>$this->meta['description'],
+             ];
+       return $data;
+   }
+   public function getUrl()
+   {
+       return $this->url;
+   }
    public function setDataForMonitor($data)// данные из массива параметров переносит в переменные класса
    {
-       setUrl($data['url']);
-       setPageSize($data['size_page']);
-       setDeviationSize($data['deviation_size']);
-       setH1($data['h1']);
-       setTitle($data['title']);
-       setKeywords($data['keywords']);
-       setDescription($data['description']);
+       $this->setUrl($data['url']);
+       $this->setPageSize($data['size_page']);
+       $this->setDeviationSize($data['deviation_size']);
+       $this->setH1($data['h1']);
+       $this->setTitle($data['title']);
+       $this->setKeywords($data['keywords']);
+       $this->setDescription($data['description']);
    }
    public function setUrl($value)
    {
