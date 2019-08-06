@@ -1,0 +1,109 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26.07.2019, 15:07:49
+    Author     : Владимир
+*/
+h1{
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+#headDiv{
+    background-color: rgb(200,200,200);
+    border-radius: 10px;
+    border: 1px solid gray;
+    width: 100%;
+    height: 50px;
+    
+}
+#headIndexA,#headOptionA{
+    position: absolute;
+    display: inline;
+    color: blue;   
+    margin-top: -8px;
+    font-size: 15pt;
+}
+#headIndexA{
+    left: 2%;
+    width: 100px;
+    height: 60px; 
+}
+#headIndexA>p{
+    text-align: center;
+}
+#headOptionA{
+    left:90%;
+    width: 100px;
+    height: 60px; 
+}
+
+main{
+    border: 1px solid gray;
+}
+nav{
+    position: absolute;
+    height:200px;
+    width: 100px;
+    float:left;
+    z-index: 5;
+    margin-top: 10px;
+    //background-color: red;
+}
+main{
+       position: relative;
+        top: 50%;
+        left: 50%;
+        width: 750px;
+        height: 1000px;
+        margin-right: -50%;
+        transform: translate(-50%,0);
+        margin-top: 10px;
+        //background-color: blue;
+}
+ul{
+    padding-left: 0px;
+    margin: 0px;
+}
+ul>li{
+    list-style-type: none;
+}
+ul>li>div{
+    
+    border: 1px solid blue;
+    margin: 6px 0px;
+    //margin-left: 0px;
+    
+}
+ul>li>div>a>p{
+    margin:4px 0px;
+}
+#mainDiv{
+    width:100%;
+    height:70px;
+}
+#mainDivP{
+    display: inline;
+    position: absolute;
+    width: 300px;
+}
+#PBalanse{
+   display: inline;
+    position: absolute;
+    width: 300px;  
+    left: 500px;
+}
+#mainSpan{
+    
+}
+table {
+   border-collapse: collapse; 
+   margin-left: 30px;
+}
+td {
+  border: 1px solid black; 
+  padding: 4px;
+ 
+}

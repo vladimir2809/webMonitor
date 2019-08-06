@@ -12,7 +12,7 @@
      {
 
        $monitor->setDataForMonitor($data[$i]);
-       debug($monitor->getDataMonitorPage());
+      // debug($monitor->getDataMonitorPage());
        $resOne;
        $response=$monitor->getResponse();
        if ($response==200)
@@ -81,8 +81,7 @@
 //        require "monitor.php";
         $conn=connectDB();
         $sql="SELECT * FROM result_check;";
-        debug( $sql);
-       
+        //debug( $sql);
         $resultSQL=$conn->query($sql);
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
@@ -90,16 +89,17 @@
         {
             $result[]=$row;
         }
-        debug($result);
+        //debug($result);
         return $result;
         
  }
  function writeResChecksInDB($resCheck)// записать в базу данных рзультаты проверок 
  {
      //require "functions.php";
+     $conn=connectDB();
      $readRes=readResultIsDB();
-          $conn=connectDB();
-     debug($resCheck);  
+          
+    // debug($resCheck);  
      if ($readRes==null)// если в базе данных нет записей
      {
          for ($i=0;$i<count($resCheck);$i++)
@@ -109,7 +109,7 @@
                     . "VALUES ('".$resCheck[$i]['url']."',".$resCheck[$i]['response'].", "
                     . "".$resCheck[$i]['size'].",".$resCheck[$i]['h1'].","
                     . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].")";
-            debug( $sql); 
+            //debug( $sql); 
             $resultSQL=$conn->query($sql);
             $error=$conn->errorInfo();
             if (isset($error[2])) die($error[2]);  
@@ -146,17 +146,22 @@
                        if (isset($error[2])) die($error[2]);
                     }
                 }
-            }
-            if  (flag==false)
+           
+            }   
+            if  ($flag==false)
             {
+                $sql="INSERT INTO result_check (url, response, size, h1, title, "
+                    . "keywords, description )"
+                    . "VALUES ('".$resCheck[$i]['url']."',".$resCheck[$i]['response'].", "
+                    . "".$resCheck[$i]['size'].",".$resCheck[$i]['h1'].","
+                    . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].")";
+                //debug( $sql); 
+                $resultSQL=$conn->query($sql);
+                $error=$conn->errorInfo();
+                if (isset($error[2])) die($error[2]); 
             }
+      
          }
      }
-//          $sql="INSERT INTO for_check (url,size_page,deviation_size,h1,title,keywords,description)"
-//                . "VALUES('".$url."',$sizePage,$deviationSize,'".$h1."','".$title."','".$keywords."'"
-//                . ",'".$description."')";
-//        $result=$this->conn->query($sql);
-//        $error=$this->conn->errorInfo();
-//        if (isset($error[2])) die($error[2]);
  }
 
