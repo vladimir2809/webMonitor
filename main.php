@@ -75,6 +75,19 @@
     }
     return $resCheck;
  }
+ function getDataOnePage($url)
+ {
+     require "monitor.php";
+     $monitor=new Monitor; 
+     $monitor->setUrl($url);
+     $response=$monitor->getResponse();
+     $size=$monitor->getPageSize();
+     $meta=$monitor->getMetaPage();
+     return [ "response"=>$response, 'size'=>$size,
+         'h1'=>$meta['h1'], 'title'=>$meta['title'],
+         'keywords'=>$meta['keywords'],'description'=>$meta['description']
+     ];
+ }
  function readResultIsDB() //чтение результатов из базы данных
  {
 //        require "modelDBForCheck.php";

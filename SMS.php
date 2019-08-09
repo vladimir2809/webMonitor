@@ -8,7 +8,7 @@
 /* 
 * функция передачи сообщения 
 */
- require "functions.php";
+ //require "functions.php";
 function send($host, $port, $login, $password, $phone, $text, $sender = false, $wapurl = false )
 {
     $fp = fsockopen($host, $port, $errno, $errstr);
@@ -97,5 +97,8 @@ If (isset($_POST['submit']))
 //echo send("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", 
 //          "79505582918", "привет! Это PHP", "TEST-SMS");
 }
-echo balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
-echo status("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", "A133541BC");
+function getBalance()
+{
+    return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
+}
+//echo status("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", "A133541BC");

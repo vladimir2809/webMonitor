@@ -57,7 +57,7 @@ main{
         top: 50%;
         left: 50%;
         width: 750px;
-        height: 1000px;
+        height: 300px;
         margin-right: -50%;
         transform: translate(-50%,0);
         margin-top: 10px;
@@ -88,6 +88,7 @@ ul>li>div>a>p{
     display: inline;
     position: absolute;
     width: 300px;
+    margin-left:15px;
 }
 #PBalanse{
    display: inline;
@@ -102,8 +103,12 @@ table {
    border-collapse: collapse; 
    margin-left: 30px;
 }
+th{
+    padding: 0px 5px;
+}
 td {
   border: 1px solid black; 
   padding: 4px;
+  text-align: center;
  
 }

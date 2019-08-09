@@ -3,6 +3,7 @@
 //require_once "modelDBforCheck.php";
 require_once "functions.php";
 require_once "main.php";
+require_once "SMS.php";
 $resultCheck=readResultIsDB();
 //debug($resultCheck);
 //writeResChecksInDB(checkAll());
@@ -42,12 +43,13 @@ $resultCheck=readResultIsDB();
         <main>
             <div id='mainDiv'>
                 <div id='mainDivP'><p  > Страницы на мониторинге</p></div>
-                <div id='PBalanse'><p  > баланс</p></div>
+                <div id='PBalanse'><p  > баланс: <?= getBalance()?></p></div>
             </div>
             <table>
                 <tr>
-                    <td> url</td><td> ответ сервера</td><td> размер старницы</td>
-                    <td> h1</td><td> title</td><td> keywords</td><td> description</td>
+                    <th> url</th><th> ответ</th><th>размер</th>
+                    <th> h1</th><th> title</th><th> keywords</th><th> description</th>
+                    <th></th><th></th>
                 </tr>
                 <?php for($i=0;$i<count($resultCheck);$i++): ?>
                  <tr>
@@ -67,6 +69,12 @@ $resultCheck=readResultIsDB();
                     </td>
                     <td><?php if ($resultCheck[$i]['description']==1) echo "OK";
                             else echo "FAIL";  ?>
+                    </td>
+                    <td>
+                        <div><img style=" width: 17px;"src="image/pause.png"  title='поставить на паузу'></div>
+                    </td>
+                    <td>
+                        <div><img style=" width: 17px;"src="image/bag.png" title="снять с мониторинга"></div>
                     </td>
                 </tr>
                 <?php endfor;?>
