@@ -3,7 +3,7 @@
     Author     : Владимир
 */
 main{
-    height: 1000px;
+    height: 600px;
 }
 #formUrl{
     margin-left: 20px;
@@ -17,13 +17,64 @@ main{
     border: 1px solid gray;
     width: 250px;
 }
-#dataPage{
+#divDataPage{
     margin-left: 20px;
+    margin-top: 17px;
+    border-right: 1px solid rgb(100,100,255);
+    width: 330px;
+    height: 450px;
+    float: left;
 }
-#dataPage p{
+#divDataPage2{
+    //margin-left: 20px;
+    margin-top:50px;
+    
+}
+#divDataPage3{
+    //margin-left: 20px;
+    margin-top:24px;
+    
+}
+#divDataPage p{
     margin-bottom: 2px;
+    
 }
-#dataPage textarea{
+#divDataPageDB{
+    margin-left: 15px;
+ margin-top: 17px;
+ width: 370px;
+ height: 450px;
+ float :left;
+}
+#divDataPageDB p{
+    margin-bottom: 2px;
+   
+   
+}
+#dataPageSize{
+    border: 1px solid black;
+}
+ textarea{
     border: 1px solid black;
     margin: 2px 0px;
+}
+#formDataPageDB{
+    margin-top: 10px;
+    border: 1px solid white;
+}
+#divPageSizeDB{
+    margin-top:-5px;
+}
+#divPageMetaDB{
+    margin-top: 22px;
+}
+#btnTrancfer{
+    position: relative;
+    left: 335px;
+    top: 5px;
+}
+#btnSaveDataPageInDB{
+    position: relative;
+    left: 635px;
+    top: -18px;  
 }

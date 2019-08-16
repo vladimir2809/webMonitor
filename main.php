@@ -83,7 +83,7 @@
      $response=$monitor->getResponse();
      $size=$monitor->getPageSize();
      $meta=$monitor->getMetaPage();
-     return [ "response"=>$response, 'size'=>$size,
+     return [ 'url'=>$url,"response"=>$response, 'size'=>$size,
          'h1'=>$meta['h1'], 'title'=>$meta['title'],
          'keywords'=>$meta['keywords'],'description'=>$meta['description']
      ];
