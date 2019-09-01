@@ -79,14 +79,21 @@
  {
      require "monitor.php";
      $monitor=new Monitor; 
-     $monitor->setUrl($url);
-     $response=$monitor->getResponse();
-     $size=$monitor->getPageSize();
-     $meta=$monitor->getMetaPage();
-     return [ 'url'=>$url,"response"=>$response, 'size'=>$size,
-         'h1'=>$meta['h1'], 'title'=>$meta['title'],
-         'keywords'=>$meta['keywords'],'description'=>$meta['description']
-     ];
+     if ($monitor->checkUrl($url))
+     {
+        $monitor->setUrl($url);
+        $response=$monitor->getResponse();
+        if ($response==200) $size=$monitor->getPageSize();
+        $meta=$monitor->getMetaPage();
+        return [ 'url'=>$url,"response"=>$response, 'size'=>$size,
+            'h1'=>$meta['h1'], 'title'=>$meta['title'],
+            'keywords'=>$meta['keywords'],'description'=>$meta['description']
+        ];
+     }
+     else
+     {
+        return [ 'url'=>$url,"message"=>$monitor->message]; 
+     }
  }
  function readResultIsDB() //чтение результатов из базы данных
  {

@@ -17,27 +17,48 @@ class monitor
    private $keywords;
    private $descripion;
    private $meta;// хранит h1, title, keywords, description;
+   public  $message;// хранит сообшение о проверке
    
-  
-   public function getHeader()
+   public function checkUrl($url)// функция проверки URL коорректность и на сушествование
    {
-        $url = $this->url;
+         
 
         // Remove all illegal characters from a url
         $url = filter_var($url, FILTER_SANITIZE_URL);
 
         // Validate url
-        if (!filter_var($url, FILTER_VALIDATE_URL) === false) {
-        echo("$url is a valid URL");
-        } else {
-        echo("$url is not a valid URL");
+        if (!filter_var($url, FILTER_VALIDATE_URL) === false) // если URL валиден
+        {
+           // echo("$url is not a valid URL");  
+            $parse = parse_url($url);
+            //echo $parse['host'];
+            //  debug(get_headers($this->url, 1));
+            if(checkdnsrr($parse['host'],'A') && get_headers($url, 1))// если URL сушествует
+            {
+                return true;
+            }
+            else 
+            {
+                $this->message='такой страницы не сушествует';
+            }
         }
-
-       $this->header=get_headers($this->url);
+        else
+        {
+            $this->message="Неверный URL";
+        }
+        return false; 
+   }
+      
+   public function getHeader()// получить заголовки страницы
+   {
+         if ($this->checkUrl($this->url))
+         {
+              $this->header=get_headers($this->url);
+         }
      //  debug($this->header);
       
    }
-   public function getResponse()
+   public function getResponse()// получить ответ от сервера
    {
        $this->getHeader();
        $response=$this->header[0];
@@ -45,15 +66,15 @@ class monitor
        $responseNum= mb_strcut($response,9,3,"UTF-8");
        return $responseNum;
    }
-   public function checkResponse()
+   public function checkResponse()// проверить ответ от сервера
    {
        if ($this->getResponse()==200) return true; else return false;
    }
-   private function getFilePage()
+   private function getFilePage()//получить файл страницы
    {  
         $this->filePage = fopen($this->url, "r");
    }
-   public function getPageSize()
+   public function getPageSize()// получить размер страницы
    {
         $this->getFilePage();
         $fileSize=0;
@@ -63,7 +84,7 @@ class monitor
         }
         return $fileSize;
    }
-   public function checkPageSize()
+   public function checkPageSize()// проверить размер страницы
    {
        $factPageSize=$this->getPageSize();
        if ($factPageSize <= $this->pageSize + $this->deviationSize &&
@@ -76,7 +97,7 @@ class monitor
            return false;
        }
    }
-   private function file_get_contents_curl($url)
+   private function file_get_contents_curl($url)// получить файл для проверки мета данных
    {
         $ch = curl_init();
 
@@ -124,38 +145,46 @@ class monitor
         return $this->meta;
    }
 
-   public function checkH1()
+   public function checkH1()// проверить заголовок
    {
        if ($this->meta['h1']==$this->h1) return true; else return false;
    } 
-   public function checkTitle()
+   public function checkTitle()// проверить подпись
    {
        if ($this->meta['title']==$this->title) return true; else return false;
    }
-   public function checkKeywords()
+   public function checkKeywords()// проверить ключевые слова
    {
        if ($this->meta['keywords']==$this->keywords) return true; else return false;
    }
-   public function checkDescription()
+   public function checkDescription()// проверить  описание
    {
        if ($this->meta['description']==$this->description) return true; else return false;
    }
-   public function getDataMonitorPage()
+   public function getDataMonitorPage()// получить данные монитора страницы
    {
-       $response=$this->getResponse();
-       if ($response==200) $sizePage=$this->getPageSize(); else $sizepage=0;
-       if ($this->meta['url']!=$this->url)$this->getMetaPage();
-       $data=["url"=>$this->url,
-              "response"=>$this->getResponse(),
-              "size_page"=> $sizePage,
-              "h1"=>$this->meta['h1'],
-              "title"=>$this->meta['title'],
-              "keywords"=>$this->meta['keywords'],
-              "descrtiption"=>$this->meta['description'],
-             ];
+       if ($this->checkUrl($this->url)===true)
+       {
+            $response=$this->getResponse();
+            if ($response==200) $sizePage=$this->getPageSize(); else $sizepage=0;
+            if ($this->meta['url']!=$this->url)$this->getMetaPage();
+            $data=["url"=>$this->url,
+                   "response"=>$this->getResponse(),
+                   "size_page"=> $sizePage,
+                   "h1"=>$this->meta['h1'],
+                   "title"=>$this->meta['title'],
+                   "keywords"=>$this->meta['keywords'],
+                   "descrtiption"=>$this->meta['description'],
+                  ];
+       }
+       else
+       {
+           $data=['url'=>$this->url,"message"=>$this->message];
+       }
        return $data;
+       
    }
-   public function getUrl()
+   public function getUrl()// получить URL
    {
        return $this->url;
    }
@@ -169,15 +198,15 @@ class monitor
        $this->setKeywords($data['keywords']);
        $this->setDescription($data['description']);
    }
-   public function setUrl($value)
+   public function setUrl($value) // положить URL
    {
        $this->url=$value;
    }
-   public function setPageSize($value)
+   public function setPageSize($value) // положить размер страницы с которым сравнивать
    {
        $this->pageSize=$value;
    }
-   public function setDeviationSize($value)
+   public function setDeviationSize($value)// положить поргрещность размера страницы
    {
        $this->deviationSize=$value;
    }

@@ -6,6 +6,7 @@ require_once "main.php";
 if ($_POST['btnGetData'])
 {
    $dataUrl=getDataOnePage($_POST['urlPage']);
+ //  debug($dataUrl);
     
 }
 //debug($resultCheck);
@@ -51,6 +52,10 @@ if ($_POST['btnGetData'])
               <p>Введите адресс страницы </p>
               <input type="text" id="urlPage" name="urlPage" value="<?= $dataUrl['url'];?>">
               <input type='submit' value="Получить данные" name="btnGetData">
+               <?php if (isset($dataUrl['message'])):?>
+                  <p style="color: red; margin: 0px;"><?= $dataUrl['message']?></p>
+                  <br>
+              <?php endif; ?>
             </form>
             <div>
                 <div id="divDataPage">
