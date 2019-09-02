@@ -1,5 +1,5 @@
 <?php
- function checkAll()
+ function checkAll()// проверить все сайты которые есть базе данных
  {
      require "modelDBForCheck.php";
      require "monitor.php";
@@ -75,7 +75,7 @@
     }
     return $resCheck;
  }
- function getDataOnePage($url)
+ function getDataOnePage($url)// получить данные от одной страницы
  {
      require "monitor.php";
      $monitor=new Monitor; 
@@ -113,6 +113,19 @@
         return $result;
         
  }
+  function readDataIsDBOneOfUrl($url) // чтение данных из базы данных об одной странице по url 
+  {
+        $conn=connectDB();
+        $sql="SELECT * FROM for_check WHERE url='$url';";
+        //debug( $sql);
+        $resultSQL=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
+ 
+        //debug($result);
+        return $result;
+  }
  function writeResChecksInDB($resCheck)// записать в базу данных рзультаты проверок 
  {
      //require "functions.php";
@@ -146,6 +159,7 @@
                 if ($resCheck[$i]['url']==$readRes[$j]['url'])
                 {
                     $flag=true;
+                    // если данные проверки отличаются от того что есть в БД
                     if (!($resCheck[$i]['response']==$readRes[$j]['response']&&
                           $resCheck[$i]['size']==$readRes[$j]['size']&&
                           $resCheck[$i]['h1']==$readRes[$j]['h1']&&
@@ -154,6 +168,7 @@
                           $resCheck[$i]['description']==$readRes[$j]['description']
                         ))
                     {
+                        // обновить запись
                        $sql="UPDATE result_check SET response=".$resCheck[$i]['response']
                                .", size=".$resCheck[$i]['size'].""
                                . ", h1=".$resCheck[$i]['h1'].""
@@ -168,7 +183,7 @@
                 }
            
             }   
-            if  ($flag==false)
+            if  ($flag==false)// если в БД нет страницы с нужным url
             {
                 $sql="INSERT INTO result_check (url, response, size, h1, title, "
                     . "keywords, description )"

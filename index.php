@@ -7,6 +7,7 @@ require_once "SMS.php";
 $resultCheck=readResultIsDB();
 //debug($resultCheck);
 //writeResChecksInDB(checkAll());
+//debug($resultCheck);
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,7 +34,7 @@ $resultCheck=readResultIsDB();
         </header> 
         <nav>
             <ul>
-            <li><div><a href="#"><p>Добавить сайт</p></a></li></div>
+                <li><div><a href="/page.php"><p>Добавить сайт</p></a></li></div>
             
             <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
             
@@ -47,13 +48,18 @@ $resultCheck=readResultIsDB();
             </div>
             <table>
                 <tr>
-                    <th> url</th><th> ответ</th><th>размер</th>
+                    <th> url</th><th> состояние</th><th> ответ</th><th>размер</th>
                     <th> h1</th><th> title</th><th> keywords</th><th> description</th>
                     <th></th><th></th>
                 </tr>
                 <?php for($i=0;$i<count($resultCheck);$i++): ?>
                  <tr>
-                    <td><a href='#'><?= $resultCheck[$i]['url']?><a> </td>
+                    <td><a href='/page.php?url=<?=$resultCheck[$i]['url']?>'>
+                        <?= $resultCheck[$i]['url']?><a> 
+                    </td>
+                    <td>
+                        мониторится
+                    </td>
                     <td><?= $resultCheck[$i]['response']?> </td>
                     <td><?php if ($resultCheck[$i]['size']==1) echo "OK";
                             else echo "FAIL";  ?>
@@ -71,10 +77,10 @@ $resultCheck=readResultIsDB();
                             else echo "FAIL";  ?>
                     </td>
                     <td>
-                        <div><img style=" width: 17px;"src="image/pause.png"  title='поставить на паузу'></div>
+                        <div><img class="imgBtn"style=" width: 17px;"src="image/pause.png"  title='поставить на паузу'></div>
                     </td>
                     <td>
-                        <div><img style=" width: 17px;"src="image/bag.png" title="снять с мониторинга"></div>
+                        <div><img class="imgBtn" style=" width: 17px;"src="image/bag.png" title="снять с мониторинга"></div>
                     </td>
                 </tr>
                 <?php endfor;?>
