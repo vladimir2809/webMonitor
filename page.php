@@ -1,11 +1,20 @@
 <?php
 //require_once "monitor.php";
 //require_once "modelDBforCheck.php";
+session_start();
 require_once "functions.php";
 require_once "main.php";
+
+if (isset($_SESSION['message_data']))
+{
+    $mes_data=$_SESSION['message_data'];
+    unset($_SESSION['message_data']);
+}
 if ($_POST['btnGetData'])
 {
    $dataUrl=getDataOnePage($_POST['urlPage']);
+   
+//   $resultCheck= readResultIsDBOneOfUrl($_POST['urlPage']);
  //  debug($dataUrl);
     
 }
@@ -13,6 +22,7 @@ if (isset( $_GET['url']))
 {
   $dataOnePageDB=readDataIsDBOneOfUrl($_GET['url']);
   $dataUrl=getDataOnePage($_GET['url']);  
+  $resultCheck= readResultIsDBOneOfUrl($_GET['url']);
  // debug($dataOnePageDB);
   //debug($dataUrl);
 }
@@ -47,7 +57,7 @@ if (isset( $_GET['url']))
         </header> 
         <nav>
             <ul>
-            <li><div><a href="/page.php"><p>Добавить сайт</p></a></li></div>
+                <li><div><a href="/enterUrlPage.php"><p>Добавить сайт</p></a></li></div>
             
             <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
             
@@ -55,6 +65,7 @@ if (isset( $_GET['url']))
              </ul>
         </nav>
         <main>  
+            <!--
             <?php if (!isset($_GET['url'])):?>
                 <form id="formUrl" action="page.php" method="post">
                     <p>Введите адресс страницы </p>
@@ -66,39 +77,51 @@ if (isset( $_GET['url']))
                     <?php endif; ?>
                 </form>
             <?php else:?>
-            <h3 style="margin-left: 17px">Просмотр данных о странице: <?=$_GET['url'] ?></h3>
+          
+            <h3 style="margin-left: 17px">Редактирование данных о странице: <?=$_GET['url'] ?></h3>
             <?php endif;?>
-            <div>
+            --> 
+            
+            <h3 style="margin-left: 17px">Редактирование данных о странице: <?=$_GET['url'] ?></h3>
+            <?php if (isset($mes_data)):?>
+                <p style="margin-left: 17px; color: red;"><?=$mes_data ?></p>
+            <?php endif?>
+            <div id="divContent">
                 <div id="divDataPage">
                         <h3> То что полученно со страницы</h3>
-                        <p id="responseP"> Ответ сервера: <?= $dataUrl['response']?></p>
+                        <p id="responseP"> Ответ сервера: <?=$dataUrl['response']?></p>
                         <div id="divDataPage2">
                             <p>Размер страницы:</p>
-                            <input type="text" readonly id="dataSize" name="dataSize" value=" <?= $dataUrl['size']?>">
+                            <input type="text" readonly id="dataSize" name="dataSize" value="<?=$dataUrl['size']?>">
                             <div id="divDataPage3">
                                 <p>H1: </p>
-                                <textarea readonly id='dataH1' rows="3" cols="40"><?= $dataUrl['h1']?></textarea>
+                                <textarea readonly id='dataH1' rows="3" cols="40"><?=$dataUrl['h1']?></textarea>
 
                                 <p>Title:</p>
-                                <textarea readonly id='dataTitle' rows="3" cols="40"><?= $dataUrl['title']?></textarea>
+                                <textarea readonly id='dataTitle' rows="3" cols="40"><?=$dataUrl['title']?></textarea>
                                 <p>Keywords: </p>
-                                <textarea readonly id='dataKeywords' rows="3" cols="40"><?= $dataUrl['keywords']?></textarea>
+                                <textarea readonly id='dataKeywords' rows="3" cols="40"><?=$dataUrl['keywords']?></textarea>
                                 <p>Description: </p>
-                                <textarea readonly id='dataDescription' rows="3" cols="40"><?= $dataUrl['description']?></textarea>
+                                <textarea readonly id='dataDescription' rows="3" cols="40"><?=$dataUrl['description']?></textarea>
                             </div>
                         </div>
 
                 </div>
                 <div id="divDataPageDB">
                     <h3> То что находиться в базе данных</h3>
-                    <form id="formDataPageDB" action="" method="post">
+                    <form id="formDataPageDB" action="serverFunc.php" method="post">
                         <div id="divPageSizeDB">
                             <div id="divPageSizeDB2">
-                            <p>Размер страницы</p>
-                            <input type="text" id="dataSizeDB" name="dataSizeDB" 
-                                value="<?php if (isset($dataOnePageDB['size_page'])) 
-                                echo $dataOnePageDB['size_page'] ?>"
-                            >
+                                <input type="hidden" name="url" value="<?php
+                                    if( isset($_GET['url'])) echo $_GET['url'];
+                                    else if (isset($_POST['urlPage'])) echo $_POST['urlPage'];
+                                   ?>"
+                                >
+                                <p>Размер страницы</p>
+                                <input type="text"  id="dataSizeDB" name="dataSizeDB" 
+                                    value="<?php if (isset($dataOnePageDB['size_page'])) 
+                                    echo $dataOnePageDB['size_page'] ?>"
+                                >
                             </div>
                             <p>Погрешность размера страницы</p>
                             <input type="text" id="dataDeviationSizeDB" name="dataDeviationSizeDB"
@@ -110,38 +133,64 @@ if (isset( $_GET['url']))
                         
                         <div id="divPageMetaDB"> 
                             <p>H1</p>
-                            <textarea id='dataH1DB' rows="3" cols="40"><?php 
+                            <textarea id='dataH1DB' name='dataH1DB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['h1'])) 
                                         echo $dataOnePageDB['h1'] ?>
                             </textarea>
                             <p>Title</p>
-                            <textarea id='dataTitleDB' rows="3" cols="40"><?php 
+                            <textarea id='dataTitleDB' name='dataTitleDB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['title'])) 
                                         echo $dataOnePageDB['title'] ?>
                             </textarea>
                             <p>Keywords</p>
-                            <textarea id='dataKeywordsDB' rows="3" cols="40"><?php 
+                            <textarea id='dataKeywordsDB'  name='dataKeywordsDB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['keywords'])) 
                                         echo $dataOnePageDB['keywords'] ?></textarea>
                             <p>Description</p>
-                            <textarea id='dataDescriptionDB' rows="3" cols="40"><?php 
+                            <textarea id='dataDescriptionDB' name='dataDescriptionDB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['description'])) 
                                         echo $dataOnePageDB['description'] ?>
                             </textarea>
                         </div>
+                        <input type="submit" value="сохранить в БД" name="btnSaveDataPageInDB" id="btnSaveDataPageInDB">
                     </form>
+            
                 </div>
+                <div id="divCheckPage">
+                    <?php if (!(isset($_GET['newPage'])&&$_GET['newPage']==true)):?>
+                      <h4> Результат проверки</h4>
+                      <p>ответ сервера:<?php if ($resultCheck['response']==200) echo "OK";
+                              else echo "FAIL";  ?>
+                      </p>
+                      <p>Размер страницы:<?php if ($resultCheck['size']==1) echo "OK";
+                              else echo "FAIL";  ?>
+                      </p>
+                      <p>h1:<?php if ($resultCheck['h1']==1) echo "OK";
+                              else echo "FAIL";  ?>
+                      </p>
+                      <p>Title:<?php if ($resultCheck['title']==1) echo "OK";
+                              else echo "FAIL";  ?>
+                      </p>
+                      <p>Keywords:<?php if ($resultCheck['keywords']==1) echo "OK";
+                              else echo "FAIL";  ?>
+                      </p>
+                      <p>Description:<?php if ($resultCheck['description']==1) echo "OK";
+                              else echo "FAIL";  ?>
+                      </p>
+                      <?php endif?>
+                  </div>
+           </div> 
                 <?php //if (!isset($_GET['url'])):?>
                 <button id="btnTrancfer" name="btnTransfer" 
                         title="Перенести в область того что находиться в базе данных"> 
                     &#62; &#62;
                 </button>
+            <!--
                 <form id="formSaveDataPageInDB" action="/serverFunc.php" method="post">
                     <input type="submit" value="сохранить в БД" name="btnSaveDataPageInDB" id="btnSaveDataPageInDB">
                 </form>
+            -->
                 <?php //endif?>
-           </div> 
-              
         </main>       
     </body>
 </html>

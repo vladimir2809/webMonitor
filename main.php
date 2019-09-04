@@ -79,7 +79,7 @@
  {
      require "monitor.php";
      $monitor=new Monitor; 
-     if ($monitor->checkUrl($url))
+     if ($monitor->checkUrlForMonitor($url))
      {
         $monitor->setUrl($url);
         $response=$monitor->getResponse();
@@ -113,7 +113,22 @@
         return $result;
         
  }
-  function readDataIsDBOneOfUrl($url) // чтение данных из базы данных об одной странице по url 
+  function readResultIsDBOneOfUrl($url) //чтение результатов из базы данных для одной записи по Url
+ {
+//        require "modelDBForCheck.php";
+//        require "monitor.php";
+        $conn=connectDB();
+        $sql="SELECT * FROM result_check WHERE url='$url';";
+        //debug( $sql);
+        $resultSQL=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
+        //debug($result);
+        return $result;
+        
+ }
+ function readDataIsDBOneOfUrl($url) // чтение данных из базы данных об одной странице по url 
   {
         $conn=connectDB();
         $sql="SELECT * FROM for_check WHERE url='$url';";

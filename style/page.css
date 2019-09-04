@@ -4,7 +4,7 @@
 */
 main{
     height: 750px;
-    width: 770px;
+    width: 900px;
 }
 #formUrl{
     margin-left: 20px;
@@ -18,9 +18,23 @@ main{
     border: 1px solid gray;
     width: 250px;
 }
+#divDataPage h3{
+    margin-top: 1px;
+}
+#divDataPageDB h3{
+    margin-top: 1px;
+}
+#divCheckPage h4{
+    margin-top: 1px;
+}
+#divContent{
+    margin-top: 15px;
+    width: 970px;
+    height: 600px;
+}
 #divDataPage{
-    margin-left: 20px;
-    margin-top: 17px;
+    padding-left: 20px;
+    padding-top: 1px;
     border-right: 1px solid rgb(100,100,255);
     width: 330px;
     height: 600px;
@@ -41,11 +55,19 @@ main{
     
 }
 #divDataPageDB{
-    margin-left: 15px;
- margin-top: 17px;
- width: 370px;
+    padding-left: 15px;
+ padding-top: 1px;
+ width: 315px;
  height: 600px;
- float :left;
+ border-right: 1px solid blue; 
+ float: left;
+}
+#divCheckPage{
+    float:left;
+    padding-top: 1px;
+    padding-left: 15px;
+    width: 180px;
+    height: 600px;
 }
 #divDataPageDB p{
     margin-bottom: 2px;
@@ -78,7 +100,7 @@ main{
     top: 5px;
 }
 #btnSaveDataPageInDB{
-    position: relative;
-    left: 635px;
-    top: -18px;  
+   position: relative;
+    left: 85px;
+    top: 8px;  
 }

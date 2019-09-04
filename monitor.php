@@ -19,7 +19,7 @@ class monitor
    private $meta;// хранит h1, title, keywords, description;
    public  $message;// хранит сообшение о проверке
    
-   public function checkUrl($url)// функция проверки URL коорректность и на сушествование
+   public function checkUrlForMonitor($url)// функция проверки URL коорректность и на сушествование
    {
          
 
@@ -51,7 +51,7 @@ class monitor
       
    public function getHeader()// получить заголовки страницы
    {
-         if ($this->checkUrl($this->url))
+         if ($this->checkUrlForMonitor($this->url))
          {
               $this->header=get_headers($this->url);
          }
@@ -163,7 +163,7 @@ class monitor
    }
    public function getDataMonitorPage()// получить данные монитора страницы
    {
-       if ($this->checkUrl($this->url)===true)
+       if ($this->checkUrlForMonitor($this->url)===true)
        {
             $response=$this->getResponse();
             if ($response==200) $sizePage=$this->getPageSize(); else $sizepage=0;

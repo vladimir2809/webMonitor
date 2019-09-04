@@ -34,7 +34,7 @@ $resultCheck=readResultIsDB();
         </header> 
         <nav>
             <ul>
-                <li><div><a href="/page.php"><p>Добавить сайт</p></a></li></div>
+                <li><div><a href="/enterUrlPage.php"><p>Добавить сайт</p></a></li></div>
             
             <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
             
