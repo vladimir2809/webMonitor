@@ -117,16 +117,20 @@ if (isset( $_GET['url']))
                                     else if (isset($_POST['urlPage'])) echo $_POST['urlPage'];
                                    ?>"
                                 >
+                                <input type="hidden" name="newPage" value="<?php
+                                    if( isset($_GET['newPage'])) echo (1);
+                                   ?>"
+                                >
                                 <p>Размер страницы</p>
                                 <input type="text"  id="dataSizeDB" name="dataSizeDB" 
                                     value="<?php if (isset($dataOnePageDB['size_page'])) 
-                                    echo $dataOnePageDB['size_page'] ?>"
+                                    echo $dataOnePageDB['size_page']; else echo (0); ?>"
                                 >
                             </div>
                             <p>Погрешность размера страницы</p>
                             <input type="text" id="dataDeviationSizeDB" name="dataDeviationSizeDB"
                                 value="<?php if (isset($dataOnePageDB['deviation_size'])) 
-                                echo $dataOnePageDB['deviation_size'] ?>"
+                                echo $dataOnePageDB['deviation_size']; else echo (0); ?>"
                             >
                             
                         </div>

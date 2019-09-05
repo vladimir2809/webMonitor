@@ -37,12 +37,25 @@ class modelDBForCheck
         if (isset($error[2])) die($error[2]);
         
     }
-    public function readDB()
+    public function readDBOneRecordByURL($url)//читать из базы данных таьлицы for_check одну запись по url 
+    {
+        $sql="SELECT * FROM for_check WHERE url='{$url}'";
+        //debug( $sql);
+       
+        $resultSQL=$this->conn->query($sql);
+        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);  
+        $error=$this->conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        debug($result);
+    }
+    public function readDB()// читать из базы данных все записи
     {
          $sql="SELECT * FROM for_check;";
         //debug( $sql);
        
         $resultSQL=$this->conn->query($sql);
+        $error=$this->conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
         while($row=$resultSQL->fetch(PDO::FETCH_ASSOC))
         {
             $result[]=$row;

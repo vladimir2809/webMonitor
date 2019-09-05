@@ -1,19 +1,14 @@
 <?php
- function checkAll()// проверить все сайты которые есть базе данных
- {
-     require "modelDBForCheck.php";
-     require "monitor.php";
-     $conn=connectDB();
-     $DBForCheck=new modelDBForCheck;
-     $DBForCheck->setConn($conn);
-     $data=$DBForCheck->readDB();
-     $monitor=new Monitor;
-     for ($i=0;$i<count($data);$i++)
-     {
+require_once 'functions.php';
+require "monitor.php";
 
-       $monitor->setDataForMonitor($data[$i]);
+function checkOne($data)// проверитть одну страницу
+ {
+       //require "monitor.php";
+       $monitor=new Monitor;
+     //  debug($data);
+       $monitor->setDataForMonitor($data);
       // debug($monitor->getDataMonitorPage());
-       $resOne;
        $response=$monitor->getResponse();
        if ($response==200)
        {
@@ -59,25 +54,51 @@
             {
                  $description=0;
             }
-        }
-     
+       }
        else
        {
-        $size=0;
-        $h1=0;
-        $title=0;
-        $keywords=0;
-        $description=0;
+            $size=0;
+            $h1=0;
+            $title=0;
+            $keywords=0;
+            $description=0;
        }
-       $resCheck[]=["url"=>$monitor->getUrl(),"response"=>$response,"size"=>$size,
+       $resCheckOne=["url"=>$monitor->getUrl(),"response"=>$response,"size"=>$size,
                    "h1"=>$h1,"title"=>$title,"keywords"=>$keywords,
                     "description"=>$description];
-    }
-    return $resCheck;
+  // debug($resCheckOne);
+    return $resCheckOne;
+ }
+ function checkAll()// проверить все сайты которые есть базе данных
+ {
+     //require 'functions.php';
+     require_once "modelDBForCheck.php";
+ //    require "monitor.php";
+     $conn=connectDB();
+     $DBForCheck=new modelDBForCheck;
+     $DBForCheck->setConn($conn);
+     $data=$DBForCheck->readDB();
+   //  $monitor=new Monitor;
+     for ($i=0;$i<count($data);$i++)
+     {
+         $resOne=checkOne($data[$i]);
+         $resCheck[]=$resOne;
+     }
+     debug($resCheck);
+     return $resCheck;
+ }
+ function readDataOneForCheckByUrl($url)//читать данные одной записи из таблицы for_check по URL
+ {
+     require_once "modelDBForCheck.php";
+     $conn=connectDB();
+     $DBForCheck=new modelDBForCheck;
+     $DBForCheck->setConn($conn);
+     $data=$DBForCheck->readDBOneRecordByURL($url);
+     return $data;
  }
  function getDataOnePage($url)// получить данные от одной страницы
  {
-     require "monitor.php";
+     //require "monitor.php";
      $monitor=new Monitor; 
      if ($monitor->checkUrlForMonitor($url))
      {
@@ -95,7 +116,8 @@
         return [ 'url'=>$url,"message"=>$monitor->message]; 
      }
  }
- function readResultIsDB() //чтение результатов из базы данных
+ 
+ function readResultIsDB() //чтение результатов из базы данных из таблицы result_check
  {
 //        require "modelDBForCheck.php";
 //        require "monitor.php";
@@ -141,7 +163,21 @@
         //debug($result);
         return $result;
   }
- function writeResChecksInDB($resCheck)// записать в базу данных рзультаты проверок 
+  function insertDBCheckOne($resCheckOne)// вставить в таблицу result_check одну запись
+  {
+       $conn=connectDB();
+       debug($resCheckOne);
+       $sql="INSERT INTO result_check (url, response, size, h1, title, "
+               . "keywords, description )"
+               . "VALUES ('{$resCheckOne['url']}','{$resCheckOne['response']}',"
+               . "".$resCheckOne['size'].",".$resCheckOne['h1'].","
+               . "".$resCheckOne['title'].",".$resCheckOne['keywords'].",".$resCheckOne['description'].")";
+       debug( $sql); 
+       $resultSQL=$conn->query($sql);
+       $error=$conn->errorInfo();
+       if (isset($error[2])) die($error[2]); 
+  }
+ function writeResChecksInDB($resCheck)// записать в базу данных все рзультаты проверок 
  {
      //require "functions.php";
      $conn=connectDB();
@@ -214,4 +250,7 @@
          }
      }
  }
-
+if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)   
+{
+    writeResChecksInDB(checkAll());
+}

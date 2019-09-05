@@ -47,5 +47,18 @@ function checkUrl($url)// функция проверки URL корректно
      return false; 
      
 }
+function checkStrInt($str)
+{
+    if (is_numeric($str) && is_int($str+0) && ($str+0 <= 2147483647)&&($str[0]!='-')
+                && ( ($str[0]!='0') || ($str=='0') && (strlen($str)==1) )   
+        )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 
