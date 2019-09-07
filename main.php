@@ -84,7 +84,7 @@ function checkOne($data)// проверитть одну страницу
          $resOne=checkOne($data[$i]);
          $resCheck[]=$resOne;
      }
-     debug($resCheck);
+ //    debug($resCheck);
      return $resCheck;
  }
  function readDataOneForCheckByUrl($url)//читать данные одной записи из таблицы for_check по URL
@@ -166,16 +166,32 @@ function checkOne($data)// проверитть одну страницу
   function insertDBCheckOne($resCheckOne)// вставить в таблицу result_check одну запись
   {
        $conn=connectDB();
-       debug($resCheckOne);
+      // debug($resCheckOne);
        $sql="INSERT INTO result_check (url, response, size, h1, title, "
                . "keywords, description )"
-               . "VALUES ('{$resCheckOne['url']}','{$resCheckOne['response']}',"
+               . "VALUES ('{$resCheckOne['url']}',{$resCheckOne['response']},"
                . "".$resCheckOne['size'].",".$resCheckOne['h1'].","
                . "".$resCheckOne['title'].",".$resCheckOne['keywords'].",".$resCheckOne['description'].")";
-       debug( $sql); 
+      // debug( $sql); 
        $resultSQL=$conn->query($sql);
        $error=$conn->errorInfo();
        if (isset($error[2])) die($error[2]); 
+  }
+  function updateDBCheckOne($resCheckOne)// обновить одну запись в таблице result_check
+  {
+       $conn=connectDB();
+      // debug($resCheckOne);
+       $sql="UPDATE result_check SET response={$resCheckOne['response']},"
+                                   . "size={$resCheckOne['size']},"
+                                   . "h1={$resCheckOne['h1']},title={$resCheckOne['title']},"
+                                   . "keywords={$resCheckOne['keywords']},description={$resCheckOne['description']}"
+                                   . " WHERE url='{$resCheckOne['url']}'";
+                                   
+                                   
+      // debug( $sql); 
+       $resultSQL=$conn->query($sql);
+       $error=$conn->errorInfo();
+       if (isset($error[2])) die($error[2]);
   }
  function writeResChecksInDB($resCheck)// записать в базу данных все рзультаты проверок 
  {

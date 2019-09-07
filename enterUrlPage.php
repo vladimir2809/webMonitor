@@ -27,7 +27,6 @@ if ($_POST['btnGetData'])
         <link rel="stylesheet" href="style/main.css" type="text/css">
         <link rel="stylesheet" href="style/page.css" type="text/css">
         <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
-        <script src="scripts/pageJS.js" type="text/javascript"></script>
         <title> WebMonitor</title>   
     </head>    
     <body>

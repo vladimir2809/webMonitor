@@ -1,10 +1,15 @@
 <?php
 //require_once "monitor.php";
-//require_once "modelDBforCheck.php";
+require_once "modelDBforCheck.php";
 require_once "functions.php";
 require_once "main.php";
 require_once "SMS.php";
 $resultCheck=readResultIsDB();
+$conn=connectDB();
+$DBForCheck=new modelDBForCheck; 
+$DBForCheck->setConn($conn);
+$statePause=$DBForCheck->readStatePause();
+//debug($statePause);
 //debug($resultCheck);
 //writeResChecksInDB(checkAll());
 //debug($resultCheck);
@@ -58,7 +63,8 @@ $resultCheck=readResultIsDB();
                         <?= $resultCheck[$i]['url']?><a> 
                     </td>
                     <td>
-                        мониторится
+                       <?php if ($statePause[$i]['state_pause']==0) echo "Мониторится";
+                           else echo 'Остановлено'?>
                     </td>
                     <td><?= $resultCheck[$i]['response']?> </td>
                     <td><?php if ($resultCheck[$i]['size']==1) echo "OK";
@@ -77,10 +83,26 @@ $resultCheck=readResultIsDB();
                             else echo "FAIL";  ?>
                     </td>
                     <td>
-                        <div><img class="imgBtn"style=" width: 17px;"src="image/pause.png"  title='поставить на паузу'></div>
+                      <!--  <div><img class="imgBtn"style=" width: 17px;"src="image/pause.png"  title='поставить на паузу'></div>-->
+                        <form id='formPauseBtn' action="serverFunc.php" method="post">
+                            <input type='hidden' name='urlOfPause' value='<?=$resultCheck[$i]['url']?>' >
+                            <input type='image' style=" width: 17px;" class='imgBtn'
+                                   src='image/pause.png' name='btnPause' value='pause'
+                                   title='поставить на паузу'
+                            >
+                        </form>
+                            
+                            
                     </td>
                     <td>
-                        <div><img class="imgBtn" style=" width: 17px;"src="image/bag.png" title="снять с мониторинга"></div>
+                      <!--  <div><img class="imgBtn" style=" width: 17px;"src="image/bag.png" title="снять с мониторинга"></div>-->
+                        <form id='formDeleteBtn' action="serverFunc.php" method="post">
+                            <input type='hidden' name='urlOfDelete' value='<?=$resultCheck[$i]['url']?>' >
+                            <input type='image' style=" width: 17px;" class='imgBtn' 
+                                   src='image/bag.png' name='btnDelete' value='delete'
+                                   title='снять с мониторинга'
+                            >
+                        </form>
                     </td>
                 </tr>
                 <?php endfor;?>

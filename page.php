@@ -139,13 +139,11 @@ if (isset( $_GET['url']))
                             <p>H1</p>
                             <textarea id='dataH1DB' name='dataH1DB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['h1'])) 
-                                        echo $dataOnePageDB['h1'] ?>
-                            </textarea>
+                                        echo $dataOnePageDB['h1'] ?></textarea>
                             <p>Title</p>
                             <textarea id='dataTitleDB' name='dataTitleDB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['title'])) 
-                                        echo $dataOnePageDB['title'] ?>
-                            </textarea>
+                                        echo $dataOnePageDB['title'] ?></textarea>
                             <p>Keywords</p>
                             <textarea id='dataKeywordsDB'  name='dataKeywordsDB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['keywords'])) 
@@ -153,8 +151,7 @@ if (isset( $_GET['url']))
                             <p>Description</p>
                             <textarea id='dataDescriptionDB' name='dataDescriptionDB' rows="3" cols="40"><?php 
                                     if (isset($dataOnePageDB['description'])) 
-                                        echo $dataOnePageDB['description'] ?>
-                            </textarea>
+                                        echo $dataOnePageDB['description'] ?></textarea>
                         </div>
                         <input type="submit" value="сохранить в БД" name="btnSaveDataPageInDB" id="btnSaveDataPageInDB">
                     </form>

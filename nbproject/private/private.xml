@@ -9,7 +9,12 @@
             <file>file:/C:/OSPanel/domains/webmonitor/scripts/pageJS.js</file>
             <file>file:/C:/OSPanel/domains/webmonitor/monitor.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/SMS.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/serverFunc.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/style/page.css</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/modelDBForCheck.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/functions.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/style/main.css</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/enterUrlPage.php</file>
         </group>
     </open-files>
 </project-private>

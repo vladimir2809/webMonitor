@@ -2,7 +2,11 @@ jQuery(document).ready(function(){
 //alert('Привет мир!');
     // добавляем обработчик события к кнопке ">>"
     $(':button[name="btnTransfer"]').bind('click', function(){
-        $('#dataSizeDB').val($('#dataSize').val());
+        if ($('#dataSize').val()==''){
+           $('#dataSizeDB').val(0); 
+        }else{
+            $('#dataSizeDB').val($('#dataSize').val());
+        }
         $('#dataDeviationSizeDB').val(2000);
         $('#dataH1DB').val($('#dataH1').val());
         $('#dataTitleDB').val($('#dataTitle').val());
