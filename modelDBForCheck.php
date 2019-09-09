@@ -43,7 +43,7 @@ class modelDBForCheck
     {
        $sql="UPDATE for_check SET state_pause={$statePause} WHERE url='{$url}'";
                                 
-        debug( $sql);
+      //  debug( $sql);
         $result=$this->conn->query($sql);
         $error=$this->conn->errorInfo();
         if (isset($error[2])) die($error[2]);   
@@ -83,6 +83,14 @@ class modelDBForCheck
         if (isset($error[2])) die($error[2]);
        // debug($result);
         return $result;
+    }
+    public function deleteOneRecordByUrl($url)
+    {
+         $sql="DELETE FROM for_check WHERE url='{$url}';";
+        //debug( $sql);
+        $result=$this->conn->query($sql);
+        $error=$this->conn->errorInfo();
+        if (isset($error[2])) die($error[2]);  
     }
     public function readDB()// читать из базы данных все записи
     {

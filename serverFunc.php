@@ -70,13 +70,30 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
 }
 if (isset($_POST['btnPause_x']))// если нажата пауза на странице index
 {
-    debug($_POST);
+   // debug($_POST);
     $conn=connectDB();
     $DBForCheck=new modelDBForCheck; 
     $DBForCheck->setConn($conn);
     $DBForCheck->updateStatePauseByUrl($_POST['urlOfPause'],1);
+    header("Location: "."index.php");
+}
+if (isset($_POST['btnPlay_x']))// если нажата пауза на странице index
+{
+   // debug($_POST);
+    $conn=connectDB();
+    $DBForCheck=new modelDBForCheck; 
+    $DBForCheck->setConn($conn);
+    $DBForCheck->updateStatePauseByUrl($_POST['urlOfPause'],0);
+    header("Location: "."index.php");
 }
 if (isset($_POST['btnDelete_x']))// если нажата  снять с мониторинга на странице index
 {
-    debug($_POST);
+    //debug($_POST);
+    $conn=connectDB();
+    $DBForCheck=new modelDBForCheck; 
+    $DBForCheck->setConn($conn);
+    $DBForCheck->deleteOneRecordByUrl($_POST['urlOfDelete']);
+    include_once 'main.php';
+    deleteOneRecResCheckByUrl($_POST['urlOfDelete']);
+    header("Location: "."index.php");
 }

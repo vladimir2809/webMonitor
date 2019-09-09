@@ -193,6 +193,15 @@ function checkOne($data)// проверитть одну страницу
        $error=$conn->errorInfo();
        if (isset($error[2])) die($error[2]);
   }
+function deleteOneRecResCheckByUrl($url)
+{
+    $conn=connectDB();
+    $sql="DELETE FROM result_check WHERE url='{$url}';";
+    //debug( $sql);
+    $result=$conn->query($sql);
+    $error=$conn->errorInfo();
+    if (isset($error[2])) die($error[2]);  
+}
  function writeResChecksInDB($resCheck)// записать в базу данных все рзультаты проверок 
  {
      //require "functions.php";

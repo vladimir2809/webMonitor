@@ -19,6 +19,8 @@ $statePause=$DBForCheck->readStatePause();
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="style/main.css" type="text/css">
+        <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+        <script src="scripts/mainJS.js" type="text/javascript"></script>
         <title> WebMonitor</title>   
     </head>    
     <body>
@@ -86,10 +88,17 @@ $statePause=$DBForCheck->readStatePause();
                       <!--  <div><img class="imgBtn"style=" width: 17px;"src="image/pause.png"  title='поставить на паузу'></div>-->
                         <form id='formPauseBtn' action="serverFunc.php" method="post">
                             <input type='hidden' name='urlOfPause' value='<?=$resultCheck[$i]['url']?>' >
-                            <input type='image' style=" width: 17px;" class='imgBtn'
-                                   src='image/pause.png' name='btnPause' value='pause'
-                                   title='поставить на паузу'
-                            >
+                            <?php if ($statePause[$i]['state_pause']==0):?>
+                                <input type='image' style=" width: 17px;" class='imgBtn'
+                                       src='image/pause.png' name='btnPause' value='pause'
+                                       title='поставить на паузу'
+                                >
+                            <?php else: ?>
+                                <input type='image' style=" width: 17px;" class='imgBtn'
+                                   src='image/play.png' name='btnPlay' value='play'
+                                   title='возобновить мониторинг'
+                                >
+                            <?php endif?>
                         </form>
                             
                             
@@ -97,7 +106,7 @@ $statePause=$DBForCheck->readStatePause();
                     <td>
                       <!--  <div><img class="imgBtn" style=" width: 17px;"src="image/bag.png" title="снять с мониторинга"></div>-->
                         <form id='formDeleteBtn' action="serverFunc.php" method="post">
-                            <input type='hidden' name='urlOfDelete' value='<?=$resultCheck[$i]['url']?>' >
+                            <input type='hidden' id='hidUrlOfDelete' name='urlOfDelete' value='<?=$resultCheck[$i]['url']?>' >
                             <input type='image' style=" width: 17px;" class='imgBtn' 
                                    src='image/bag.png' name='btnDelete' value='delete'
                                    title='снять с мониторинга'
