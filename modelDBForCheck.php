@@ -63,9 +63,9 @@ class modelDBForCheck
     // вставить в БД одну запись
     public function insertInDB($url,$sizePage,$deviationSize,$h1,$title,$keywords,$description)// функция которая добавлеят в БД в таблицу for_check запись
     {
-        $sql="INSERT INTO for_check (url,size_page,deviation_size,h1,title,keywords,description)"
+        $sql="INSERT INTO for_check (url,size_page,deviation_size,h1,title,keywords,description,time_add)"
                 . "VALUES('".$url."',$sizePage,$deviationSize,'".$h1."','".$title."','".$keywords."'"
-                . ",'".$description."')";
+                . ",'".$description."',NOW())";
         //debug( $sql);
         $result=$this->conn->query($sql);
         $error=$this->conn->errorInfo();

@@ -41,7 +41,7 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
     {
     //    echo "333";
      //   debug($_POST);
-        if ($DBForCheck->checkRecordByUrl($_POST['url'])==false)
+        if ($DBForCheck->checkRecordByUrl($_POST['url'])==false)// если нет записи в for_check 
         {
          //   echo "222";
             //////////
@@ -56,7 +56,7 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
     else
     {
        /// echo "111";
-        if ($DBForCheck->checkRecordByUrl($_POST['url'])==true)
+       if ($DBForCheck->checkRecordByUrl($_POST['url'])==true)// если есть запись в for_check
         {
             $DBForCheck->updateRecordByUrl($url,$sizePage,$deviationSize,$h1,$title,$keywords,$description); 
             require_once 'main.php';

@@ -3,7 +3,9 @@
 require_once "modelDBforCheck.php";
 require_once "functions.php";
 require_once "main.php";
+require_once 'Journal.php';
 require_once "SMS.php";
+
 $resultCheck=readResultIsDB();
 $conn=connectDB();
 $DBForCheck=new modelDBForCheck; 
@@ -11,6 +13,12 @@ $DBForCheck->setConn($conn);
 $statePause=$DBForCheck->readStatePause();
 //debug($statePause);
 //debug($resultCheck);
+//$journal=new Journal();
+//for($i=0;$i<count($resultCheck);$i++)
+//{
+//    echo $journal->createCodeByResCheck($resultCheck[$i]);
+//    echo '<br>';
+//}
 //writeResChecksInDB(checkAll());
 //debug($resultCheck);
 ?>
@@ -55,7 +63,7 @@ $statePause=$DBForCheck->readStatePause();
             </div>
             <table>
                 <tr>
-                    <th> url</th><th> состояние</th><th> ответ</th><th>размер</th>
+                    <th> url</th><th> состояние</th><th>проверен</th><th> ответ</th><th>размер</th>
                     <th> h1</th><th> title</th><th> keywords</th><th> description</th>
                     <th></th><th></th>
                 </tr>
@@ -68,6 +76,7 @@ $statePause=$DBForCheck->readStatePause();
                        <?php if ($statePause[$i]['state_pause']==0) echo "Мониторится";
                            else echo 'Остановлено'?>
                     </td>
+                    <td><?= date("d-M-y H:i",strtotime($resultCheck[$i]['time_upload']))?> </td>
                     <td><?= $resultCheck[$i]['response']?> </td>
                     <td><?php if ($resultCheck[$i]['size']==1) echo "OK";
                             else echo "FAIL";  ?>

@@ -150,7 +150,7 @@ function checkOne($data)// проверитть одну страницу
         return $result;
         
  }
- function readDataIsDBOneOfUrl($url) // чтение данных из базы данных об одной странице по url 
+ function readDataIsDBOneOfUrl($url) // чтение данных из базы данных for_check об одной странице по url 
   {
         $conn=connectDB();
         $sql="SELECT * FROM for_check WHERE url='$url';";
@@ -168,11 +168,12 @@ function checkOne($data)// проверитть одну страницу
        $conn=connectDB();
       // debug($resCheckOne);
        $sql="INSERT INTO result_check (url, response, size, h1, title, "
-               . "keywords, description )"
+               . "keywords, description, time_upload)"
                . "VALUES ('{$resCheckOne['url']}',{$resCheckOne['response']},"
                . "".$resCheckOne['size'].",".$resCheckOne['h1'].","
-               . "".$resCheckOne['title'].",".$resCheckOne['keywords'].",".$resCheckOne['description'].")";
-      // debug( $sql); 
+               . "".$resCheckOne['title'].",".$resCheckOne['keywords'].",".$resCheckOne['description'].","
+                       ."NOW());";
+       //debug( $sql); 
        $resultSQL=$conn->query($sql);
        $error=$conn->errorInfo();
        if (isset($error[2])) die($error[2]); 
@@ -184,7 +185,9 @@ function checkOne($data)// проверитть одну страницу
        $sql="UPDATE result_check SET response={$resCheckOne['response']},"
                                    . "size={$resCheckOne['size']},"
                                    . "h1={$resCheckOne['h1']},title={$resCheckOne['title']},"
-                                   . "keywords={$resCheckOne['keywords']},description={$resCheckOne['description']}"
+                                   . "keywords={$resCheckOne['keywords']},"
+                                   . "description={$resCheckOne['description']}"
+                                   . ",time_upload=NOW()"
                                    . " WHERE url='{$resCheckOne['url']}'";
                                    
                                    
@@ -214,10 +217,11 @@ function deleteOneRecResCheckByUrl($url)
          for ($i=0;$i<count($resCheck);$i++)
          {
             $sql="INSERT INTO result_check (url, response, size, h1, title, "
-                    . "keywords, description )"
+                    . "keywords, description,time_upload )"
                     . "VALUES ('".$resCheck[$i]['url']."',".$resCheck[$i]['response'].", "
                     . "".$resCheck[$i]['size'].",".$resCheck[$i]['h1'].","
-                    . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].")";
+                    . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].","
+                    . "NOW())";
             //debug( $sql); 
             $resultSQL=$conn->query($sql);
             $error=$conn->errorInfo();
@@ -250,8 +254,10 @@ function deleteOneRecResCheckByUrl($url)
                                . ", h1=".$resCheck[$i]['h1'].""
                                . ", title=".$resCheck[$i]['title'].""
                                . ", keywords=".$resCheck[$i]['keywords'].""
-                               . ", description=".$resCheck[$i]['description']." "
+                               . ", description=".$resCheck[$i]['description'].""
+                               . ", time_upload=NOW()"
                                . "WHERE url='{$resCheck[$i]['url']}';";
+                       debug($sql);
                        $result=$conn->query($sql);
                        $error=$conn->errorInfo();
                        if (isset($error[2])) die($error[2]);
@@ -262,11 +268,12 @@ function deleteOneRecResCheckByUrl($url)
             if  ($flag==false)// если в БД нет страницы с нужным url
             {
                 $sql="INSERT INTO result_check (url, response, size, h1, title, "
-                    . "keywords, description )"
-                    . "VALUES ('".$resCheck[$i]['url']."',".$resCheck[$i]['response'].", "
+                    . "keywords, description, time_upload)"
+                    . "VALUES ('".$resCheck[$i]['url']."',".$resCheck[$i]['response'].","
                     . "".$resCheck[$i]['size'].",".$resCheck[$i]['h1'].","
-                    . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].")";
-                //debug( $sql); 
+                    . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].","
+                        . "NOW());";
+              //  debug( $sql); 
                 $resultSQL=$conn->query($sql);
                 $error=$conn->errorInfo();
                 if (isset($error[2])) die($error[2]); 
