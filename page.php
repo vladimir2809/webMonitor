@@ -4,7 +4,8 @@
 session_start();
 require_once "functions.php";
 require_once "main.php";
-
+require_once "modelDBResultCheck.php";
+require_once "modelDBForCheck.php";
 if (isset($_SESSION['message_data']))
 {
     $mes_data=$_SESSION['message_data'];
@@ -12,6 +13,7 @@ if (isset($_SESSION['message_data']))
 }
 if ($_POST['btnGetData'])
 {
+   $DBResultCheck=new modelDBResultCheck();
    $dataUrl=getDataOnePage($_POST['urlPage']);
    
 //   $resultCheck= readResultIsDBOneOfUrl($_POST['urlPage']);
@@ -20,9 +22,13 @@ if ($_POST['btnGetData'])
 }
 if (isset( $_GET['url']))
 {
-  $dataOnePageDB=readDataIsDBOneOfUrl($_GET['url']);
+  $DBResultCheck=new modelDBResultCheck();
+  $DBForCheck=new modelDBForCheck();
+  $conn=connectDB();
+  $DBForCheck->setConn($conn);
+  $dataOnePageDB=$DBForCheck->readDBOneRecordByURL($_GET['url']);
   $dataUrl=getDataOnePage($_GET['url']);  
-  $resultCheck= readResultIsDBOneOfUrl($_GET['url']);
+  $resultCheck=$DBResultCheck->readResultIsDBOneOfUrl($_GET['url']);
  // debug($dataOnePageDB);
   //debug($dataUrl);
 }

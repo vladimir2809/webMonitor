@@ -2,6 +2,7 @@
 session_start();
 require 'functions.php';
 require 'modelDBForCheck.php';
+require_once 'modelDBResultCheck.php';
 //debug($_POST);
 if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка сохранитть на странице PAGE
 {   
@@ -47,9 +48,10 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
             //////////
             $DBForCheck->insertInDB($url,$sizePage,$deviationSize,$h1,$title,$keywords,$description);
             require_once 'main.php';
-            $data=readDataOneForCheckByUrl($url);
+            $DBResultCheck=new modelDBResultCheck();
+            $data=$DBForCheck->readDBOneRecordByURL($url);
             //debug($data);
-            insertDBCheckOne(checkOne($data));
+            $DBResultCheck->insertDBCheckOne(checkOne($data));
 
         }
     }
@@ -60,9 +62,10 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
         {
             $DBForCheck->updateRecordByUrl($url,$sizePage,$deviationSize,$h1,$title,$keywords,$description); 
             require_once 'main.php';
-            $data=readDataOneForCheckByUrl($url);
+            $DBResultCheck=new modelDBResultCheck();
+            $data=$DBForCheck->readDBOneRecordByURL($url);
             //debug($data);
-            updateDBCheckOne(checkOne($data));
+            $DBResultCheck->updateDBCheckOne(checkOne($data));
         }
     }
     //debug($_POST);
@@ -94,6 +97,7 @@ if (isset($_POST['btnDelete_x']))// если нажата  снять с мон�
     $DBForCheck->setConn($conn);
     $DBForCheck->deleteOneRecordByUrl($_POST['urlOfDelete']);
     include_once 'main.php';
-    deleteOneRecResCheckByUrl($_POST['urlOfDelete']);
+    $DBResultCheck=new modelDBResultCheck();
+    $DBResultCheck->deleteOneRecResCheckByUrl($_POST['urlOfDelete']);
     header("Location: "."index.php");
 }

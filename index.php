@@ -5,8 +5,9 @@ require_once "functions.php";
 require_once "main.php";
 require_once 'Journal.php';
 require_once "SMS.php";
-
-$resultCheck=readResultIsDB();
+require_once "modelDBResultCheck.php";
+$DBResultCheck=new modelDBResultCheck();
+$resultCheck=$DBResultCheck->readResultIsDB();
 $conn=connectDB();
 $DBForCheck=new modelDBForCheck; 
 $DBForCheck->setConn($conn);

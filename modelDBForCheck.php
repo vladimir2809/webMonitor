@@ -72,8 +72,45 @@ class modelDBForCheck
         if (isset($error[2])) die($error[2]);
         
     }
+// function readDataOneForCheckByUrl($url)//читать данные одной записи из таблицы for_check по URL
+// {
+//     require_once "modelDBForCheck.php";
+//     $conn=connectDB();
+//     $DBForCheck=new modelDBForCheck;
+//     $DBForCheck->setConn($conn);
+//     $data=$DBForCheck->readDBOneRecordByURL($url);
+//     return $data;
+// }
+    
+//  public function readDataIsDBOneOfUrl($url) // чтение данных из базы данных for_check об одной странице по url 
+//  {
+//        $conn=connectDB();
+//        $sql="SELECT * FROM for_check WHERE url='$url';";
+//        //debug( $sql);
+//        $resultSQL=$conn->query($sql);
+//        $error=$conn->errorInfo();
+//        if (isset($error[2])) die($error[2]);
+//        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
+// 
+//        //debug($result);
+//        return $result;
+//  }
+//  function readDataIsDBOneOfUrl($url) // чтение данных из базы данных for_check об одной странице по url 
+//  {
+//        $conn=connectDB();
+//        $sql="SELECT * FROM for_check WHERE url='$url';";
+//        //debug( $sql);
+//        $resultSQL=$conn->query($sql);
+//        $error=$conn->errorInfo();
+//        if (isset($error[2])) die($error[2]);
+//        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
+// 
+//        //debug($result);
+//        return $result;
+//  }
     public function readDBOneRecordByURL($url)//читать из базы данных таьлицы for_check одну запись по url 
     {
+        
         $sql="SELECT * FROM for_check WHERE url='{$url}'";
         //debug( $sql);
        

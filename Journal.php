@@ -42,7 +42,12 @@ class Journal
         return $result;
         
     }
-    public function checkToWriteDB()// проверить нужно ли записывать в БД данные о проверки
+    private function getResCheckOfMonitor()
+    {
+        require_once 'main.php';
+        return readResultIsDB();
+    }
+    public function checkOneToWriteDB()// проверить нужно ли записывать в БД данные о проверки
     {
         
     }
