@@ -1,6 +1,7 @@
 <?php
 require_once 'functions.php';
 require_once 'modelDBresultCheck.php';
+require_once 'Journal.php';
 require "monitor.php";
 
 function checkOne($data)// проверитть одну страницу
@@ -102,6 +103,8 @@ if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)
 {
     $DBResultCheck=new modelDBResultCheck();
     $DBResultCheck->writeResChecksInDB(checkAll());
+    $journal=new Journal();
+    $journal->updateJournal();
 }
 
  function getDataOnePage($url)// получить данные от одной страницы
