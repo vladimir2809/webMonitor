@@ -1,7 +1,7 @@
 <?php
 require_once 'functions.php';
 require_once 'modelDBresultCheck.php';
-require_once 'Journal.php';
+require_once 'modelJournal.php';
 require "monitor.php";
 
 function checkOne($data)// проверитть одну страницу

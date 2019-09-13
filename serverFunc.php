@@ -101,3 +101,7 @@ if (isset($_POST['btnDelete_x']))// если нажата  снять с мон�
     $DBResultCheck->deleteOneRecResCheckByUrl($_POST['urlOfDelete']);
     header("Location: "."index.php");
 }
+if (isset($_POST['btnSearchJournal']))
+{
+    debug($_POST);
+}

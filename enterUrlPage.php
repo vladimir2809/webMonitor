@@ -51,7 +51,7 @@ if ($_POST['btnGetData'])
             
             <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
             
-             <li><div> <a href="#"><p>Журнал</p></a></li></div>
+             <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
              </ul>
         </nav>
         <main>  
