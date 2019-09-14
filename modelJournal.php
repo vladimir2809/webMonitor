@@ -79,10 +79,10 @@ class Journal
     }
     public function codeToMessage($url,$code)// конвертировать код в сообшение для пользователя
     {
-        $result="У страницы <a href='page.php?url={$url}'><span style='color: green;'> {$url} </span></a>: ";
+        $result="У страницы <a href='page.php?url={$url}'><span class='urlJournal' > {$url} </span></a>: ";
         if ($code=="111111")
         {
-            return "Страница <a href='page.php?url={$url}'><span style='color: green;'> {$url} </span></a>"
+            return "Страница <a href='page.php?url={$url}'><span class='urlJournal> {$url} </span></a>"
                     ." работает нормально";
         }
         if ($code[0]=='0') 
@@ -117,9 +117,27 @@ class Journal
         }
         return $result;
     }
-    public function search($key)
+    public function searchAndGetResult($key)
     {
-        
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="SELECT url, code_check, time_check FROM journal WHERE url LIKE '%{$key}%'"
+                . " ORDER BY time_check DESC";
+        //debug( $sql);
+       
+        $resultSQL=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        while($row=$resultSQL->fetch(PDO::FETCH_ASSOC))
+        {
+            $arrCode[]=$row;
+        }
+        for ($i=0;$i<count($arrCode);$i++)
+        {
+            $message=$this->codeToMessage($arrCode[$i]['url'],$arrCode[$i]['code_check'] );
+            $result[]=['time'=>$arrCode[$i]['time_check'],"message"=>$message];
+        }
+        return $result;
     }
     public function getArrMessage()//  получить массив сообшений
     {

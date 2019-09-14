@@ -103,5 +103,11 @@ if (isset($_POST['btnDelete_x']))// если нажата  снять с мон�
 }
 if (isset($_POST['btnSearchJournal']))
 {
-    debug($_POST);
+    require_once 'modelJournal.php';
+    $journal=new Journal;
+    $_SESSION['resultSearch']=$journal->searchAndGetResult($_POST['querySearchJournal']);
+    //debug($_POST);
+    header("Location: "."journal.php");
+    //debug($_POST);
+    
 }

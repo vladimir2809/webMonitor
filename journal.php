@@ -1,8 +1,17 @@
 <?php
 require_once 'functions.php';
 require_once 'modelJournal.php';
-$journal=new Journal();
-$message=$journal->getArrMessage();
+session_start();
+if (!isset($_SESSION['resultSearch']))
+{
+    $journal=new Journal();
+    $message=$journal->getArrMessage();
+}
+else
+{
+    $message=$_SESSION['resultSearch'];
+    unset($_SESSION['resultSearch']);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,6 +21,7 @@ $message=$journal->getArrMessage();
         <link rel="stylesheet" href="style/journal.css" type="text/css">
         <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
         <script src="scripts/mainJS.js" type="text/javascript"></script>
+        <script src="scripts/journal.js" type="text/javascript"></script>
         <title> WebMonitor</title>   
     </head>    
     <body>
@@ -42,7 +52,7 @@ $message=$journal->getArrMessage();
         <main style="border: none;">
             <div id="divSearchJournal">
                 <form id="searchByJournal" action="serverFunc.php" method="post">
-                    <p> введите URL для поиска </p>
+                    <p> Введите запрос для поиска по URL</p>
                     <input type="text" id="textSearchJournal" name="querySearchJournal"> 
                     <input type="submit" name="btnSearchJournal" value="Поиск">
                 </form>

@@ -32,3 +32,9 @@
 .divMessageJournal p{
     margin: 3px;
 }
+.urlJournal{
+    color: green;
+}
+.urlSearch{
+    color: yellow;
+}
