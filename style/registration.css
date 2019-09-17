@@ -1,0 +1,25 @@
+header h1{
+    font-size:100px;
+    color: greenyellow;
+    margin-top: 2px;
+}
+main h2{
+    text-align: center;
+}
+main form{
+    width: 280px;
+    height: 500px;
+    border: 1px solid blue;
+    border-radius: 15px;
+}
+main form p{
+    margin-left: 20px;
+    margin-bottom: 2px;
+}
+main form input{
+    margin-left: 20px;
+}
+#submitReg{
+    margin-top: 10px;
+    margin-left: 36px;
+}
