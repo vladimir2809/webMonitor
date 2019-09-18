@@ -111,3 +111,8 @@ if (isset($_POST['btnSearchJournal']))
     //debug($_POST);
     
 }
+if (isset($_POST['btnRegistration']))
+{
+    debug($_POST);
+}
+//debug($_POST);
