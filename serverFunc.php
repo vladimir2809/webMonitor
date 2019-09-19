@@ -113,6 +113,82 @@ if (isset($_POST['btnSearchJournal']))
 }
 if (isset($_POST['btnRegistration']))
 {
-    debug($_POST);
+    $_SESSION['data']=$_POST;
+    if (strlen($_POST['nameUser'])<3)
+    {
+        $_SESSION['errorReg']="Имя должно быть не менее 3 символов.";
+        header("Location: "."registration.php");
+        exit;
+    }
+    if (strlen($_POST['surnameUser'])<3)
+    {
+        $_SESSION['errorReg']="Фамилия должна быть не менее 3 символов.";
+        header("Location: "."registration.php");
+        exit;
+    }
+    if (strlen($_POST['login'])<3)
+    {
+        $_SESSION['errorReg']="Логин должен быть не менее 3 символов.";
+        header("Location: "."registration.php");
+        exit;
+    }
+    if (strlen($_POST['password'])<6)
+    {
+        $_SESSION['errorReg']="Пароль должен быть не менее 6 символов.";
+        header("Location: "."registration.php");
+        exit;
+    }
+    if ($_POST['password']!=$_POST['password2'])
+    {
+        $_SESSION['errorReg']="Введенные пароли не совпадают.";
+        header("Location: "."registration.php");
+        exit;
+    }
+    if ($_POST['checkboxSms']=='on')
+    {
+        require_once 'SMS.php';
+        $resultBalance=balance("api.smsfeedback.ru", 80, $_POST['loginSmsFeedBack'],
+                        $_POST['passwordSmsFeedBack']);
+        $resBalanceLen=strlen($resultBalance);
+        if ($resBalanceLen>40)
+        {
+          $_SESSION['errorReg']="логин или пароль от smsfeedback.ru не верен.";  
+          header("Location: "."registration.php");
+          exit; 
+        }
+        if (strlen($_POST['telephone'])!=10)
+        {  
+            $_SESSION['errorReg']="длина номера телефона должна быть 10 цивр.";  
+            header("Location: "."registration.php");
+            exit; 
+        }   //varietyStr
+        if (varietyStr("0123456789",$_POST['telephone'])==false)
+        {
+            //echo "size == int";
+            //echo '<br>';
+            $_SESSION['errorReg']='номер телефона должен состоять только из цивр.';
+            header("Location: "."registration.php");
+            exit;
+        }
+        
+        
+    }
+    require_once 'modelUserOption.php';
+    $name=$_POST['nameUser'];
+    $surname=$_POST['surnameUser'];
+    $login=$_POST['login'];
+    $password=$_POST['password'];
+    if ($_POST['checkboxSms']=='on') $smsSubmit=1; else $smsSubmit=0;
+    $loginSmsFeedBack=$_POST['loginSmsFeedBack'];
+    $passwordSmsFeedBack=$_POST['passwordSmsFeedBack'];
+    $telephone='7'.$_POST['telephone'];
+    
+    $DBUserOption=new modelUserOption();
+    
+    if ($DBUserOption->checkRecordInDB()==false)
+    {
+        $DBUserOption->insertUserOption($name, $surname, $login, $password, $smsSubmit, 
+                                        $loginSmsFeedBack, $passwordSmsFeedBack, $telephone);
+    }
 }
 //debug($_POST);

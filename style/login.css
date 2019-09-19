@@ -1,0 +1,25 @@
+/* 
+    Created on : 19.09.2019, 14:26:15
+    Author     : Владимир
+*/
+main{
+       position: relative;
+        top: 50%;
+        left: 50%;
+        width: 420px;
+        height: 180px;
+        margin-right: -50%;
+        transform: translate(-50%,20%);
+        margin-top: 10px;
+        background-color: rgb(200,200,255);
+        border-radius: 15px;
+}
+main>h3{
+    text-align: center;
+}
+main form{
+    margin-left: 30px;
+}
+main form p{
+    margin-bottom: 3px;
+}

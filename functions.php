@@ -60,5 +60,28 @@ function checkStrInt($str)
         return false;
     }
 }
+function varietyStr($patern,$str)// фунцкция которая проверяет что строка состоит только из определенных символов
+{
+    for ($i=0;$i<strlen($str);$i++)
+    {
+        $resFalse=false;
+        for ($j=0;$j<strlen($patern);$j++)
+        {
+            if ($str[$i]==$patern[$j])//сравниваем каждый символ строки с патерном
+            {
+                $resFalse=true;
+
+            }
+        }
+        if ($resFalse==false)//если совпадения символа строки с набором символов патерна не найдены 
+        {
+            return false;
+        }
+    }
+    return true;
+}
+		
+	
+
 
 
