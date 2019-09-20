@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'))
+{
+    header("Location: "."login.php");
+}
 //require_once "monitor.php";
 //require_once "modelDBforCheck.php";
 session_start();
@@ -54,7 +59,7 @@ if (isset( $_GET['url']))
                         <p> Главная</p>
                     </div>
                 </a>
-                <a href="index.php">
+                <a href="option.php">
                     <div id="headOptionA">
                         <p> Настройки</p>
                     </div>
@@ -68,6 +73,7 @@ if (isset( $_GET['url']))
             <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
             
              <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
+            <li><div> <a href="serverFunc.php?exit=true"><p>Выход</p></a></li></div>
              </ul>
         </nav>
         <main>  

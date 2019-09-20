@@ -1,11 +1,17 @@
 <?php
 //require_once "monitor.php";
+session_start();
+if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'))
+{
+    header("Location: "."login.php");
+}
 require_once "modelDBforCheck.php";
 require_once "functions.php";
 require_once "main.php";
 //require_once 'Journal.php';
 require_once "SMS.php";
 require_once "modelDBResultCheck.php";
+
 $DBResultCheck=new modelDBResultCheck();
 $resultCheck=$DBResultCheck->readResultIsDB();
 $conn=connectDB();
@@ -41,7 +47,7 @@ $statePause=$DBForCheck->readStatePause();
                         <p> Главная</p>
                     </div>
                 </a>
-                <a href="index.php">
+                <a href="option.php">
                     <div id="headOptionA">
                         <p> Настройки</p>
                     </div>
@@ -55,6 +61,7 @@ $statePause=$DBForCheck->readStatePause();
             <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
             
              <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
+            <li><div> <a href="serverFunc.php?exit=true"><p>Выход</p></a></li></div>
              </ul>
         </nav>
         <main>

@@ -1,5 +1,18 @@
 <?php
-
+    session_start();
+    require_once 'modelUserOption.php';
+    $DBUserOption=new modelUserOption();
+    
+    if ($DBUserOption->checkRecordInDB()==false)
+    {
+        header("Location: "."registration.php");
+        exit;
+    }
+    if (isset($_SESSION['errorMes']))
+    {
+        $error=$_SESSION['errorMes'];
+        unset($_SESSION['errorMes']);
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,6 +29,13 @@
                 <input type="text" name="login">
                 <p> Пароль</p>
                 <input type="password" name="password">
+                
+                <input type="submit" id="btnLogin" name="btnLogin" value="Войти">
+                <?php if (isset($error)):?>
+                    <p style="color:red; font-size:17px;">
+                        <?=$error?>
+                    </p>
+                 <?php endif?>
             </form>
                 
         </main>

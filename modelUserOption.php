@@ -24,6 +24,17 @@ class modelUserOption
             return false;
         }
     }
+    public function getLoginPassword()
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="SELECT login, password FROM user_option LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
     public function insertUserOption($name,$surname,$login,$password,$smsSubmit,
                                         $loginSmsFeedBack,$passwordSmsFeedBack,$telephone)
     {
@@ -33,7 +44,7 @@ class modelUserOption
                 .  "login_smsfeedback,password_smsfeedback,telephone)"
                 . "VALUES ('{$name}','{$surname}','{$login}','{$password}',{$smsSubmit},"
                 . "'{$loginSmsFeedBack}','{$passwordSmsFeedBack}',{$telephone})";
-        debug( $sql);
+       // debug( $sql);
         $resultSQL=$conn->query($sql);
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);

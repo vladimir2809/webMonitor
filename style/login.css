@@ -23,3 +23,8 @@ main form{
 main form p{
     margin-bottom: 3px;
 }
+#btnLogin{
+    position:relative;
+    top: -30px;
+    left: 80px;
+}
