@@ -211,6 +211,7 @@ if (isset($_POST['btnLogin']))// если нажата кнопка ввойти
    if ($_POST['password']=='')// если не введен пароль
    { 
         $_SESSION['errorMes']='Не введен пароль.';
+        $_SESSION['data']=$_POST;
         header("Location: "."login.php");
         exit;
    }
@@ -225,13 +226,67 @@ if (isset($_POST['btnLogin']))// если нажата кнопка ввойти
    else 
    {
         $_SESSION['errorMes']='Неверно введен логин или пароль.';
+        $_SESSION['data']=$_POST;
         header("Location: "."login.php");
         exit;
    } 
 }
+if (isset($_POST['btnChangePassword']))// если нажата кнопка изменить пароль в настройках
+{
+   // debug($_POST);
+    if ($_POST['passwordOld']=='')// если не введен пароль
+    { 
+         $_SESSION['errorMes']='Не введен старый пароль.';
+         //debug($_SESSION['errorMes']);
+         header("Location: "."option.php");
+         exit;
+    }
+     if ($_POST['passwordNew']=='')// если не введен новый пароль
+    { 
+         $_SESSION['errorMes']='Не введен новый пароль.';
+         //debug($_SESSION['errorMes']);
+         header("Location: "."option.php");
+         exit;
+    }
+    if ($_POST['passwordNew2']!=$_POST['passwordNew']) // если новый и новый пароль 2 не совпадают
+    { 
+         $_SESSION['errorMes']='Новые пароли не совпадают.';
+        // debug($_SESSION['errorMes']);
+         header("Location: "."option.php");
+         exit;
+    }
+    if (strlen($_POST['passwordNew'])<6)// если длина нового пароля меньше 6
+    { 
+         $_SESSION['errorMes']='Длина пароля должна быть не менее 6 символов.';
+         //debug($_SESSION['errorMes']);
+         header("Location: "."option.php");
+         exit;
+    }
+    require_once 'modelUserOption.php';
+    $DBUserOption=new modelUserOption();
+    //debug($DBUserOption->getPassword());
+    $passwordDB=$DBUserOption->getPassword();
+    
+    if (crypt($_POST['passwordOld'], '_J9..rasm')!=$passwordDB)// если старый пароль не верен
+    {
+         $_SESSION['errorMes']='Старый пароль не верен.';
+         //debug($_SESSION['errorMes']);
+         header("Location: "."option.php");
+         exit; 
+    }
+    else if (crypt($_POST['passwordOld'], '_J9..rasm')==$passwordDB)// если старый пароль верен
+    {
+        $DBUserOption->updatePassword(crypt($_POST['passwordNew'], '_J9..rasm'));
+        $_SESSION['errorMes']='Пароль успешно обновлен.';
+        header("Location: "."option.php");
+        exit; 
+    }
+    
+}
 if (isset ($_GET['exit'])&&$_GET['exit']=="true")// если нажали на ссылку выход.
 {
-    unset($_SESSION['authorized']);
+    //unset($_SESSION['authorized']);
+    session_destroy();
     header("Location: "."login.php");
     exit;
 }

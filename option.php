@@ -1,4 +1,22 @@
 <?php
+    session_start();
+    if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'))
+    {
+        header("Location: "."login.php");
+    }
+    require_once 'functions.php';
+    require_once 'modelUserOption.php';
+    
+    if (isset($_SESSION['errorMes']))
+    {
+        $error=$_SESSION['errorMes'];
+        unset($_SESSION['errorMes']);
+    }
+    //debug($_SESSION);
+    require_once 'modelUserOption.php';
+    $DBUserOption=new modelUserOption();
+    $data=$DBUserOption->getSmsOption();
+    debug($data);
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,48 +56,88 @@
         </nav>
         <main>  
             <h1>Настройки</h1>
-            <form id="formOption" action="serverFunc.php" method="post">
+            <form id="formChangePassword" action="serverFunc.php" method="post">
                 <div id="divChangePassword">
                     <h4>Изменение пароля</h4>
                     <p>Старый пароль</p>
                     <input type="password" name="passwordOld" class="inputText">
                     <p>Новый пароль</p>
-                    <input type="password" name="PasswordNew" class="inputText">
+                    <input type="password" name="passwordNew" class="inputText">
                     <p>Повторение нового пароля</p>
                     <input type="password" name="passwordNew2"class="inputText">
                     <br>
+                    <input type="submit" id="btnChangePassword" name="btnChangePassword" value="Изменить пароль">
                 </div>
+            </form>
+            
+            <form id="formSmsOption" action="serverFunc.php" method="post"> 
                 <h4>Настройка СМС уведомлений</h4>
                 <input type="checkbox" name="checkboxSms" id="checkboxSms"  class="chBox"
-                     <?php if ($data['checkboxSms']=="on" || !isset($data)) echo "checked" ?> id="checkboxSMS" >
-                <label for="checkboxSMS">Отправлять СМС</label>
-
-                <p class="SMS">Логин от smsfeedback</p>
-                <input type="text" class="SMS inputText" name="loginSmsFeedBack"value="<?=$data['loginSmsFeedBack'] ?>">
-                <p class="SMS">Пароль от smsfeedback</p>
-                <input type="password" class="SMS inputText" name="passwordSmsFeedBack" value="<?=$data['passwordSmsFeedBack'] ?>">
+                     <?php if ($data['sms_submit']==1 ) echo "checked" ?> id="checkboxSMS" >
+                <label for="checkboxSMS">Отправлять СМС уведомления</label>
+                <?php if ($data['login_smsfeedback']!=''):?>
+                    <h4> Ваш логин от smsfeedback: <?=$data['login_smsfeedback'] ?></h4>
+                 <?php else:?>
+                    <h4> Аккаунт от smsfeedback не введен</h4>
+                <?php endif?>
+                <p class="SMS">Логин от нового аккаунта smsfeedback</p>
+                <input type="text" class="SMS inputText" name="loginSmsFeedBack" >
+                <p class="SMS">Пароль от нового аккаунта smsfeedback</p>
+                <input type="password" class="SMS inputText" name="passwordSmsFeedBack" >
+                <br>
+                <input type="submit" id="btnChangeAccountSms" name="btnChangeAccountSms" value="Изменить аккаунт">
                 <p class="SMS">Телефон</p>
                 <span id="spanTelephone">+7</span>
-                <input type="text" class="SMS " id="telephone" name="telephone"value="<?=$data['telephone'] ?>">
+                <input type="text" class="SMS " id="telephone" name="telephone"value="<?=substr($data['telephone'],1) ?>"
+                       title="Номер телефона на который будут присылаться СМС уведомления"          
+                >
+                
                 
                 <br>
                 
-                <input type="checkbox" name="checkboxSmsSize" id="checkboxSmsSize"  class="chBox"
-                     <?php if ($data['checkboxSms']=="on" || !isset($data)) echo "checked" ?> id="checkboxSMS" >
-                <label for="checkboxSMS">Отправлять СМС, если размер страницы вышел за допустимый диапазон.</label>
+                <input type="checkbox" name="checkboxSmsSize" id="checkboxSmsSize"  class="chBox SMS"
+                     <?php if ($data['sms_size']==1 ) echo "checked" ?>  >
+                <label for="checkboxSmsSize">Отправлять СМС, если размер страницы вышел за допустимый диапазон.</label>
                 
                 <br>
                 
-                <input type="checkbox" name="checkboxSmsMeta" id="checkboxSmsMeta" class="chBox"
-                     <?php if ($data['checkboxSms']=="on" || !isset($data)) echo "checked" ?> id="checkboxSMS" >
-                <label for="checkboxSMS">Отправлять СМС, если неверен h1, title, keywords или description.</label>
+                <input type="checkbox" name="checkboxSmsMeta" id="checkboxSmsMeta" class="chBox SMS"
+                     <?php if ($data['sms_meta']==1 ) echo "checked" ?>  >
+                <label for="checkboxSmsMeta">Отправлять СМС, если неверен h1, title, keywords или description.</label>
                 
                 <br>
                 
+                <input type="checkbox" name="checkboxSmsNormal" id="checkboxSmsNormal" class="chBox SMS"
+                     <?php if ($data['sms_normal']==1 ) echo "checked" ?>  >
+                <label for="checkboxSmsNormal">Отправлять СМС, если страница на мониторинге, начала нормально работать.</label>
+                
+                <br>
+                <input type="checkbox" name="checkboxSmsBalance" id="checkboxSmsBalance" class="chBox SMS"
+                     <?php if ($data['sms_balance']==1 ) echo "checked" ?> >
+                <label for="checkboxSmsBalance">Отправлять СМС, если баланс менее 10 руб.</label>
+                
+                <br>
                 <input type="submit" id="btnSaveOption" name="btnSaveOption" value="Сохранить">
-               
-              
+            </form>
+                
+            <form id="formAccountOption" action="serverFunc.php" method="post">
+                <h4> Настройки аккаунта</h4>
+                <input type="submit" id="btnDeleteData" name="btnDeleteData" value="Удалить данные о страницах">
+                <br>
+                <input type="submit" id="btnDeleteAccount" name="btnDeleteAccount" value="Удалить аккаунт"> 
             </form>   
-        </main>       
+        </main>    
+        <?php if (isset($error)):?>
+        <div id="divScreen">
+            <div id="divMessageError">
+                <h3>Сообщение об ошибке</h3>
+                <p>
+                   <?=$error?>
+                </p>
+                <button name="btnError" >Ok</button>
+
+            </div>
+        </div>
+        <?php endif?>
     </body>
 </html>

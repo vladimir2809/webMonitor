@@ -13,6 +13,9 @@
         $error=$_SESSION['errorMes'];
         unset($_SESSION['errorMes']);
     }
+    $data=$_SESSION['data'];
+   // debug($data);
+    unset($_SESSION['data']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,13 +29,13 @@
             <h3>Добро пожаловать в WebMonitor</h3>
             <form id="formLogin" action="serverFunc.php" method="post">
                 <p> Логин</p>
-                <input type="text" name="login">
+                <input type="text" name="login" value="<?=$data['login']?>">
                 <p> Пароль</p>
                 <input type="password" name="password">
                 
                 <input type="submit" id="btnLogin" name="btnLogin" value="Войти">
                 <?php if (isset($error)):?>
-                    <p style="color:red; font-size:17px;">
+                    <p style="color:rgb(200,0,0); font-size:17px; margin-top: 2px;">
                         <?=$error?>
                     </p>
                  <?php endif?>

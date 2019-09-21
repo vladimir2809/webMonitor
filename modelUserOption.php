@@ -6,7 +6,7 @@
  */
 class modelUserOption
 {
-    public function checkRecordInDB()
+    public function checkRecordInDB()// проверить есть ли записи в таблице user_option
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -24,7 +24,7 @@ class modelUserOption
             return false;
         }
     }
-    public function getLoginPassword()
+    public function getLoginPassword()// получить логин и пароль
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -35,6 +35,41 @@ class modelUserOption
         if (isset($error[2])) die($error[2]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+    public function getPassword()// получить пароль
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="SELECT password FROM user_option LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        return $result->fetch(PDO::FETCH_ASSOC)['password'];
+        
+    } 
+    public function updatePassword($password)// обновить пароль
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="UPDATE user_option SET password='{$password}' LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);   
+    }
+    public function getSmsOption()// получить настройки относяшиеся к смс уведомленям
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="SELECT sms_submit,login_smsfeedback,telephone,sms_size,sms_meta,sms_normal,sms_balance"
+                . " FROM user_option LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        return $result->fetch(PDO::FETCH_ASSOC); 
+    }
+    //вставить запись в таблицу user_option
     public function insertUserOption($name,$surname,$login,$password,$smsSubmit,
                                         $loginSmsFeedBack,$passwordSmsFeedBack,$telephone)
     {
