@@ -99,6 +99,15 @@ If (isset($_POST['submit']))
 }
 function getBalance()
 {
-    return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
+    require_once 'modelUserOption.php';
+    require_once 'crypt.php';
+    $crypt=new MCrypt();
+    $DBUserOption=new modelUserOption();  
+    $smsOption=$DBUserOption->getSmsOptionLoginPassword();
+    //return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
+    return balance("api.smsfeedback.ru", 80, $smsOption['login_smsfeedback'], 
+                                            $crypt->decrypt($smsOption['password_smsfeedback']));
+   //return $crypt->decrypt($smsOption['password_smsfeedback']). "  ".$smsOption['login_smsfeedBack'];
+    
 }
 //echo status("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", "A133541BC");

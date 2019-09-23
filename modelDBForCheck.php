@@ -149,6 +149,14 @@ class modelDBForCheck
 //        $error=$this->conn->errorInfo();
 //        if (isset($error[2])) die($error[2]);
     }
+    public function deleteData()
+    {
+        $sql="DELETE FROM for_check;";
+        //debug( $sql);
+        $result=$this->conn->query($sql);
+        $error=$this->conn->errorInfo();
+        if (isset($error[2])) die($error[2]); 
+    }
     public function setConn($value)
     {
      $this->conn=$value;   

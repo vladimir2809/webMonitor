@@ -180,4 +180,14 @@ public function deleteOneRecResCheckByUrl($url)
          }
      }
  }
+    public function deleteData()
+    {
+        require_once 'functions.php';
+        $conn=connectDB();
+        $sql="DELETE FROM result_check;";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]); 
+    }
 }

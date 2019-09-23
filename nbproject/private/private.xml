@@ -6,28 +6,26 @@
             <file>file:/C:/OSPanel/domains/webmonitor/journal.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/main.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/index.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/page.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/monitor.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/SMS.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/scripts/registration.js</file>
             <file>file:/C:/OSPanel/domains/webmonitor/option.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/registration.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/scripts/journal.js</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/style/option.css</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/style/registration.css</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/login.php</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/style/login.css</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/style/page.css</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/functions.php</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/page.php</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/monitor.php</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/scripts/registration.js</file>
             <file>file:/C:/OSPanel/domains/webmonitor/modelJournal.php</file>
-            <file>file:/C:/OSPanel/domains/webmonitor/style/main.css</file>
             <file>file:/C:/OSPanel/domains/webmonitor/modelDBResultCheck.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/modelUserOption.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/enterUrlPage.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/style/option.css</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/style/registration.css</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/login.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/scripts/pageJS.js</file>
             <file>file:/C:/OSPanel/domains/webmonitor/scripts/option.js</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/style/login.css</file>
             <file>file:/C:/OSPanel/domains/webmonitor/serverFunc.php</file>
             <file>file:/C:/OSPanel/domains/webmonitor/modelDBForCheck.php</file>
+            <file>file:/C:/OSPanel/domains/webmonitor/functions.php</file>
         </group>
     </open-files>
 </project-private>

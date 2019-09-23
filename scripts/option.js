@@ -29,6 +29,17 @@
         
             
     });
-   
+     $(':submit[name=btnDeleteData]').bind('click', function(event){
+        if (confirm("Вы действительно хотите удалить все данные о страницах. Удалятся все раннее"+
+                        " веденые данные а также журнал." )==false){
+            event.preventDefault();
+        }
+    });
+      $(':submit[name=btnDeleteAccount]').bind('click', function(event){
+        if (confirm("Вы действительно хотите удалить аккаунт. Удалятся все данные,"+
+                        " в том числе и данные пользователя." )==false){
+            event.preventDefault();
+        }
+    });
 });
 

@@ -57,6 +57,17 @@ class modelUserOption
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);   
     }
+    public function updateLoginPasswordSmsFeedBack($login,$password)
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="UPDATE user_option SET login_smsfeedback='{$login}',"
+                                 .  "password_smsfeedback='{$password}' LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]); 
+    }
     public function getSmsOption()// получить настройки относяшиеся к смс уведомленям
     {
         require_once 'functions.php';
@@ -68,6 +79,34 @@ class modelUserOption
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
         return $result->fetch(PDO::FETCH_ASSOC); 
+    }
+    public function getSmsOptionLoginPassword()// получить логин и пароль от smsfeedback из БД
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="SELECT login_smsfeedback, password_smsfeedback"
+                . " FROM user_option LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        return $result->fetch(PDO::FETCH_ASSOC); 
+    }
+    public function updateSmsOption($telephone,$smsSubmit,$smsSize,$smsMeta,$smsNormal,$smsBalance)
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="UPDATE user_option SET telephone='{$telephone}', "
+                                 . "sms_submit={$smsSubmit}, "
+                                 . "sms_size={$smsSize}, "
+                                 . "sms_meta={$smsMeta}, "
+                                 . "sms_normal={$smsNormal}, "
+                                 . "sms_balance={$smsBalance} "
+                                 . "LIMIT 1";
+       // debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]); 
     }
     //вставить запись в таблицу user_option
     public function insertUserOption($name,$surname,$login,$password,$smsSubmit,
@@ -83,5 +122,15 @@ class modelUserOption
         $resultSQL=$conn->query($sql);
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
+    }
+    public function deleteData()
+    {
+         require_once 'functions.php';
+        $conn=connectDB();
+        $sql="DELETE FROM user_option;";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]); 
     }
 }

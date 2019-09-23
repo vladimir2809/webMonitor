@@ -12,11 +12,16 @@
         $error=$_SESSION['errorMes'];
         unset($_SESSION['errorMes']);
     }
+    if (isset($_SESSION['loginSms']))
+    {
+        $loginSms=$_SESSION['loginSms'];
+        unset($_SESSION['loginSms']);
+    }
     //debug($_SESSION);
     require_once 'modelUserOption.php';
     $DBUserOption=new modelUserOption();
     $data=$DBUserOption->getSmsOption();
-    debug($data);
+  //  debug($data);
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,11 +86,13 @@
                     <h4> Аккаунт от smsfeedback не введен</h4>
                 <?php endif?>
                 <p class="SMS">Логин от нового аккаунта smsfeedback</p>
-                <input type="text" class="SMS inputText" name="loginSmsFeedBack" >
+                <input type="text" class="SMS inputText" name="loginSmsFeedBack" 
+                       value="<?=$loginSms?>"
+                >
                 <p class="SMS">Пароль от нового аккаунта smsfeedback</p>
                 <input type="password" class="SMS inputText" name="passwordSmsFeedBack" >
                 <br>
-                <input type="submit" id="btnChangeAccountSms" name="btnChangeAccountSms" value="Изменить аккаунт">
+                <input type="submit"class="SMS" id="btnChangeAccountSms" name="btnChangeAccountSms" value="Изменить аккаунт">
                 <p class="SMS">Телефон</p>
                 <span id="spanTelephone">+7</span>
                 <input type="text" class="SMS " id="telephone" name="telephone"value="<?=substr($data['telephone'],1) ?>"

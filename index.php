@@ -18,6 +18,9 @@ $conn=connectDB();
 $DBForCheck=new modelDBForCheck; 
 $DBForCheck->setConn($conn);
 $statePause=$DBForCheck->readStatePause();
+$balance= getBalance();
+$balanceArr= explode(';', $balance);
+$balance=$balanceArr[1];
 //debug($statePause);
 //debug($resultCheck);
 //$journal=new Journal();
@@ -67,7 +70,7 @@ $statePause=$DBForCheck->readStatePause();
         <main>
             <div id='mainDiv'>
                 <div id='mainDivP'><p  > Страницы на мониторинге</p></div>
-                <div id='PBalanse'><p  > баланс: <?= getBalance()?></p></div>
+                <div id='PBalanse'><p  > баланс: <?= $balance?></p></div>
             </div>
             <table>
                 <tr>

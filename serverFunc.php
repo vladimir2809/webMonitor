@@ -195,7 +195,7 @@ if (isset($_POST['btnRegistration']))// если нажата кнопка за�
         header("Location: "."index.php");
     }
 }
-if (isset($_POST['btnLogin']))// если нажата кнопка ввойти
+if (isset($_POST['btnLogin']))// если нажата кнопка войти
 {
    require_once 'modelUserOption.php';
    $DBUserOption=new modelUserOption();
@@ -282,6 +282,115 @@ if (isset($_POST['btnChangePassword']))// если нажата кнопка и�
         exit; 
     }
     
+}
+if (isset($_POST['btnChangeAccountSms']))// если нажата кнопка изменить аккаунт от smsfeedback
+{
+    if($_POST['loginSmsFeedBack']=="")
+    {
+        $_SESSION['errorMes']='Не введен логин от smsfeedback.';
+        header("Location: "."option.php");
+        exit;
+    }
+    if($_POST['passwordSmsFeedBack']=="")
+    {
+        $_SESSION['errorMes']='Не введен пароль от smsfeedback.';
+        $_SESSION['loginSms']=$_POST['loginSmsFeedBack'];
+        header("Location: "."option.php");
+        exit;
+    }
+    require_once 'SMS.php';
+    $resultBalance=balance("api.smsfeedback.ru", 80, $_POST['loginSmsFeedBack'],
+                    $_POST['passwordSmsFeedBack']);
+    $resBalanceLen=strlen($resultBalance);
+    if ($resBalanceLen>40)// если не удалось получить баланс, а получили сообшение об ошибке, которое длинное
+    {
+      $_SESSION['errorMes']="логин или пароль от smsfeedback.ru не верен.";  
+      $_SESSION['loginSms']=$_POST['loginSmsFeedBack'];
+      header("Location: "."option.php");
+      exit; 
+    }
+    else
+    {
+        require_once 'modelUserOption.php';
+        require_once 'crypt.php';
+        $crypt=new MCrypt();
+        $DBUserOption=new modelUserOption();   
+        $DBUserOption->updateLoginPasswordSmsFeedBack($_POST['loginSmsFeedBack'],
+                                                     $crypt->encrypt($_POST['passwordSmsFeedBack']) );
+        $_SESSION['errorMes']= $crypt->encrypt($_POST['passwordSmsFeedBack']);
+        header("Location: "."option.php");
+        exit; 
+    }
+}
+if (isset($_POST['btnSaveOption']))
+{
+     if (strlen($_POST['telephone'])!=10)// проверяем что телефон введен полностью
+    {  
+        $_SESSION['errorMes']="длина номера телефона должна быть 10 цивр.";  
+        header("Location: "."option.php");
+        exit; 
+    }   //varietyStr
+    if (varietyStr("0123456789",$_POST['telephone'])==false)// проверяем что поле с телефоном состоит только из цифр
+    {
+        //echo "size == int";
+        //echo '<br>';
+        $_SESSION['errorMes']='номер телефона должен состоять только из цивр.';
+        header("Location: "."option.php");
+        exit;
+    }
+   // debug($_POST);
+    $telephone='7'.$_POST['telephone'];
+    if ($_POST['checkboxSms']=='on') $smsSubmit=1; else $smsSubmit=0;
+    if ($_POST['checkboxSmsSize']=='on') $smsSize=1; else $smsSize=0;
+    if ($_POST['checkboxSmsMeta']=='on') $smsMeta=1; else $smsMeta=0;
+    if ($_POST['checkboxSmsNormal']=='on') $smsNormal=1; else $smsNormal=0;
+    if ($_POST['checkboxSmsBalance']=='on') $smsBalance=1; else $smsBalance=0;
+    require_once 'modelUserOption.php';
+    $DBUserOption=new modelUserOption();
+    $DBUserOption->updateSmsOption($telephone, $smsSubmit, $smsSize, $smsMeta, $smsNormal, $smsBalance);
+    header("Location: "."option.php");
+    exit;
+}
+if (isset($_POST['btnDeleteData']))// если нажата кнопка удалить данные в настройках
+{
+    require_once 'functions.php';
+    require_once 'modelDBForCheck.php';
+    require_once 'modelDBResultCheck.php';
+    require_once 'modelJournal.php';
+    
+    $DBForCheck=new modelDBForCheck();
+    $DBResultCheck=new modelDBResultCheck();
+    $journal=new Journal();
+    
+    $DBForCheck->setConn(connectDB());
+    
+    $DBForCheck->deleteData();
+    $DBResultCheck->deleteData();
+    $journal->deleteData();
+    header("Location: "."option.php");
+    exit;
+}
+if (isset($_POST['btnDeleteAccount']))// если нажата кнопка удалить аккаунт
+{
+    require_once 'modelDBForCheck.php';
+    require_once 'modelDBResultCheck.php';
+    require_once 'modelJournal.php';
+    require_once 'modelUserOption.php';
+    
+    $DBForCheck=new modelDBForCheck();
+    $DBResultCheck=new modelDBResultCheck();
+    $journal=new Journal();
+    $DBUserOption=new modelUserOption();
+    
+    $DBForCheck->setConn(connectDB());
+    
+    $DBForCheck->deleteData();
+    $DBResultCheck->deleteData();
+    $journal->deleteData(); 
+    $DBUserOption->deleteData();
+    session_destroy();
+    header("Location: "."registration.php");
+    exit;
 }
 if (isset ($_GET['exit'])&&$_GET['exit']=="true")// если нажали на ссылку выход.
 {
