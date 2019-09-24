@@ -92,7 +92,11 @@
                 <p class="SMS">Пароль от нового аккаунта smsfeedback</p>
                 <input type="password" class="SMS inputText" name="passwordSmsFeedBack" >
                 <br>
-                <input type="submit"class="SMS" id="btnChangeAccountSms" name="btnChangeAccountSms" value="Изменить аккаунт">
+                <input type="submit"class="SMS" id="btnChangeAccountSms" name="btnChangeAccountSms" 
+                       value="<?php if ($data['login_smsfeedback']!='') echo "Изменить аккаунт";
+                           else echo "Добавить аккаунт";
+                        ?>"
+                >
                 <p class="SMS">Телефон</p>
                 <span id="spanTelephone">+7</span>
                 <input type="text" class="SMS " id="telephone" name="telephone"value="<?=substr($data['telephone'],1) ?>"

@@ -174,6 +174,8 @@ if (isset($_POST['btnRegistration']))// если нажата кнопка за�
         
     }
     require_once 'modelUserOption.php';
+    require_once "crypt.php";
+    $crypt=new MCrypt();
     // создаем перемнные для записи в бд
     $name=$_POST['nameUser'];
     $surname=$_POST['surnameUser'];
@@ -182,7 +184,7 @@ if (isset($_POST['btnRegistration']))// если нажата кнопка за�
     $password=crypt($password, '_J9..rasm') ;
     if ($_POST['checkboxSms']=='on') $smsSubmit=1; else $smsSubmit=0;
     $loginSmsFeedBack=$_POST['loginSmsFeedBack'];
-    $passwordSmsFeedBack=$_POST['passwordSmsFeedBack'];
+    $passwordSmsFeedBack=$crypt->encrypt($_POST['passwordSmsFeedBack']);
     $telephone='7'.$_POST['telephone'];
     
     $DBUserOption=new modelUserOption();
@@ -317,37 +319,52 @@ if (isset($_POST['btnChangeAccountSms']))// если нажата кнопка �
         $DBUserOption=new modelUserOption();   
         $DBUserOption->updateLoginPasswordSmsFeedBack($_POST['loginSmsFeedBack'],
                                                      $crypt->encrypt($_POST['passwordSmsFeedBack']) );
-        $_SESSION['errorMes']= $crypt->encrypt($_POST['passwordSmsFeedBack']);
+        $DBUserOption->updateSmsSubmit(1);
         header("Location: "."option.php");
         exit; 
     }
 }
-if (isset($_POST['btnSaveOption']))
+if (isset($_POST['btnSaveOption']))// сохранить настройки аккаунта для смс
 {
-     if (strlen($_POST['telephone'])!=10)// проверяем что телефон введен полностью
-    {  
-        $_SESSION['errorMes']="длина номера телефона должна быть 10 цивр.";  
-        header("Location: "."option.php");
-        exit; 
-    }   //varietyStr
-    if (varietyStr("0123456789",$_POST['telephone'])==false)// проверяем что поле с телефоном состоит только из цифр
-    {
-        //echo "size == int";
-        //echo '<br>';
-        $_SESSION['errorMes']='номер телефона должен состоять только из цивр.';
-        header("Location: "."option.php");
-        exit;
-    }
-   // debug($_POST);
-    $telephone='7'.$_POST['telephone'];
-    if ($_POST['checkboxSms']=='on') $smsSubmit=1; else $smsSubmit=0;
-    if ($_POST['checkboxSmsSize']=='on') $smsSize=1; else $smsSize=0;
-    if ($_POST['checkboxSmsMeta']=='on') $smsMeta=1; else $smsMeta=0;
-    if ($_POST['checkboxSmsNormal']=='on') $smsNormal=1; else $smsNormal=0;
-    if ($_POST['checkboxSmsBalance']=='on') $smsBalance=1; else $smsBalance=0;
     require_once 'modelUserOption.php';
     $DBUserOption=new modelUserOption();
-    $DBUserOption->updateSmsOption($telephone, $smsSubmit, $smsSize, $smsMeta, $smsNormal, $smsBalance);
+    if ($_POST['checkboxSms']=="on")
+    {
+        if (strlen($_POST['telephone'])!=10)// проверяем что телефон введен полностью
+        {  
+            $_SESSION['errorMes']="длина номера телефона должна быть 10 цивр.";  
+            header("Location: "."option.php");
+            exit; 
+        }   //varietyStr
+        if (varietyStr("0123456789",$_POST['telephone'])==false)// проверяем что поле с телефоном состоит только из цифр
+        {
+            //echo "size == int";
+            //echo '<br>';
+            $_SESSION['errorMes']='номер телефона должен состоять только из цивр.';
+            header("Location: "."option.php");
+            exit;
+        }
+       
+       // debug($_POST);
+        $telephone='7'.$_POST['telephone'];
+        if ($_POST['checkboxSms']=='on') $smsSubmit=1; else $smsSubmit=0;
+        if ($_POST['checkboxSmsSize']=='on') $smsSize=1; else $smsSize=0;
+        if ($_POST['checkboxSmsMeta']=='on') $smsMeta=1; else $smsMeta=0;
+        if ($_POST['checkboxSmsNormal']=='on') $smsNormal=1; else $smsNormal=0;
+        if ($_POST['checkboxSmsBalance']=='on') $smsBalance=1; else $smsBalance=0;
+        $loginPasswordSms=$DBUserOption->getSmsOptionLoginPassword();
+        // проверяем есть ли аккунт smsfeedback в БД
+        if ($loginPasswordSms['login_smsfeedback']==''||$loginPasswordSms['password_smsfeedback']=='')
+        {// если не аккаунта smsfeedback
+            $smsSubmit=0;
+            $_SESSION['errorMes']="Нет аккаунта от smsfeedback.";  
+        }
+        $DBUserOption->updateSmsOption($telephone, $smsSubmit, $smsSize, $smsMeta, $smsNormal, $smsBalance);
+    }
+    else
+    {
+        $DBUserOption->updateSmsSubmit(0);
+    }
     header("Location: "."option.php");
     exit;
 }

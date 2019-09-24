@@ -108,6 +108,16 @@ class modelUserOption
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]); 
     }
+    public function updateSmsSubmit($smsSubmit)
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="UPDATE user_option SET sms_submit={$smsSubmit} LIMIT 1";
+       // debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]); 
+    }
     //вставить запись в таблицу user_option
     public function insertUserOption($name,$surname,$login,$password,$smsSubmit,
                                         $loginSmsFeedBack,$passwordSmsFeedBack,$telephone)
@@ -123,6 +133,7 @@ class modelUserOption
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
     }
+    
     public function deleteData()
     {
          require_once 'functions.php';

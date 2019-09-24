@@ -116,3 +116,22 @@ td {
     cursor:pointer;
     
 }
+#paginator{
+    position: absolute;
+    top: 265px;
+    left:30px;
+}
+.divPaginator{
+    display:inline-block;
+    width:18px;
+    height:18px; 
+    border: 1px solid gray;
+    margin: 2px 0px;
+}
+.divPaginator p{
+    margin:0px;
+    text-align: center;
+}
+.divPaginator a{
+    text-decoration: none;
+}

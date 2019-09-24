@@ -104,3 +104,6 @@ main{
     left: 85px;
     top: 8px;  
 }
+textarea{
+    width:300px;
+}

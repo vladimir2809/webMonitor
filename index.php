@@ -18,9 +18,21 @@ $conn=connectDB();
 $DBForCheck=new modelDBForCheck; 
 $DBForCheck->setConn($conn);
 $statePause=$DBForCheck->readStatePause();
-$balance= getBalance();
-$balanceArr= explode(';', $balance);
-$balance=$balanceArr[1];
+
+require_once 'modelUserOption.php';
+$DBUserOption=new modelUserOption();
+$loginPasswordSms=$DBUserOption->getSmsOptionLoginPassword();
+// проверяем есть ли аккунт smsfeedback в БД
+if (!($loginPasswordSms['login_smsfeedback']==''||$loginPasswordSms['password_smsfeedback']==''))
+{// если есть аккаунт smsfeedback
+    $balance= getBalance();
+    $balanceArr= explode(';', $balance);    
+    $balance=$balanceArr[1];
+}
+else
+{
+    $balance="нет данных";
+}
 //debug($statePause);
 //debug($resultCheck);
 //$journal=new Journal();
@@ -136,6 +148,25 @@ $balance=$balanceArr[1];
                 </tr>
                 <?php endfor;?>
             </table>
+            <div id="paginator">
+                <div class="divPaginator">
+                        <a href="#"><p><< </p></a>
+                </div>
+                <div class="divPaginator">
+                        <a href="#"><p>< </p></a>
+                </div>
+                <?php for ($i=1;$i<=5;$i++):?>
+                    <div class="divPaginator">
+                        <a href="#"><p><?= $i?> </p></a>
+                    </div>
+                <?php endfor;?>
+                <div class="divPaginator">
+                        <a href="#"><p>> </p></a>
+                </div>
+                <div class="divPaginator">
+                        <a href="#"><p>>> </p></a>
+                </div>
+            </div>
         </main>       
     </body>
 </html>
