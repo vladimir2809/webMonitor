@@ -110,7 +110,9 @@ td {
   border: 1px solid black; 
   padding: 4px;
   text-align: center;
- 
+}
+table td:first-child{
+    width:100px;
 }
 .imgBtn{
     cursor:pointer;
@@ -121,12 +123,14 @@ td {
     top: 265px;
     left:30px;
 }
+
 .divPaginator{
     display:inline-block;
     width:18px;
     height:18px; 
     border: 1px solid gray;
     margin: 2px 0px;
+    
 }
 .divPaginator p{
     margin:0px;
@@ -134,4 +138,7 @@ td {
 }
 .divPaginator a{
     text-decoration: none;
+}
+.divPaginChecked{
+    background-color: rgb(100,100,200);
 }

@@ -33,6 +33,41 @@ else
 {
     $balance="нет данных";
 }
+$recordInPage=5;// сколько записий на странице
+$recordBegin=0;// начала отчета записей
+$recordEnb=$recordBegin+$recordInPage;// конец отчета записей
+$paginPageAll=1;// всего страниц для пагинации.
+
+$countRecords=count($resultCheck);// сколько всего записей
+
+$paginPageAll=(int)($countRecords / $recordInPage);
+if ($countRecords % $recordInPage!=0) $paginPageAll++;
+
+$numPaginPage=$_GET['numpage'];
+if (!isset($_GET['numpage'])) $numPaginPage=1;
+
+$recordBegin=$recordInPage*($numPaginPage-1);// начала отчета записей
+$recordEnb=$recordBegin+$recordInPage;// конец отчета записей
+if ($recordEnb>=$countRecords)$recordEnb=$countRecords;
+//debug ($recordBegin);
+//debug ($recordEnb);
+//расчет номеров пагинации
+if ($numPaginPage-2<=1)
+{
+    $paginBegin=1;
+}
+ else
+{
+     $paginBegin=$numPaginPage-2;
+}
+if ($numPaginPage+2>=$paginPageAll)
+{
+    $paginEnd=$paginPageAll;
+}
+ else
+{
+     $paginEnd=$numPaginPage+2;
+}
 //debug($statePause);
 //debug($resultCheck);
 //$journal=new Journal();
@@ -90,10 +125,12 @@ else
                     <th> h1</th><th> title</th><th> keywords</th><th> description</th>
                     <th></th><th></th>
                 </tr>
-                <?php for($i=0;$i<count($resultCheck);$i++): ?>
+                <?php //for($i=0;$i<count($resultCheck);$i++):
+                        for($i=$recordBegin;$i<$recordEnb;$i++):
+                ?>
                  <tr>
-                    <td><a href='/page.php?url=<?=$resultCheck[$i]['url']?>'>
-                        <?= $resultCheck[$i]['url']?><a> 
+                    <td style="max-width: 230px;width: 230px; "><a href='/page.php?url=<?=$resultCheck[$i]['url']?>'>
+                        <p style="word-wrap: break-word;"><?= $resultCheck[$i]['url']?><p><a> 
                     </td>
                     <td>
                        <?php if ($statePause[$i]['state_pause']==0) echo "Мониторится";
@@ -148,25 +185,33 @@ else
                 </tr>
                 <?php endfor;?>
             </table>
-            <div id="paginator">
-                <div class="divPaginator">
-                        <a href="#"><p><< </p></a>
+            <?php if ($paginPageAll>1):?>
+                <div id="paginator">
+                    <?php if($numPaginPage>1):?>
+                        <div class="divPaginator">
+                                <a href="index.php?numpage=1"><p><< </p></a>
+                        </div>
+                        <div class="divPaginator">
+                                <a href="index.php?numpage=<?=$numPaginPage-1?>"><p>< </p></a>
+                        </div>
+                    <?php endif;?>
+                    <?php
+                        for ($i=$paginBegin;$i<=$paginEnd;$i++):
+                    ?>
+                        <div class="divPaginator <?php if($numPaginPage==$i) echo " divPaginChecked" ?>">
+                            <a href="index.php?numpage=<?=$i?>"><p><?= $i?> </p></a>
+                        </div>
+                    <?php endfor;?>
+                    <?php if($numPaginPage<$paginPageAll):?>
+                        <div class="divPaginator">
+                                <a href="index.php?numpage=<?=$numPaginPage+1?>"><p>> </p></a>
+                        </div>
+                        <div class="divPaginator">
+                                <a href="index.php?numpage=<?=$paginPageAll?>"><p>>> </p></a>
+                        </div>
+                    <?php endif;?>
                 </div>
-                <div class="divPaginator">
-                        <a href="#"><p>< </p></a>
-                </div>
-                <?php for ($i=1;$i<=5;$i++):?>
-                    <div class="divPaginator">
-                        <a href="#"><p><?= $i?> </p></a>
-                    </div>
-                <?php endfor;?>
-                <div class="divPaginator">
-                        <a href="#"><p>> </p></a>
-                </div>
-                <div class="divPaginator">
-                        <a href="#"><p>>> </p></a>
-                </div>
-            </div>
+            <?php endif;?>
         </main>       
     </body>
 </html>

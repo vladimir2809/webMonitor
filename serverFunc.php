@@ -106,6 +106,7 @@ if (isset($_POST['btnSearchJournal']))// если нажата кнопка по
     require_once 'modelJournal.php';
     $journal=new Journal;
     $_SESSION['resultSearch']=$journal->searchAndGetResult($_POST['querySearchJournal']);
+    $_SESSION['querySearch']=$_POST['querySearchJournal'];
     //debug($_POST);
     header("Location: "."journal.php");
     //debug($_POST);

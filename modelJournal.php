@@ -79,11 +79,12 @@ class Journal
     }
     public function codeToMessage($url,$code)// конвертировать код в сообшение для пользователя
     {
+       // debug($code);
         $result="У страницы <a href='page.php?url={$url}'><span class='urlJournal' > {$url} </span></a>: ";
-        if ($code=="111111")
+        if (strcmp($code,'111111')==0)
         {
-            return "Страница <a href='page.php?url={$url}'><span class='urlJournal> {$url} </span></a>"
-                    ." работает нормально";
+            return "Страница <a href='page.php?url={$url}'><span class='urlJournal'> {$url} </span></a> работает нормально";
+            //return "1122";
         }
         if ($code[0]=='0') 
         {
@@ -153,10 +154,14 @@ class Journal
         {
             $arrCode[]=$row;
         }
+      //  debug($arrCode);
         for ($i=0;$i<count($arrCode);$i++)
         {
             $message=$this->codeToMessage($arrCode[$i]['url'],$arrCode[$i]['code_check'] );
-            $result[]=['time'=>$arrCode[$i]['time_check'],"message"=>$message];
+       //     debug($message);
+            $resultOne=['time'=>$arrCode[$i]['time_check'],"message"=>$message];
+       //     debug($resultOne);
+            $result[]=$resultOne;
         }
         return $result;
     }
