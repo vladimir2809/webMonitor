@@ -1,3 +1,6 @@
+body{
+    width:1100px;
+}
 header h1{
     font-size:100px;
     color: greenyellow;
@@ -9,6 +12,7 @@ main h2{
 }
 #divInform{
     position:absolute;
+    left:290px;
     width: 800px;
     height: 600px;
     display: inline;

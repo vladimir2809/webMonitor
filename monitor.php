@@ -55,6 +55,10 @@ class monitor
          {
               $this->header=get_headers($this->url);
          }
+         else
+         {
+             $this->header[0]=0;
+         }
      //  debug($this->header);
       
    }
@@ -63,7 +67,8 @@ class monitor
        $this->getHeader();
        $response=$this->header[0];
      //  debug($response);
-       $responseNum= mb_strcut($response,9,3,"UTF-8");
+       if ($response!==0)$responseNum= mb_strcut($response,9,3,"UTF-8");  else $responseNum=0; 
+           
        return $responseNum;
    }
    public function checkResponse()// проверить ответ от сервера
@@ -124,7 +129,8 @@ class monitor
         $title = $nodes->item(0)->nodeValue;
 
         $metas = $doc->getElementsByTagName('meta');
-
+        $keywords='';
+        $description='';
         for ($i = 0; $i < $metas->length; $i++)
         {
             $meta = $metas->item($i);
@@ -147,19 +153,26 @@ class monitor
 
    public function checkH1()// проверить заголовок
    {
-       if ($this->meta['h1']==$this->h1) return true; else return false;
+       //require_once 'functions.php';
+      // debug($this->meta['h1']);
+       //debug($this->h1);
+       if (strcmp(str_replace(chr(13),'',$this->meta['h1']), str_replace(chr(13),'',$this->h1))==0) 
+               return true; else return false;
    } 
    public function checkTitle()// проверить подпись
    {
-       if ($this->meta['title']==$this->title) return true; else return false;
+       if (strcmp(str_replace(chr(13),'',$this->meta['title']), str_replace(chr(13),'',$this->title))==0)
+               return true; else return false;
    }
    public function checkKeywords()// проверить ключевые слова
    {
-       if ($this->meta['keywords']==$this->keywords) return true; else return false;
+       if (strcmp(str_replace(chr(13),'',$this->meta['keywords']), str_replace(chr(13),'',$this->keywords))==0)
+               return true; else return false;
    }
    public function checkDescription()// проверить  описание
    {
-       if ($this->meta['description']==$this->description) return true; else return false;
+       if (strcmp(str_replace(chr(13),'',$this->meta['description']), str_replace(chr(13),'',$this->description))==0) 
+               return true; else return false;
    }
    public function getDataMonitorPage()// получить данные монитора страницы
    {

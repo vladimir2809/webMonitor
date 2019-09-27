@@ -4,15 +4,20 @@ if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'
 {
     header("Location: "."login.php");
 }
+
 require_once "functions.php";
+//debug($_SESSION);
 require_once "main.php";
 require "modelDBForCheck.php";
+//ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+//error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
 if ($_POST['btnGetData'])
 {
    $dataUrl=getDataOnePage($_POST['urlPage']);
    
 //   $resultCheck= readResultIsDBOneOfUrl($_POST['urlPage']);
- //  debug($dataUrl); 
+     //debug($_POST);
+ 
     $conn=connectDB();
     $DBForCheck=new modelDBForCheck; 
     $DBForCheck->setConn($conn);
@@ -20,18 +25,20 @@ if ($_POST['btnGetData'])
     {
         $dataUrl['message']="Эта страница с таким адрессом сушествует в базе данных";
     }
+    //debug($dataUrl['message']); 
     if (!isset($dataUrl['message']))
     {
         header("Location: "."page.php?newPage=true&url={$_POST['urlPage']}");
     }
-}?>
-<!DOCTYPE html>
+}
+?><!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="style/main.css" type="text/css">
-        <link rel="stylesheet" href="style/page.css" type="text/css">
-        <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="style\main.css" type="text/css">
+        <link rel="stylesheet" href="style\page.css" type="text/css">
+        <script src="scripts\jquery-1.10.2.min.js" type="text/javascript"></script>
+        <script src="scripts\position.js" type="text/javascript"></script>
         <title> WebMonitor</title>   
     </head>    
     <body>

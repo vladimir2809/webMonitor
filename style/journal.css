@@ -1,3 +1,4 @@
+
 #divSearchJournal{
     position: relative;
     left: 15%;
@@ -37,4 +38,7 @@
 }
 .urlSearch{
     color: yellow;
+}
+h2{
+    text-align:center;
 }

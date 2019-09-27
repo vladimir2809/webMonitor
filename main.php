@@ -1,6 +1,6 @@
 <?php
 require_once 'functions.php';
-require_once 'modelDBresultCheck.php';
+require_once 'modelDBResultCheck.php';
 require_once 'modelJournal.php';
 require "monitor.php";
 
@@ -115,6 +115,7 @@ if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)
      {
         $monitor->setUrl($url);
         $response=$monitor->getResponse();
+        $size=0;
         if ($response==200) $size=$monitor->getPageSize();
         $meta=$monitor->getMetaPage();
         return [ 'url'=>$url,"response"=>$response, 'size'=>$size,

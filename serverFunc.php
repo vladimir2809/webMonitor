@@ -73,21 +73,35 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
 }
 if (isset($_POST['btnPause_x']))// если нажата пауза на странице index
 {
-   // debug($_POST);
+    //debug($_POST);
     $conn=connectDB();
     $DBForCheck=new modelDBForCheck; 
     $DBForCheck->setConn($conn);
     $DBForCheck->updateStatePauseByUrl($_POST['urlOfPause'],1);
-    header("Location: "."index.php");
+    if (empty($_POST['numpage']))
+    {
+        header("Location: "."index.php");
+    }
+    else
+    {
+        header("Location: "."index.php?numpage={$_POST['numpage']}");
+    }
 }
 if (isset($_POST['btnPlay_x']))// если нажата пауза на странице index
 {
-   // debug($_POST);
+    //debug($_POST);
     $conn=connectDB();
     $DBForCheck=new modelDBForCheck; 
     $DBForCheck->setConn($conn);
     $DBForCheck->updateStatePauseByUrl($_POST['urlOfPause'],0);
-    header("Location: "."index.php");
+    if (empty($_POST['numpage'])||$_POST['numpage']==1)
+    {
+        header("Location: "."index.php");
+    }
+    else
+    {
+        header("Location: "."index.php?numpage={$_POST['numpage']}");
+    }
 }
 if (isset($_POST['btnDelete_x']))// если нажата  снять с мониторинга на странице index
 {
@@ -99,7 +113,14 @@ if (isset($_POST['btnDelete_x']))// если нажата  снять с мон�
     include_once 'main.php';
     $DBResultCheck=new modelDBResultCheck();
     $DBResultCheck->deleteOneRecResCheckByUrl($_POST['urlOfDelete']);
-    header("Location: "."index.php");
+    if (empty($_POST['numpage'])||$_POST['numpage']==1)
+    {
+        header("Location: "."index.php");
+    }
+    else
+    {
+        header("Location: "."index.php?numpage={$_POST['numpage']}");
+    }
 }
 if (isset($_POST['btnSearchJournal']))// если нажата кнопка поиск в журале
 {
@@ -107,8 +128,9 @@ if (isset($_POST['btnSearchJournal']))// если нажата кнопка по
     $journal=new Journal;
     $_SESSION['resultSearch']=$journal->searchAndGetResult($_POST['querySearchJournal']);
     $_SESSION['querySearch']=$_POST['querySearchJournal'];
+    //$_GET['numpage']=1;
     //debug($_POST);
-    header("Location: "."journal.php");
+    header("Location: "."journal.php?numpage=1");
     //debug($_POST);
     
 }
@@ -185,7 +207,10 @@ if (isset($_POST['btnRegistration']))// если нажата кнопка за�
     $password=crypt($password, '_J9..rasm') ;
     if ($_POST['checkboxSms']=='on') $smsSubmit=1; else $smsSubmit=0;
     $loginSmsFeedBack=$_POST['loginSmsFeedBack'];
-    $passwordSmsFeedBack=$crypt->encrypt($_POST['passwordSmsFeedBack']);
+    if (isset($_POST['passwordSmsFeedBack']))
+    {
+        $passwordSmsFeedBack=$crypt->encrypt($_POST['passwordSmsFeedBack']);
+    }
     $telephone='7'.$_POST['telephone'];
     
     $DBUserOption=new modelUserOption();

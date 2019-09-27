@@ -18,6 +18,7 @@ main{
     border: 1px solid gray;
     width: 250px;
 }
+
 #divDataPage h3{
     margin-top: 1px;
 }
@@ -106,4 +107,5 @@ main{
 }
 textarea{
     width:300px;
+    //height: 150px;
 }

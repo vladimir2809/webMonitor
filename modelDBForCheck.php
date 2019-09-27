@@ -51,6 +51,10 @@ class modelDBForCheck
     // обновить запись по url
     public function updateRecordByUrl($url,$sizePage,$deviationSize,$h1,$title,$keywords,$description)
     {
+        $h1= addslashes($h1);
+        $title= addslashes($title);
+        $keywords= addslashes($keywords);
+        $description= addslashes($description);
         $sql="UPDATE for_check SET size_page={$sizePage},deviation_size={$deviationSize},h1='{$h1}',"
                                 . "title='{$title}',keywords='{$keywords}',description='{$description}'"
                                 . "WHERE url='{$url}'";
@@ -63,6 +67,10 @@ class modelDBForCheck
     // вставить в БД одну запись
     public function insertInDB($url,$sizePage,$deviationSize,$h1,$title,$keywords,$description)// функция которая добавлеят в БД в таблицу for_check запись
     {
+        $h1= addslashes($h1);
+        $title= addslashes($title);
+        $keywords= addslashes($keywords);
+        $description= addslashes($description);
         $sql="INSERT INTO for_check (url,size_page,deviation_size,h1,title,keywords,description,time_add)"
                 . "VALUES('".$url."',$sizePage,$deviationSize,'".$h1."','".$title."','".$keywords."'"
                 . ",'".$description."',NOW())";

@@ -138,13 +138,13 @@ public function deleteOneRecResCheckByUrl($url)
                 {
                     $flag=true;
                     // если данные проверки отличаются от того что есть в БД
-                    if (!($resCheck[$i]['response']==$readRes[$j]['response']&&
-                          $resCheck[$i]['size']==$readRes[$j]['size']&&
-                          $resCheck[$i]['h1']==$readRes[$j]['h1']&&
-                          $resCheck[$i]['title']==$readRes[$j]['title']&&
-                          $resCheck[$i]['keywords']==$readRes[$j]['keywords']&&
-                          $resCheck[$i]['description']==$readRes[$j]['description']
-                        ))
+//                    if (!($resCheck[$i]['response']==$readRes[$j]['response']&&
+//                          $resCheck[$i]['size']==$readRes[$j]['size']&&
+//                          $resCheck[$i]['h1']==$readRes[$j]['h1']&&
+//                          $resCheck[$i]['title']==$readRes[$j]['title']&&
+//                          $resCheck[$i]['keywords']==$readRes[$j]['keywords']&&
+//                          $resCheck[$i]['description']==$readRes[$j]['description']
+//                                                                                    ))
                     {
                         // обновить запись
                        $sql="UPDATE result_check SET response=".$resCheck[$i]['response']

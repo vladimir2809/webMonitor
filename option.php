@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="style/option.css" type="text/css">
         <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
         <script src="scripts/option.js" type="text/javascript"></script>
+        <script src="scripts/position.js" type="text/javascript"></script>
         <title> WebMonitor</title>   
     </head>    
     <body>

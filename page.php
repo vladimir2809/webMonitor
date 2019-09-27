@@ -6,7 +6,6 @@ if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'
 }
 //require_once "monitor.php";
 //require_once "modelDBforCheck.php";
-session_start();
 require_once "functions.php";
 require_once "main.php";
 require_once "modelDBResultCheck.php";
@@ -48,6 +47,7 @@ if (isset( $_GET['url']))
         <link rel="stylesheet" href="style/page.css" type="text/css">
         <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
         <script src="scripts/pageJS.js" type="text/javascript"></script>
+        <script src="scripts/position.js" type="text/javascript"></script>
         <title> WebMonitor</title>   
     </head>    
     <body>

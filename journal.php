@@ -6,26 +6,27 @@ if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'
 }
 require_once 'functions.php';
 require_once 'modelJournal.php';
-//debug($_GET);
+//debug($_GET['numpage']);
+if (!isset($_GET['numpage'])) 
+{
+    unset($_SESSION['resultSearch']);
+    unset($_SESSION['querySearch']);
+}
 if (!isset($_SESSION['resultSearch']))
 {
     $journal=new Journal();
     $message=$journal->getArrMessage();
+    unset($_SESSION['resultSearch']);
+    unset($_SESSION['querySearch']);
 }
 else
 {
-   $message=$_SESSION['resultSearch'];
-   
-   //debug($_SESSION['resultSearch']);
-   if (isset($_GET['numpage'])) unset($_SESSION['resultSearch']);
-   
-   
-   
+   $message=$_SESSION['resultSearch']; 
 }
 
-
+//debug($message);
 //////////////////////////////////////////////////////////////ПАГИНАЦИЯ//////////////////////
-$recordInPage=10;// сколько записий на странице
+$recordInPage=5;// сколько записий на странице
 $recordBegin=0;// начала отчета записей
 $recordEnb=$recordBegin+$recordInPage;// конец отчета записей
 $paginPageAll=1;// всего страниц для пагинации.
@@ -37,6 +38,18 @@ if ($countRecords % $recordInPage!=0) $paginPageAll++;
 
 $numPaginPage=$_GET['numpage'];
 if (!isset($_GET['numpage'])) $numPaginPage=1;
+if (!isset($_GET['numpage']) || is_numeric($_GET['numpage'])==false || (int)$_GET['numpage']<1)
+{
+    header("Location: "."journal.php?numpage=1");
+    exit;
+}   
+if ((int)$_GET['numpage']>$paginPageAll)
+{
+    //echo '111';
+    header("Location: "."journal.php?numpage={$paginPageAll}");
+    exit;
+}
+
 
 $recordBegin=$recordInPage*($numPaginPage-1);// начала отчета записей
 $recordEnb=$recordBegin+$recordInPage;// конец отчета записей
@@ -72,10 +85,11 @@ if ($numPaginPage+2>=$paginPageAll)
         <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
         <script src="scripts/mainJS.js" type="text/javascript"></script>
         <script src="scripts/journal.js" type="text/javascript"></script>
+        <script src="scripts/position.js" type="text/javascript"></script>
         <style>
             #paginator{
-                position: absolute;
-                top: 640px;
+                position: relative;
+                top: 60px;
                 left:140px;
                 margin-bottom: 30px;
             }
@@ -109,25 +123,29 @@ if ($numPaginPage+2>=$paginPageAll)
              </ul>
         </nav>
         <main style="border: none;">
-            <div id="divSearchJournal">
-                <form id="searchByJournal" action="serverFunc.php" method="post">
-                    <p> Введите запрос для поиска по URL</p>
-                    <input type="text" id="textSearchJournal" name="querySearchJournal"
-                        value="<?=$_SESSION['querySearch']?>"
-                    > 
-                    <input type="submit" name="btnSearchJournal" value="Поиск">
-                </form>
-            </div>
-            
-           <?php for ($i=$recordBegin;$i<$recordEnb;$i++):
-              // for ($i=0;$i<count($message);$i++):
-            ?>
-                <div class="divMessageJournal">
-                    <h5><?= $message[$i]['time']?> </h5>
-                    <p><?= $message[$i]['message']?></p>
+            <h2>Журнал</h2>
+            <?php if (!isset($message) && !isset($_SESSION['querySearch'])):?>
+                <h3 style="margin-left: 30px;">Нет данных</h3>
+            <?php else: ?>
+                <div id="divSearchJournal">
+                    <form id="searchByJournal" action="serverFunc.php" method="post">
+                        <p> Введите запрос для поиска по URL</p>
+                        <input type="text" id="textSearchJournal" name="querySearchJournal"
+                            value="<?=$_SESSION['querySearch']?>"
+                        > 
+                        <input type="submit" name="btnSearchJournal" value="Поиск">
+                    </form>
                 </div>
-            <?php endfor?>
-            
+
+               <?php for ($i=$recordBegin;$i<$recordEnb;$i++):
+                  // for ($i=0;$i<count($message);$i++):
+                ?>
+                    <div class="divMessageJournal">
+                        <h5><?= $message[$i]['time']?> </h5>
+                        <p><?= $message[$i]['message']?></p>
+                    </div>
+                <?php endfor?>
+            <?php endif?>
             <?php if ($paginPageAll>1):?>
                 <div id="paginator">
                     <?php if($numPaginPage>1):?>

@@ -61,6 +61,7 @@ class modelUserOption
     {
         require_once 'functions.php';
         $conn= connectDB();
+        $login= addslashes($login);
         $sql="UPDATE user_option SET login_smsfeedback='{$login}',"
                                  .  "password_smsfeedback='{$password}' LIMIT 1";
         //debug( $sql);
@@ -124,6 +125,9 @@ class modelUserOption
     {
         require_once 'functions.php';
         $conn= connectDB();
+        $name= addslashes($name);
+        $surname= addslashes($surname);
+        $login= addslashes($login);
         $sql="INSERT INTO user_option  (name,surname,login,password,sms_submit,"
                 .  "login_smsfeedback,password_smsfeedback,telephone)"
                 . "VALUES ('{$name}','{$surname}','{$login}','{$password}',{$smsSubmit},"
