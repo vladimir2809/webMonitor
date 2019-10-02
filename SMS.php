@@ -97,6 +97,20 @@ If (isset($_POST['submit']))
 //echo send("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", 
 //          "79505582918", "привет! Это PHP", "TEST-SMS");
 }
+function submitSMS($text)
+{
+    require_once 'modelUserOption.php';
+    require_once 'crypt.php';
+    $crypt=new MCrypt();
+    $DBUserOption=new modelUserOption();  
+    $smsOption=$DBUserOption->getSmsOption();
+    $loginPassword=$DBUserOption->getSmsOptionLoginPassword();
+    //return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
+    echo 'SMS '.$text."<br>";
+//    send("api.smsfeedback.ru", 80, $loginPassword['login_smsfeedback'], 
+//          $crypt->decrypt($loginPassword['password_smsfeedback']), 
+//          $smsOption['telephone'], $text, "WebMonitor");
+}
 function getBalance()
 {
     require_once 'modelUserOption.php';

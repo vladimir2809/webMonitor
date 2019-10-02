@@ -30,6 +30,8 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
     $conn=connectDB();
     $DBForCheck=new modelDBForCheck; 
     $DBForCheck->setConn($conn);
+    require_once 'modelJournal.php';
+    $journal=new Journal();
     $url=$_POST['url'];
     $sizePage=$_POST['dataSizeDB'];
     $deviationSize=$_POST['dataDeviationSizeDB'];
@@ -48,11 +50,13 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
             //////////
             $DBForCheck->insertInDB($url,$sizePage,$deviationSize,$h1,$title,$keywords,$description);
             require_once 'main.php';
+            
             $DBResultCheck=new modelDBResultCheck();
+            
             $data=$DBForCheck->readDBOneRecordByURL($url);
             //debug($data);
             $DBResultCheck->insertDBCheckOne(checkOne($data));
-
+            $journal->updateJournal();
         }
     }
     else// если мы сохранеям даннцые о ранее поставленой на мониторинг странице
@@ -66,6 +70,7 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
             $data=$DBForCheck->readDBOneRecordByURL($url);
             //debug($data);
             $DBResultCheck->updateDBCheckOne(checkOne($data));
+            $journal->updateJournal();
         }
     }
     //debug($_POST);
@@ -419,11 +424,13 @@ if (isset($_POST['btnDeleteAccount']))// если нажата кнопка уд
     require_once 'modelDBResultCheck.php';
     require_once 'modelJournal.php';
     require_once 'modelUserOption.php';
+    require_once 'modelDataServis.php';
     
     $DBForCheck=new modelDBForCheck();
     $DBResultCheck=new modelDBResultCheck();
     $journal=new Journal();
     $DBUserOption=new modelUserOption();
+    $dataServis=new modelDataServis();
     
     $DBForCheck->setConn(connectDB());
     
@@ -431,6 +438,8 @@ if (isset($_POST['btnDeleteAccount']))// если нажата кнопка уд
     $DBResultCheck->deleteData();
     $journal->deleteData(); 
     $DBUserOption->deleteData();
+    $dataServis->updateSmsBalanceSubmit(0);
+    $dataServis->updateCheckAllTime(0);
     session_destroy();
     header("Location: "."registration.php");
     exit;

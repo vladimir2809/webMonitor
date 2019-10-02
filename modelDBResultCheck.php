@@ -137,14 +137,14 @@ public function deleteOneRecResCheckByUrl($url)
                 if ($resCheck[$i]['url']==$readRes[$j]['url'])
                 {
                     $flag=true;
-                    // если данные проверки отличаются от того что есть в БД
-//                    if (!($resCheck[$i]['response']==$readRes[$j]['response']&&
-//                          $resCheck[$i]['size']==$readRes[$j]['size']&&
-//                          $resCheck[$i]['h1']==$readRes[$j]['h1']&&
-//                          $resCheck[$i]['title']==$readRes[$j]['title']&&
-//                          $resCheck[$i]['keywords']==$readRes[$j]['keywords']&&
-//                          $resCheck[$i]['description']==$readRes[$j]['description']
-//                                                                                    ))
+//                     если данные проверки отличаются от того что есть в БД
+                    if (!($resCheck[$i]['response']==$readRes[$j]['response']&&
+                          $resCheck[$i]['size']==$readRes[$j]['size']&&
+                          $resCheck[$i]['h1']==$readRes[$j]['h1']&&
+                          $resCheck[$i]['title']==$readRes[$j]['title']&&
+                          $resCheck[$i]['keywords']==$readRes[$j]['keywords']&&
+                          $resCheck[$i]['description']==$readRes[$j]['description']
+                                                                                    ))
                     {
                         // обновить запись
                        $sql="UPDATE result_check SET response=".$resCheck[$i]['response']
@@ -155,7 +155,16 @@ public function deleteOneRecResCheckByUrl($url)
                                . ", description=".$resCheck[$i]['description'].""
                                . ", time_upload=NOW()"
                                . "WHERE url='{$resCheck[$i]['url']}';";
-                       debug($sql);
+                     //  debug($sql);
+                       $result=$conn->query($sql);
+                       $error=$conn->errorInfo();
+                       if (isset($error[2])) die($error[2]);
+                    }
+                    else// если все данные совпадают то просто обновим время
+                    {
+                           $sql="UPDATE result_check SET time_upload=NOW()"
+                                     . "WHERE url='{$resCheck[$i]['url']}';";
+                     //  debug($sql);
                        $result=$conn->query($sql);
                        $error=$conn->errorInfo();
                        if (isset($error[2])) die($error[2]);

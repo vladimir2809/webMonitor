@@ -26,7 +26,7 @@ class modelDBForCheck
         }
         //debug($result);
     }
-    public function readStatePause()// считать поле state_pause уц всех записей
+    public function readStatePause()// считать поле state_pause у всех записей
     {
         $sql="SELECT url, state_pause FROM for_check";
         //debug( $sql);

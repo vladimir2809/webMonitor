@@ -8,7 +8,7 @@ class Journal
         require_once 'functions.php';
         $conn= connectDB();
         $sql="SELECT * FROM journal WHERE url='{$url}' ORDER BY time_check DESC LIMIT 64;";
-        debug( $sql);
+        //debug( $sql);
        
         $resultSQL=$conn->query($sql);
         $error=$conn->errorInfo();
@@ -19,13 +19,13 @@ class Journal
         }
         return $result;
     }
-    public function insertDB($url,$code,$time)// вставить в БД одну запись
+    public function insertDB($url,$code,$time,$response)// вставить в БД одну запись
     {
         require_once 'functions.php';
         $conn= connectDB();
-        $sql="INSERT INTO journal  (url,code_check,time_check)"
-                . "VALUES ('{$url}','{$code}','{$time}')";
-        debug( $sql);
+        $sql="INSERT INTO journal  (url,code_check,time_check, response)"
+                . "VALUES ('{$url}','{$code}','{$time}', {$response})";
+      //  debug( $sql);
         $resultSQL=$conn->query($sql);
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
@@ -53,7 +53,7 @@ class Journal
     public function checkOneToWriteDB($url,$code)// проверить нужно ли записывать в БД данные о проверки
     {
         $dataDB=$this->readDBByUrl($url);
-        debug($dataDB);
+       // debug($dataDB);
       //  $flag=false;
         for ($i=0;$i<count($dataDB);$i++)
         { 
@@ -93,7 +93,7 @@ class Journal
         }
         if ($code[1]=='0') 
         {
-            $result.="Размер страницы вышел за допустимый диапозон;";
+            $result.="Размер страницы вышел за допустимый диапозон; ";
             //return $result;
         }
         if ($code[2]=='0') 
@@ -173,10 +173,11 @@ class Journal
         for ($i=0;$i<count($resCheckDB);$i++)
         {
             $code=$this->createCodeByResCheck($resCheckDB[$i]);
-            echo "code= $code";
+       //     echo "code= $code";
             if ($this->checkOneToWriteDB($resCheckDB[$i]['url'], $code))
             {
-                $this->insertDB($resCheckDB[$i]['url'], $code,$resCheckDB[$i]['time_upload'] );
+                $this->insertDB($resCheckDB[$i]['url'], $code,$resCheckDB[$i]['time_upload'] ,
+                        $resCheckDB[$i]['response'] );
             }
         }
     }

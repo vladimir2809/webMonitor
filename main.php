@@ -80,11 +80,16 @@ function checkOne($data)// проверитть одну страницу
      $DBForCheck=new modelDBForCheck;
      $DBForCheck->setConn($conn);
      $data=$DBForCheck->readDB();
+     $dataPause=$DBForCheck->readStatePause();
+    // debug($dataPause);
    //  $monitor=new Monitor;
      for ($i=0;$i<count($data);$i++)
      {
-         $resOne=checkOne($data[$i]);
-         $resCheck[]=$resOne;
+         if ($dataPause[$i]['state_pause']==0)
+         { 
+            $resOne=checkOne($data[$i]);
+            $resCheck[]=$resOne;
+         }
      }
  //    debug($resCheck);
      return $resCheck;
@@ -101,10 +106,71 @@ function checkOne($data)// проверитть одну страницу
 // }
 if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)   
 {
+    ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+    error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
+    require_once 'SMS.php';
+    require_once 'modelDataServis.php';
+    require_once "modelUserOption.php";
     $DBResultCheck=new modelDBResultCheck();
-    $DBResultCheck->writeResChecksInDB(checkAll());
+    $dataServis=new modelDataServis();
     $journal=new Journal();
+    $DBUserOption=new modelUserOption();
+    $resultChecks=checkAll();
+    $DBResultCheck->writeResChecksInDB($resultChecks);
+    $smsOption=$DBUserOption->getSmsOption();
+    debug($smsOption);
+    if ($smsOption['sms_submit']==1)
+    {
+        
+        for ($i=0;$i<count($resultChecks);$i++)
+        {
+            $code=$journal->createCodeByResCheck($resultChecks[$i]);
+            $flagSize=false;
+            $flagSmsOption=false;
+            $flagSmsJournal=$journal->checkOneToWriteDB($resultChecks[$i]['url'],$code);
+            debug($code);
+            if ($code[0]=='0') $flagSmsOption=true;
+            if ($smsOption['sms_size']==true && $code[1]=="0")
+            {
+                $flagSmsOption=true;
+            }
+            if ($smsOption['sms_meta']==true &&
+                    ($code[2]=='0' || $code[3]=='0' || $code[4]=='0' || $code[5]=='0'))
+            {
+                $flagSmsOption=true;
+            }
+            if ($smsOption['sms_normal']==true && strcmp($code,"111111")==0) $flagSmsOption=true;
+//            if ($smsOption['sms_size']==false && $code[1]=="0")
+//            {
+//                $flagSms=false;
+//                $flagSize=true;
+//            }
+//            if ($smsOption['sms_meta']==false &&
+//                    ($code[2]=='0' || $code[3]=='0' || $code[4]=='0' || $code[5]=='0'))
+//            {
+//                echo "12234";
+//                
+//            }
+//            if ($flagSize==true && $flagSms==false) $flagSms=true; else $flagSms=false;
+           // if ($smsOption['sms_normal']==false && strcmp($code,"111111")==0) $flagSms=false;
+            
+            if ($flagSmsJournal==true && $flagSmsOption==true)
+            {
+                $textSms=$journal->codeToMessage($resultChecks[$i]['url'], $code);
+                submitSMS($textSms);
+            }
+        }
+    }
+    
     $journal->updateJournal();
+    //debug($resultChecks);
+//    debug($dataServis->getSmsBalanceSubmit());
+//    $dataServis->updateSmsBalanceSubmit(0);
+//    debug($dataServis->getSmsBalanceSubmit());
+//    
+//    debug($dataServis->getCheckAllTime());
+//    $dataServis->updateCheckAllTime(0);
+//    debug($dataServis->getCheckAllTime());
 }
 
  function getDataOnePage($url)// получить данные от одной страницы
