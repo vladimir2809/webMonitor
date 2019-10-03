@@ -111,13 +111,16 @@ if (isset($_POST['btnPlay_x']))// если нажата пауза на стра
 if (isset($_POST['btnDelete_x']))// если нажата  снять с мониторинга на странице index
 {
     //debug($_POST);
+    require_once 'modelJournal.php';
     $conn=connectDB();
     $DBForCheck=new modelDBForCheck; 
+    $journal=new Journal;
     $DBForCheck->setConn($conn);
     $DBForCheck->deleteOneRecordByUrl($_POST['urlOfDelete']);
-    include_once 'main.php';
+    //include_once 'main.php';
     $DBResultCheck=new modelDBResultCheck();
     $DBResultCheck->deleteOneRecResCheckByUrl($_POST['urlOfDelete']);
+    $journal->deleteByUrl($_POST['urlOfDelete']);
     if (empty($_POST['numpage'])||$_POST['numpage']==1)
     {
         header("Location: "."index.php");

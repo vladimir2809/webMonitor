@@ -49,4 +49,38 @@ class modelDataServis
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
     }
+        public function getTimeForCheckAll()
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="SELECT time_for_check_all  FROM data_servis LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql)->fetchColumn(); ;
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        
+        return $result;
+    }
+     public function getBalance()
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="SELECT balance  FROM data_servis LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql)->fetchColumn(); ;
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+        
+        return $result;
+    }
+    public function updateBalance($value)
+    {
+        require_once 'functions.php';
+        $conn= connectDB();
+        $sql="UPDATE data_servis SET balance={$value} LIMIT 1";
+        //debug( $sql);
+        $result=$conn->query($sql)->fetchColumn(); ;
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);
+    }
 }

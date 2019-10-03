@@ -9,10 +9,13 @@ ini_set('display_errors', 'On'); // сообщения с ошибками бу�
 error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
 require_once "modelDBForCheck.php";
 require_once "functions.php";
+//init();
 require_once "main.php";
 //require_once 'Journal.php';
 require_once "SMS.php";
 require_once "modelDBResultCheck.php";
+require_once 'modelDataServis.php';
+require_once 'modelUserOption.php';
 $DBResultCheck=new modelDBResultCheck();
 $resultCheck=$DBResultCheck->readResultIsDB();
 $conn=connectDB();
@@ -20,15 +23,16 @@ $DBForCheck=new modelDBForCheck;
 $DBForCheck->setConn($conn);
 $statePause=$DBForCheck->readStatePause();
 $timeZone= mb_strcut(date('O'), 1,2);
-require_once 'modelUserOption.php';
 $DBUserOption=new modelUserOption();
+$dataServis=new modelDataServis();
+$timeCheck=$dataServis->getCheckAllTime();
 $loginPasswordSms=$DBUserOption->getSmsOptionLoginPassword();
 // проверяем есть ли аккунт smsfeedback в БД
 if (!($loginPasswordSms['login_smsfeedback']==''||$loginPasswordSms['password_smsfeedback']==''))
 {// если есть аккаунт smsfeedback
     $balance= getBalance();
-    $balanceArr= explode(';', $balance);    
-    $balance=$balanceArr[1];
+  //  $balanceArr= explode(';', $balance);    
+   // $balance=$balanceArr[1];
 }
 else
 {
@@ -93,6 +97,10 @@ if ($numPaginPage+2>=$paginPageAll)
 //debug($resultCheck);
 ?>
 <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]--> 
 <html>
     <head>
         <meta charset="UTF-8">
@@ -129,10 +137,12 @@ if ($numPaginPage+2>=$paginPageAll)
              </ul>
         </nav>
         <main>
+        <div id="main">
             <div id='mainDiv'>
                 <div id='mainDivP'><p  > Страницы на мониторинге</p></div>
                 <div id='PBalanse'><p  > баланс: <?= $balance?></p></div>
                 <div id="divUTC"><p>Часовой пояс +<?=$timeZone?> UTC</p></div>
+               
             </div>
             
                 
@@ -207,6 +217,13 @@ if ($numPaginPage+2>=$paginPageAll)
                     <?php endfor;?>
                 </table>
             <?php endif?> 
+            <div id="divTimeCheck"><p>Время последней проверки всех страниц заняло: <?=$timeCheck?> сек</p>
+            <?php 
+                if ($timeCheck>=$dataServis->getTimeForCheckAll()-10):
+            ?>
+                <p style="color: red"> Программа не успевает проверить все страницы </p>
+            <?php endif; ?>
+            </div>
             <?php if ($paginPageAll>1):?>
                 <div id="paginator">
                     <?php if($numPaginPage>1):?>
@@ -234,6 +251,7 @@ if ($numPaginPage+2>=$paginPageAll)
                     <?php endif;?>
                 </div>
             <?php endif;?>
+        </div>
         </main>       
     </body>
 </html>

@@ -105,6 +105,11 @@ ul>li>div>a>p{
     left: 30px;
     top: 45px;
 }
+#divTimeCheck{
+    position: relative;
+    left: 30px;
+    top: 45px;
+}
 #mainSpan{
     
 }

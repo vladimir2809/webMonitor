@@ -77,7 +77,7 @@ class Journal
         }
         return true;
     }
-    public function codeToMessage($url,$code)// конвертировать код в сообшение для пользователя
+    public function codeToMessage($url,$code,$response)// конвертировать код в сообшение для пользователя
     {
        // debug($code);
         $result="У страницы <a href='page.php?url={$url}'><span class='urlJournal' > {$url} </span></a>: ";
@@ -88,7 +88,7 @@ class Journal
         }
         if ($code[0]=='0') 
         {
-            $result.="Код ответа сервера не 200.";
+            $result.="Код ответа сервера не 200. А ".$response.".";
             return $result;
         }
         if ($code[1]=='0') 
@@ -122,7 +122,7 @@ class Journal
     {
         require_once 'functions.php';
         $conn= connectDB();
-        $sql="SELECT url, code_check, time_check FROM journal WHERE url LIKE '%{$key}%'"
+        $sql="SELECT url, code_check, time_check, response FROM journal WHERE url LIKE '%{$key}%'"
                 . " ORDER BY time_check DESC";
         //debug( $sql);
        
@@ -135,7 +135,8 @@ class Journal
         }
         for ($i=0;$i<count($arrCode);$i++)
         {
-            $message=$this->codeToMessage($arrCode[$i]['url'],$arrCode[$i]['code_check'] );
+            $message=$this->codeToMessage($arrCode[$i]['url'],
+                    $arrCode[$i]['code_check'],$arrCode[$i]['response']);
             $result[]=['time'=>$arrCode[$i]['time_check'],"message"=>$message];
         }
         return $result;
@@ -144,7 +145,7 @@ class Journal
     {
         require_once 'functions.php';
         $conn= connectDB();
-        $sql="SELECT url, code_check, time_check FROM journal ORDER BY time_check DESC";
+        $sql="SELECT url, code_check, time_check, response FROM journal ORDER BY time_check DESC";
         //debug( $sql);
        
         $resultSQL=$conn->query($sql);
@@ -157,7 +158,8 @@ class Journal
       //  debug($arrCode);
         for ($i=0;$i<count($arrCode);$i++)
         {
-            $message=$this->codeToMessage($arrCode[$i]['url'],$arrCode[$i]['code_check'] );
+            $message=$this->codeToMessage($arrCode[$i]['url'],
+                    $arrCode[$i]['code_check'],$arrCode[$i]['response'] );
        //     debug($message);
             $resultOne=['time'=>$arrCode[$i]['time_check'],"message"=>$message];
        //     debug($resultOne);
@@ -181,6 +183,17 @@ class Journal
             }
         }
     }
+    public function deleteByUrl($url)
+    {
+       require_once 'functions.php';
+        $conn=connectDB();
+        $sql="DELETE FROM journal WHERE url='{$url}';";
+        //debug( $sql);
+        $result=$conn->query($sql);
+        $error=$conn->errorInfo();
+        if (isset($error[2])) die($error[2]);  
+    }
+        
     public function deleteData()
     {
         require_once 'functions.php';

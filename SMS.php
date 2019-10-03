@@ -9,6 +9,7 @@
 * функция передачи сообщения 
 */
  //require "functions.php";
+// $GLOBALS['balance']=100;
 function send($host, $port, $login, $password, $phone, $text, $sender = false, $wapurl = false )
 {
     $fp = fsockopen($host, $port, $errno, $errstr);
@@ -97,16 +98,24 @@ If (isset($_POST['submit']))
 //echo send("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", 
 //          "79505582918", "привет! Это PHP", "TEST-SMS");
 }
+if (!isset($_SESSION['balance']))
+    {
+        $_SESSION['balance']=50;
+    }
 function submitSMS($text)
-{
-    require_once 'modelUserOption.php';
+{   require_once 'modelUserOption.php';
     require_once 'crypt.php';
+    require_once 'modelDataServis.php';
     $crypt=new MCrypt();
     $DBUserOption=new modelUserOption();  
+    $dataServis=new modelDataServis();
     $smsOption=$DBUserOption->getSmsOption();
     $loginPassword=$DBUserOption->getSmsOptionLoginPassword();
+   
     //return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
+    $dataServis->updateBalance($dataServis->getBalance()-3);
     echo 'SMS '.$text."<br>";
+   
 //    send("api.smsfeedback.ru", 80, $loginPassword['login_smsfeedback'], 
 //          $crypt->decrypt($loginPassword['password_smsfeedback']), 
 //          $smsOption['telephone'], $text, "WebMonitor");
@@ -115,12 +124,20 @@ function getBalance()
 {
     require_once 'modelUserOption.php';
     require_once 'crypt.php';
+    require_once 'modelDataServis.php';
     $crypt=new MCrypt();
+    $dataServis=new modelDataServis();
     $DBUserOption=new modelUserOption();  
     $smsOption=$DBUserOption->getSmsOptionLoginPassword();
-    //return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
-    return balance("api.smsfeedback.ru", 80, $smsOption['login_smsfeedback'], 
-                                            $crypt->decrypt($smsOption['password_smsfeedback']));
+    //return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa")
+    //debug($_SESSION);
+    return $dataServis->getBalance();
+    
+//    $balance=balance("api.smsfeedback.ru", 80, $smsOption['login_smsfeedback'], 
+//                                           $crypt->decrypt($smsOption['password_smsfeedback']));
+//    $balanceArr=explode(';', $balance);    
+//    $balance=$balanceArr[1];
+//    return $balance;
    //return $crypt->decrypt($smsOption['password_smsfeedback']). "  ".$smsOption['login_smsfeedBack'];
     
 }

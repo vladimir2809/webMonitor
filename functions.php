@@ -1,5 +1,5 @@
 <?php
-
+//$GLOBALS['balance']=100;
 function debug($arrValue)
 {
        echo "<pre>";
@@ -80,6 +80,14 @@ function varietyStr($patern,$str)// фунцкция которая провер
     }
     return true;
 }
+//function init()
+//{
+//    
+//    if (!isset($_SESSION['balance']))
+//    {
+//        $_SESSION['balance']=100;
+//    }
+//}
 		
 	
 

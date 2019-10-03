@@ -32,6 +32,10 @@ if ($_POST['btnGetData'])
     }
 }
 ?><!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]--> 
 <html>
     <head>
         <meta charset="UTF-8">
@@ -68,6 +72,7 @@ if ($_POST['btnGetData'])
              </ul>
         </nav>
         <main>  
+        <div id="main">
            
             <form id="formUrl" action="enterUrlPage.php" method="post">
                     <p>Введите адресс страницы </p>
@@ -79,7 +84,7 @@ if ($_POST['btnGetData'])
                     <?php endif; ?>
                 </form>
             
-            
+         </div>   
         </main>       
     </body>
 </html>

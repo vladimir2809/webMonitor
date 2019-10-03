@@ -24,6 +24,10 @@
   //  debug($data);
 ?>
 <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]--> 
 <html>
     <head>
         <meta charset="UTF-8">
@@ -61,6 +65,8 @@
              </ul>
         </nav>
         <main>  
+        <div id="main">    
+         
             <h1>Настройки</h1>
             <form id="formChangePassword" action="serverFunc.php" method="post">
                 <div id="divChangePassword">
@@ -138,6 +144,7 @@
                 <br>
                 <input type="submit" id="btnDeleteAccount" name="btnDeleteAccount" value="Удалить аккаунт"> 
             </form>   
+        </div>>    
         </main>    
         <?php if (isset($error)):?>
         <div id="divScreen">

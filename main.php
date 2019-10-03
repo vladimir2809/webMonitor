@@ -3,6 +3,7 @@ require_once 'functions.php';
 require_once 'modelDBResultCheck.php';
 require_once 'modelJournal.php';
 require "monitor.php";
+require_once 'modelDataServis.php';
 
 function checkOne($data)// проверитть одну страницу
  {
@@ -78,6 +79,7 @@ function checkOne($data)// проверитть одну страницу
  //    require "monitor.php";
      $conn=connectDB();
      $DBForCheck=new modelDBForCheck;
+     $dataServis=new modelDataServis();
      $DBForCheck->setConn($conn);
      $data=$DBForCheck->readDB();
      $dataPause=$DBForCheck->readStatePause();
@@ -89,6 +91,13 @@ function checkOne($data)// проверитть одну страницу
          { 
             $resOne=checkOne($data[$i]);
             $resCheck[]=$resOne;
+            
+         }
+         $GLOBALS['time2']=time()-$GLOBALS['time1'];
+         debug($GLOBALS['time2']);
+         if ($GLOBALS['time2']>=$dataServis->getTimeForCheckAll()-10)
+         {
+             break;
          }
      }
  //    debug($resCheck);
@@ -106,8 +115,9 @@ function checkOne($data)// проверитть одну страницу
 // }
 if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)   
 {
-    ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
-    error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
+//    ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+//    error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
+    $GLOBALS['time1']=time();
     require_once 'SMS.php';
     require_once 'modelDataServis.php';
     require_once "modelUserOption.php";
@@ -121,7 +131,10 @@ if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)
     debug($smsOption);
     if ($smsOption['sms_submit']==1)
     {
-        
+        if (getBalance()>=10 && $dataServis->getSmsBalanceSubmit()==1)
+        {
+            $dataServis->updateSmsBalanceSubmit(0);
+        }
         for ($i=0;$i<count($resultChecks);$i++)
         {
             $code=$journal->createCodeByResCheck($resultChecks[$i]);
@@ -140,29 +153,26 @@ if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)
                 $flagSmsOption=true;
             }
             if ($smsOption['sms_normal']==true && strcmp($code,"111111")==0) $flagSmsOption=true;
-//            if ($smsOption['sms_size']==false && $code[1]=="0")
-//            {
-//                $flagSms=false;
-//                $flagSize=true;
-//            }
-//            if ($smsOption['sms_meta']==false &&
-//                    ($code[2]=='0' || $code[3]=='0' || $code[4]=='0' || $code[5]=='0'))
-//            {
-//                echo "12234";
-//                
-//            }
-//            if ($flagSize==true && $flagSms==false) $flagSms=true; else $flagSms=false;
-           // if ($smsOption['sms_normal']==false && strcmp($code,"111111")==0) $flagSms=false;
-            
+
             if ($flagSmsJournal==true && $flagSmsOption==true)
             {
-                $textSms=$journal->codeToMessage($resultChecks[$i]['url'], $code);
-                submitSMS($textSms);
+                $textSms=$journal->codeToMessage($resultChecks[$i]['url'], $code,
+                                                 $resultChecks[$i]['response']);
+               submitSMS($textSms);
+               if ($smsOption['sms_balance']==1 && getBalance()<10 &&
+                                $dataServis->getSmsBalanceSubmit()==0)
+                {
+                    submitSMS("Баланс WebMonitor, для отправки смс, меньше 10 руб");
+                    $dataServis->updateSmsBalanceSubmit(1);
+                }
             }
         }
     }
     
     $journal->updateJournal();
+    $GLOBALS['time2']=time()-$GLOBALS['time1'];
+    debug($GLOBALS['time2']);
+    $dataServis->updateCheckAllTime($GLOBALS['time2']);
     //debug($resultChecks);
 //    debug($dataServis->getSmsBalanceSubmit());
 //    $dataServis->updateSmsBalanceSubmit(0);
