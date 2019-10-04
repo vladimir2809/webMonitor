@@ -80,42 +80,6 @@ class modelDBForCheck
         if (isset($error[2])) die($error[2]);
         
     }
-// function readDataOneForCheckByUrl($url)//читать данные одной записи из таблицы for_check по URL
-// {
-//     require_once "modelDBForCheck.php";
-//     $conn=connectDB();
-//     $DBForCheck=new modelDBForCheck;
-//     $DBForCheck->setConn($conn);
-//     $data=$DBForCheck->readDBOneRecordByURL($url);
-//     return $data;
-// }
-    
-//  public function readDataIsDBOneOfUrl($url) // чтение данных из базы данных for_check об одной странице по url 
-//  {
-//        $conn=connectDB();
-//        $sql="SELECT * FROM for_check WHERE url='$url';";
-//        //debug( $sql);
-//        $resultSQL=$conn->query($sql);
-//        $error=$conn->errorInfo();
-//        if (isset($error[2])) die($error[2]);
-//        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
-// 
-//        //debug($result);
-//        return $result;
-//  }
-//  function readDataIsDBOneOfUrl($url) // чтение данных из базы данных for_check об одной странице по url 
-//  {
-//        $conn=connectDB();
-//        $sql="SELECT * FROM for_check WHERE url='$url';";
-//        //debug( $sql);
-//        $resultSQL=$conn->query($sql);
-//        $error=$conn->errorInfo();
-//        if (isset($error[2])) die($error[2]);
-//        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
-// 
-//        //debug($result);
-//        return $result;
-//  }
     public function readDBOneRecordByURL($url)//читать из базы данных таьлицы for_check одну запись по url 
     {
         
@@ -129,7 +93,7 @@ class modelDBForCheck
        // debug($result);
         return $result;
     }
-    public function deleteOneRecordByUrl($url)
+    public function deleteOneRecordByUrl($url)// удалить одну запись по УРЛ
     {
          $sql="DELETE FROM for_check WHERE url='{$url}';";
         //debug( $sql);
@@ -157,7 +121,7 @@ class modelDBForCheck
 //        $error=$this->conn->errorInfo();
 //        if (isset($error[2])) die($error[2]);
     }
-    public function deleteData()
+    public function deleteData()// удалить данные
     {
         $sql="DELETE FROM for_check;";
         //debug( $sql);
@@ -165,7 +129,7 @@ class modelDBForCheck
         $error=$this->conn->errorInfo();
         if (isset($error[2])) die($error[2]); 
     }
-    public function setConn($value)
+    public function setConn($value)// усртановить переменныю  соединения с БД
     {
      $this->conn=$value;   
     }

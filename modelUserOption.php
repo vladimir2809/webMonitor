@@ -57,7 +57,7 @@ class modelUserOption
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);   
     }
-    public function updateLoginPasswordSmsFeedBack($login,$password)
+    public function updateLoginPasswordSmsFeedBack($login,$password)// обновить пароль и логин smsfeedback
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -93,6 +93,7 @@ class modelUserOption
         if (isset($error[2])) die($error[2]);
         return $result->fetch(PDO::FETCH_ASSOC); 
     }
+    // обновить настройки смс сообшений
     public function updateSmsOption($telephone,$smsSubmit,$smsSize,$smsMeta,$smsNormal,$smsBalance)
     {
         require_once 'functions.php';
@@ -109,7 +110,7 @@ class modelUserOption
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]); 
     }
-    public function updateSmsSubmit($smsSubmit)
+    public function updateSmsSubmit($smsSubmit)// обновить флаг отправки сообшений
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -138,7 +139,7 @@ class modelUserOption
         if (isset($error[2])) die($error[2]);
     }
     
-    public function deleteData()
+    public function deleteData()// очистить таблицу
     {
          require_once 'functions.php';
         $conn=connectDB();

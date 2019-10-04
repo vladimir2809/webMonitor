@@ -42,26 +42,21 @@ main{
     float: left;
 }
 #divDataPage2{
-    //margin-left: 20px;
     margin-top:36px;
-    
 }
 #divDataPage3{
-    //margin-left: 20px;
     margin-top:24px;
-    
 }
 #divDataPage p{
-    margin-bottom: 2px;
-    
+    margin-bottom: 2px; 
 }
 #divDataPageDB{
     padding-left: 15px;
- padding-top: 1px;
- width: 315px;
- height: 600px;
- border-right: 1px solid blue; 
- float: left;
+    padding-top: 1px;
+    width: 315px;
+    height: 600px;
+    border-right: 1px solid blue; 
+    float: left;
 }
 #divCheckPage{
     float:left;
@@ -72,8 +67,6 @@ main{
 }
 #divDataPageDB p{
     margin-bottom: 2px;
-   
-   
 }
 #responseP{
     margin-top: 32px;
@@ -107,5 +100,4 @@ main{
 }
 textarea{
     width:300px;
-    //height: 150px;
 }

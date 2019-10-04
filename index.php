@@ -5,8 +5,8 @@ if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'
     header("Location: "."login.php");
     exit;
 }
-ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
-error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
+//ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+//error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
 require_once "modelDBForCheck.php";
 require_once "functions.php";
 //init();
@@ -30,9 +30,7 @@ $loginPasswordSms=$DBUserOption->getSmsOptionLoginPassword();
 // проверяем есть ли аккунт smsfeedback в БД
 if (!($loginPasswordSms['login_smsfeedback']==''||$loginPasswordSms['password_smsfeedback']==''))
 {// если есть аккаунт smsfeedback
-    $balance= getBalance();
-  //  $balanceArr= explode(';', $balance);    
-   // $balance=$balanceArr[1];
+    $balance= cutBalance(getBalance());
 }
 else
 {
@@ -54,7 +52,7 @@ if (!isset($_GET['numpage']) || is_numeric($_GET['numpage'])==false || (int)$_GE
     header("Location: "."index.php?numpage=1");
     exit;
 }    
-if ((int)$_GET['numpage']>$paginPageAll)
+if ((int)$_GET['numpage']>$paginPageAll && $paginPageAll>0)
 {
     //echo '111';
     header("Location: "."index.php?numpage={$paginPageAll}");
@@ -85,16 +83,7 @@ if ($numPaginPage+2>=$paginPageAll)
 {
      $paginEnd=$numPaginPage+2;
 }
-//debug($statePause);
-//debug($resultCheck);
-//$journal=new Journal();
-//for($i=0;$i<count($resultCheck);$i++)
-//{
-//    echo $journal->createCodeByResCheck($resultCheck[$i]);
-//    echo '<br>';
-//}
-//writeResChecksInDB(checkAll());
-//debug($resultCheck);
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -130,7 +119,9 @@ if ($numPaginPage+2>=$paginPageAll)
             <ul>
                 <li><div><a href="/enterUrlPage.php"><p>Добавить сайт</p></a></li></div>
             
-            <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
+            <li><div> <a href="https://www.smsfeedback.ru/users/invoices/addinvoiceform.php">
+                        <p>Пополнить баланс</p>
+                    </a> </li></div>
             
              <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
             <li><div> <a href="serverFunc.php?exit=true"><p>Выход</p></a></li></div>

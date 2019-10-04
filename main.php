@@ -5,7 +5,7 @@ require_once 'modelJournal.php';
 require "monitor.php";
 require_once 'modelDataServis.php';
 
-function checkOne($data)// проверитть одну страницу
+function checkOne($data)// проверить одну страницу
  {
        //require "monitor.php";
        $monitor=new Monitor;
@@ -94,7 +94,7 @@ function checkOne($data)// проверитть одну страницу
             
          }
          $GLOBALS['time2']=time()-$GLOBALS['time1'];
-         debug($GLOBALS['time2']);
+         //debug($GLOBALS['time2']);
          if ($GLOBALS['time2']>=$dataServis->getTimeForCheckAll()-10)
          {
              break;
@@ -103,85 +103,7 @@ function checkOne($data)// проверитть одну страницу
  //    debug($resCheck);
      return $resCheck;
  }        
- //       //readDataOneForCheckByUrl
-// function readDataOneForCheckByUrl($url)//читать данные одной записи из таблицы for_check по URL
-// {
-//     require_once "modelDBForCheck.php";
-//     $conn=connectDB();
-//     $DBForCheck=new modelDBForCheck;
-//     $DBForCheck->setConn($conn);
-//     $data=$DBForCheck->readDBOneRecordByURL($url);
-//     return $data;
-// }
-if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)   
-{
-//    ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
-//    error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
-    $GLOBALS['time1']=time();
-    require_once 'SMS.php';
-    require_once 'modelDataServis.php';
-    require_once "modelUserOption.php";
-    $DBResultCheck=new modelDBResultCheck();
-    $dataServis=new modelDataServis();
-    $journal=new Journal();
-    $DBUserOption=new modelUserOption();
-    $resultChecks=checkAll();
-    $DBResultCheck->writeResChecksInDB($resultChecks);
-    $smsOption=$DBUserOption->getSmsOption();
-    debug($smsOption);
-    if ($smsOption['sms_submit']==1)
-    {
-        if (getBalance()>=10 && $dataServis->getSmsBalanceSubmit()==1)
-        {
-            $dataServis->updateSmsBalanceSubmit(0);
-        }
-        for ($i=0;$i<count($resultChecks);$i++)
-        {
-            $code=$journal->createCodeByResCheck($resultChecks[$i]);
-            $flagSize=false;
-            $flagSmsOption=false;
-            $flagSmsJournal=$journal->checkOneToWriteDB($resultChecks[$i]['url'],$code);
-            debug($code);
-            if ($code[0]=='0') $flagSmsOption=true;
-            if ($smsOption['sms_size']==true && $code[1]=="0")
-            {
-                $flagSmsOption=true;
-            }
-            if ($smsOption['sms_meta']==true &&
-                    ($code[2]=='0' || $code[3]=='0' || $code[4]=='0' || $code[5]=='0'))
-            {
-                $flagSmsOption=true;
-            }
-            if ($smsOption['sms_normal']==true && strcmp($code,"111111")==0) $flagSmsOption=true;
 
-            if ($flagSmsJournal==true && $flagSmsOption==true)
-            {
-                $textSms=$journal->codeToMessage($resultChecks[$i]['url'], $code,
-                                                 $resultChecks[$i]['response']);
-               submitSMS($textSms);
-               if ($smsOption['sms_balance']==1 && getBalance()<10 &&
-                                $dataServis->getSmsBalanceSubmit()==0)
-                {
-                    submitSMS("Баланс WebMonitor, для отправки смс, меньше 10 руб");
-                    $dataServis->updateSmsBalanceSubmit(1);
-                }
-            }
-        }
-    }
-    
-    $journal->updateJournal();
-    $GLOBALS['time2']=time()-$GLOBALS['time1'];
-    debug($GLOBALS['time2']);
-    $dataServis->updateCheckAllTime($GLOBALS['time2']);
-    //debug($resultChecks);
-//    debug($dataServis->getSmsBalanceSubmit());
-//    $dataServis->updateSmsBalanceSubmit(0);
-//    debug($dataServis->getSmsBalanceSubmit());
-//    
-//    debug($dataServis->getCheckAllTime());
-//    $dataServis->updateCheckAllTime(0);
-//    debug($dataServis->getCheckAllTime());
-}
 
  function getDataOnePage($url)// получить данные от одной страницы
  {
@@ -204,169 +126,4 @@ if (isset($_GET['checkAll'])/*&& $_GET['checkAll']===true*/)
         return [ 'url'=>$url,"message"=>$monitor->message]; 
      }
  }
-// 
-// function readResultIsDB() //чтение результатов из базы данных из таблицы result_check
-// {
-////        require "modelDBForCheck.php";
-////        require "monitor.php";
-//        $conn=connectDB();
-//        $sql="SELECT * FROM result_check;";
-//        //debug( $sql);
-//        $resultSQL=$conn->query($sql);
-//        $error=$conn->errorInfo();
-//        if (isset($error[2])) die($error[2]);
-//        while($row=$resultSQL->fetch(PDO::FETCH_ASSOC))
-//        {
-//            $result[]=$row;
-//        }
-//        //debug($result);
-//        return $result;
-//        
-// }
-//  function readResultIsDBOneOfUrl($url) //чтение результатов из базы данных для одной записи по Url
-// {
-////        require "modelDBForCheck.php";
-////        require "monitor.php";
-//        $conn=connectDB();
-//        $sql="SELECT * FROM result_check WHERE url='$url';";
-//        //debug( $sql);
-//        $resultSQL=$conn->query($sql);
-//        $error=$conn->errorInfo();
-//        if (isset($error[2])) die($error[2]);
-//        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
-//        //debug($result);
-//        return $result;
-//        
-// }
-// function readDataIsDBOneOfUrl($url) // чтение данных из базы данных for_check об одной странице по url 
-//  {
-//        $conn=connectDB();
-//        $sql="SELECT * FROM for_check WHERE url='$url';";
-//        //debug( $sql);
-//        $resultSQL=$conn->query($sql);
-//        $error=$conn->errorInfo();
-//        if (isset($error[2])) die($error[2]);
-//        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
-// 
-//        //debug($result);
-//        return $result;
-//  }
-//  function insertDBCheckOne($resCheckOne)// вставить в таблицу result_check одну запись
-//  {
-//       $conn=connectDB();
-//      // debug($resCheckOne);
-//       $sql="INSERT INTO result_check (url, response, size, h1, title, "
-//               . "keywords, description, time_upload)"
-//               . "VALUES ('{$resCheckOne['url']}',{$resCheckOne['response']},"
-//               . "".$resCheckOne['size'].",".$resCheckOne['h1'].","
-//               . "".$resCheckOne['title'].",".$resCheckOne['keywords'].",".$resCheckOne['description'].","
-//                       ."NOW());";
-//       //debug( $sql); 
-//       $resultSQL=$conn->query($sql);
-//       $error=$conn->errorInfo();
-//       if (isset($error[2])) die($error[2]); 
-//  }
-//  function updateDBCheckOne($resCheckOne)// обновить одну запись в таблице result_check
-//  {
-//       $conn=connectDB();
-//      // debug($resCheckOne);
-//       $sql="UPDATE result_check SET response={$resCheckOne['response']},"
-//                                   . "size={$resCheckOne['size']},"
-//                                   . "h1={$resCheckOne['h1']},title={$resCheckOne['title']},"
-//                                   . "keywords={$resCheckOne['keywords']},"
-//                                   . "description={$resCheckOne['description']}"
-//                                   . ",time_upload=NOW()"
-//                                   . " WHERE url='{$resCheckOne['url']}'";
-//                                   
-//                                   
-//      // debug( $sql); 
-//       $resultSQL=$conn->query($sql);
-//       $error=$conn->errorInfo();
-//       if (isset($error[2])) die($error[2]);
-//  }
-//function deleteOneRecResCheckByUrl($url)
-//{
-//    $conn=connectDB();
-//    $sql="DELETE FROM result_check WHERE url='{$url}';";
-//    //debug( $sql);
-//    $result=$conn->query($sql);
-//    $error=$conn->errorInfo();
-//    if (isset($error[2])) die($error[2]);  
-//}
-// function writeResChecksInDB($resCheck)// записать в базу данных все рзультаты проверок 
-// {
-//     //require "functions.php";
-//     $conn=connectDB();
-//     $readRes=readResultIsDB();
-//          
-//    // debug($resCheck);  
-//     if ($readRes==null)// если в базе данных нет записей
-//     {
-//         for ($i=0;$i<count($resCheck);$i++)
-//         {
-//            $sql="INSERT INTO result_check (url, response, size, h1, title, "
-//                    . "keywords, description,time_upload )"
-//                    . "VALUES ('".$resCheck[$i]['url']."',".$resCheck[$i]['response'].", "
-//                    . "".$resCheck[$i]['size'].",".$resCheck[$i]['h1'].","
-//                    . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].","
-//                    . "NOW())";
-//            //debug( $sql); 
-//            $resultSQL=$conn->query($sql);
-//            $error=$conn->errorInfo();
-//            if (isset($error[2])) die($error[2]);  
-//         }
-//        
-//     }
-//     else// если в базе данных есть записи
-//     {
-//         for ($i=0;$i<count($resCheck);$i++)
-//         {
-//            $flag=false;// флаг того что в базе данных есть запись с url $resCheck[$i]['url']
-//            for ($j=0;$j<count($readRes);$j++)
-//            {
-//                if ($resCheck[$i]['url']==$readRes[$j]['url'])
-//                {
-//                    $flag=true;
-//                    // если данные проверки отличаются от того что есть в БД
-//                    if (!($resCheck[$i]['response']==$readRes[$j]['response']&&
-//                          $resCheck[$i]['size']==$readRes[$j]['size']&&
-//                          $resCheck[$i]['h1']==$readRes[$j]['h1']&&
-//                          $resCheck[$i]['title']==$readRes[$j]['title']&&
-//                          $resCheck[$i]['keywords']==$readRes[$j]['keywords']&&
-//                          $resCheck[$i]['description']==$readRes[$j]['description']
-//                        ))
-//                    {
-//                        // обновить запись
-//                       $sql="UPDATE result_check SET response=".$resCheck[$i]['response']
-//                               .", size=".$resCheck[$i]['size'].""
-//                               . ", h1=".$resCheck[$i]['h1'].""
-//                               . ", title=".$resCheck[$i]['title'].""
-//                               . ", keywords=".$resCheck[$i]['keywords'].""
-//                               . ", description=".$resCheck[$i]['description'].""
-//                               . ", time_upload=NOW()"
-//                               . "WHERE url='{$resCheck[$i]['url']}';";
-//                       debug($sql);
-//                       $result=$conn->query($sql);
-//                       $error=$conn->errorInfo();
-//                       if (isset($error[2])) die($error[2]);
-//                    }
-//                }
-//           
-//            }   
-//            if  ($flag==false)// если в БД нет страницы с нужным url
-//            {
-//                $sql="INSERT INTO result_check (url, response, size, h1, title, "
-//                    . "keywords, description, time_upload)"
-//                    . "VALUES ('".$resCheck[$i]['url']."',".$resCheck[$i]['response'].","
-//                    . "".$resCheck[$i]['size'].",".$resCheck[$i]['h1'].","
-//                    . "".$resCheck[$i]['title'].",".$resCheck[$i]['keywords'].",".$resCheck[$i]['description'].","
-//                        . "NOW());";
-//              //  debug( $sql); 
-//                $resultSQL=$conn->query($sql);
-//                $error=$conn->errorInfo();
-//                if (isset($error[2])) die($error[2]); 
-//            }
-//      
-//         }
-//     }
- //}
+

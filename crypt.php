@@ -1,5 +1,5 @@
 <?php
-
+/*\класс для шифрофания данных скаченный из интернета*/
 class MCrypt
  {
          private $iv = 'fed710c542a9b638'; #Same as in JAVA

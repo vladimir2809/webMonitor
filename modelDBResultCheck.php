@@ -48,19 +48,6 @@ class modelDBResultCheck
         return $result;
         
  }
-// public function readDataIsDBOneOfUrl($url) // чтение данных из базы данных for_check об одной странице по url 
-//  {
-//        $conn=connectDB();
-//        $sql="SELECT * FROM for_check WHERE url='$url';";
-//        //debug( $sql);
-//        $resultSQL=$conn->query($sql);
-//        $error=$conn->errorInfo();
-//        if (isset($error[2])) die($error[2]);
-//        $result=$resultSQL->fetch(PDO::FETCH_ASSOC);
-// 
-//        //debug($result);
-//        return $result;
-//  }
   public function insertDBCheckOne($resCheckOne)// вставить в таблицу result_check одну запись
   {
        $conn=connectDB();
@@ -94,7 +81,7 @@ class modelDBResultCheck
        $error=$conn->errorInfo();
        if (isset($error[2])) die($error[2]);
   }
-public function deleteOneRecResCheckByUrl($url)
+public function deleteOneRecResCheckByUrl($url)//удалить одну запись в таблице result_check
 {
     $conn=connectDB();
     $sql="DELETE FROM result_check WHERE url='{$url}';";
@@ -189,7 +176,7 @@ public function deleteOneRecResCheckByUrl($url)
          }
      }
  }
-    public function deleteData()
+    public function deleteData()// очистить таблицу
     {
         require_once 'functions.php';
         $conn=connectDB();

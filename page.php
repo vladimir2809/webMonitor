@@ -4,8 +4,6 @@ if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'
 {
     header("Location: "."login.php");
 }
-//require_once "monitor.php";
-//require_once "modelDBforCheck.php";
 require_once "functions.php";
 require_once "main.php";
 require_once "modelDBResultCheck.php";
@@ -19,10 +17,7 @@ if ($_POST['btnGetData'])
 {
    $DBResultCheck=new modelDBResultCheck();
    $dataUrl=getDataOnePage($_POST['urlPage']);
-   
-//   $resultCheck= readResultIsDBOneOfUrl($_POST['urlPage']);
  //  debug($dataUrl);
-    
 }
 if (isset( $_GET['url']))
 {
@@ -33,11 +28,8 @@ if (isset( $_GET['url']))
   $dataOnePageDB=$DBForCheck->readDBOneRecordByURL($_GET['url']);
   $dataUrl=getDataOnePage($_GET['url']);  
   $resultCheck=$DBResultCheck->readResultIsDBOneOfUrl($_GET['url']);
- // debug($dataOnePageDB);
-  //debug($dataUrl);
 }
-//debug($resultCheck);
-//writeResChecksInDB(checkAll());
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -74,7 +66,8 @@ if (isset( $_GET['url']))
             <ul>
                 <li><div><a href="/enterUrlPage.php"><p>Добавить сайт</p></a></li></div>
             
-            <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
+            <li><div> <a href="https://www.smsfeedback.ru/users/invoices/addinvoiceform.php">
+                        <p>Пополнить баланс</p></a> </li></div>
             
              <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
             <li><div> <a href="serverFunc.php?exit=true"><p>Выход</p></a></li></div>
@@ -82,22 +75,6 @@ if (isset( $_GET['url']))
         </nav>
         <main>  
         <div id="main">    
-            <!--
-            <?php if (!isset($_GET['url'])):?>
-                <form id="formUrl" action="page.php" method="post">
-                    <p>Введите адресс страницы </p>
-                    <input type="text" id="urlPage" name="urlPage" value="<?= $dataUrl['url'];?>">
-                    <input type='submit' value="Получить данные" name="btnGetData">
-                    <?php if (isset($dataUrl['message'])):?>
-                        <p style="color: red; margin: 0px;"><?= $dataUrl['message']?></p>
-                        <br>
-                    <?php endif; ?>
-                </form>
-            <?php else:?>
-          
-            <h3 style="margin-left: 17px">Редактирование данных о странице: <?=$_GET['url'] ?></h3>
-            <?php endif;?>
-            --> 
             
             <h3 style="margin-left: 17px">Редактирование данных о странице: <?=$_GET['url'] ?></h3>
             <?php if (isset($mes_data)):?>
@@ -203,11 +180,6 @@ if (isset( $_GET['url']))
                         title="Перенести в область того что находиться в базе данных"> 
                     &#62; &#62;
                 </button>
-            <!--
-                <form id="formSaveDataPageInDB" action="/serverFunc.php" method="post">
-                    <input type="submit" value="сохранить в БД" name="btnSaveDataPageInDB" id="btnSaveDataPageInDB">
-                </form>
-            -->
                 <?php //endif?>
         </div>
         </main>       

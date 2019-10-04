@@ -4,6 +4,8 @@ require 'functions.php';
 require 'modelDBForCheck.php';
 require_once 'modelDBResultCheck.php';
 //debug($_POST);
+//ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+//error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
 if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка сохранитть на странице PAGE
 {   
     
@@ -59,7 +61,7 @@ if (isset($_POST['btnSaveDataPageInDB']))// если нажата кнопка �
             $journal->updateJournal();
         }
     }
-    else// если мы сохранеям даннцые о ранее поставленой на мониторинг странице
+    else// если мы сохранеям данные о ранее поставленой на мониторинг странице
     {
        /// echo "111";
        if ($DBForCheck->checkRecordByUrl($_POST['url'])==true)// если есть запись в for_check
@@ -207,7 +209,7 @@ if (isset($_POST['btnRegistration']))// если нажата кнопка за�
     require_once 'modelUserOption.php';
     require_once "crypt.php";
     $crypt=new MCrypt();
-    // создаем перемнные для записи в бд
+    // создаем переменные для записи в бд
     $name=$_POST['nameUser'];
     $surname=$_POST['surnameUser'];
     $login=$_POST['login'];
@@ -354,6 +356,7 @@ if (isset($_POST['btnChangeAccountSms']))// если нажата кнопка �
         $DBUserOption->updateLoginPasswordSmsFeedBack($_POST['loginSmsFeedBack'],
                                                      $crypt->encrypt($_POST['passwordSmsFeedBack']) );
         $DBUserOption->updateSmsSubmit(1);
+        $_SESSION['errorMes']="Аккаунт от smsfeedback успешно изменен.";
         header("Location: "."option.php");
         exit; 
     }
@@ -394,6 +397,7 @@ if (isset($_POST['btnSaveOption']))// сохранить настройки ак
             $_SESSION['errorMes']="Нет аккаунта от smsfeedback.";  
         }
         $DBUserOption->updateSmsOption($telephone, $smsSubmit, $smsSize, $smsMeta, $smsNormal, $smsBalance);
+        
     }
     else
     {

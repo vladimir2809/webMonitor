@@ -65,7 +65,8 @@ if ($_POST['btnGetData'])
             <ul>
                 <li><div><a href="/enterUrlPage.php"><p>Добавить сайт</p></a></li></div>
             
-            <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
+            <li><div> <a href="https://www.smsfeedback.ru/users/invoices/addinvoiceform.php">
+                        <p>Пополнить баланс</p></a> </li></div>
             
             <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
             <li><div> <a href="serverFunc.php?exit=true"><p>Выход</p></a></li></div>
@@ -73,9 +74,9 @@ if ($_POST['btnGetData'])
         </nav>
         <main>  
         <div id="main">
-           
+            <h3 style="margin-left: 20px;">Добавить страницу на мониторинг.</h3>
             <form id="formUrl" action="enterUrlPage.php" method="post">
-                    <p>Введите адресс страницы </p>
+                    <p>Введите адрес страницы </p>
                     <input type="text" id="urlPage" name="urlPage" value="<?= $dataUrl['url'];?>">
                     <input type='submit' value="Получить данные" name="btnGetData">
                     <?php if (isset($dataUrl['message'])):?>

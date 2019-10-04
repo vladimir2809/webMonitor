@@ -77,14 +77,29 @@ class Journal
         }
         return true;
     }
-    public function codeToMessage($url,$code,$response)// конвертировать код в сообшение для пользователя
+    public function codeToMessage($url,$code,$response,$forSMS=false)// конвертировать код в сообшение для пользователя
     {
        // debug($code);
-        $result="У страницы <a href='page.php?url={$url}'><span class='urlJournal' > {$url} </span></a>: ";
+        if ($forSMS==true)
+        {
+            $result="У страницы {$url} ";
+        }
+        else
+        {
+            $result="У страницы <a href='page.php?url={$url}'><span class='urlJournal' > {$url} </span></a>: ";
+        }
+            
         if (strcmp($code,'111111')==0)
+        {
+        if ($forSMS==true)
+        {
+            return "Страница {$url} работает нормально.";
+        }
+        else
         {
             return "Страница <a href='page.php?url={$url}'><span class='urlJournal'> {$url} </span></a> работает нормально";
             //return "1122";
+        }
         }
         if ($code[0]=='0') 
         {
@@ -118,7 +133,7 @@ class Journal
         }
         return $result;
     }
-    public function searchAndGetResult($key)
+    public function searchAndGetResult($key)// найти и вернуть результат для поиска в журнале
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -169,8 +184,6 @@ class Journal
     }
     public function updateJournal()// обновить журнал
     {
-        //require_once 'modelDBResultCheck.php';
-        ///$DBResultCheck=new modelDBResultCheck();
         $resCheckDB=$this->getResCheckOfMonitor();
         for ($i=0;$i<count($resCheckDB);$i++)
         {
@@ -183,7 +196,7 @@ class Journal
             }
         }
     }
-    public function deleteByUrl($url)
+    public function deleteByUrl($url)// удалить записи по URL
     {
        require_once 'functions.php';
         $conn=connectDB();
@@ -194,7 +207,7 @@ class Journal
         if (isset($error[2])) die($error[2]);  
     }
         
-    public function deleteData()
+    public function deleteData()// удалить журнал
     {
         require_once 'functions.php';
         $conn=connectDB();
@@ -205,5 +218,3 @@ class Journal
         if (isset($error[2])) die($error[2]); 
     }
 }
-//$journal=new Journal();
-//$journal->updateJournal();

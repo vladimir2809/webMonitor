@@ -10,6 +10,7 @@
 */
  //require "functions.php";
 // $GLOBALS['balance']=100;
+
 function send($host, $port, $login, $password, $phone, $text, $sender = false, $wapurl = false )
 {
     $fp = fsockopen($host, $port, $errno, $errstr);
@@ -90,55 +91,57 @@ function balance($host, $port, $login, $password)
     list($other, $responseBody) = explode("\r\n\r\n", $response, 2);
     return $responseBody;
 }
-
-If (isset($_POST['submit']))
+function submitSMS($text) // отправить смс сообшение с настройками    
 {
- debug($_POST);
-  
-//echo send("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", 
-//          "79505582918", "привет! Это PHP", "TEST-SMS");
-}
-if (!isset($_SESSION['balance']))
-    {
-        $_SESSION['balance']=50;
-    }
-function submitSMS($text)
-{   require_once 'modelUserOption.php';
+    ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+    error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
+    require_once 'modelUserOption.php';
     require_once 'crypt.php';
-    require_once 'modelDataServis.php';
+    //require_once 'modelDataServis.php';
     $crypt=new MCrypt();
     $DBUserOption=new modelUserOption();  
-    $dataServis=new modelDataServis();
+   // $dataServis=new modelDataServis();
     $smsOption=$DBUserOption->getSmsOption();
     $loginPassword=$DBUserOption->getSmsOptionLoginPassword();
    
     //return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa");
-    $dataServis->updateBalance($dataServis->getBalance()-3);
-    echo 'SMS '.$text."<br>";
+    //$dataServis->updateBalance($dataServis->getBalance()-3);
+    //echo 'SMS '.$text."<br>";
    
-//    send("api.smsfeedback.ru", 80, $loginPassword['login_smsfeedback'], 
-//          $crypt->decrypt($loginPassword['password_smsfeedback']), 
-//          $smsOption['telephone'], $text, "WebMonitor");
+    send("api.smsfeedback.ru", 80, $loginPassword['login_smsfeedback'], 
+          $crypt->decrypt($loginPassword['password_smsfeedback']), 
+          $smsOption['telephone'], $text, "TEST-SMS");
+   // debug ($loginPassword);
+   // echo '<br> '.$crypt->decrypt($loginPassword['password_smsfeedback']).'  '.$smsOption['telephone'];
 }
-function getBalance()
+function getBalance()// получить баланс для отправки сообшений с настройками
 {
     require_once 'modelUserOption.php';
     require_once 'crypt.php';
-    require_once 'modelDataServis.php';
+    //require_once 'modelDataServis.php';
     $crypt=new MCrypt();
-    $dataServis=new modelDataServis();
+  //  $dataServis=new modelDataServis();
     $DBUserOption=new modelUserOption();  
     $smsOption=$DBUserOption->getSmsOptionLoginPassword();
     //return balance("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa")
-    //debug($_SESSION);
-    return $dataServis->getBalance();
     
-//    $balance=balance("api.smsfeedback.ru", 80, $smsOption['login_smsfeedback'], 
-//                                           $crypt->decrypt($smsOption['password_smsfeedback']));
-//    $balanceArr=explode(';', $balance);    
-//    $balance=$balanceArr[1];
-//    return $balance;
-   //return $crypt->decrypt($smsOption['password_smsfeedback']). "  ".$smsOption['login_smsfeedBack'];
+   // return $dataServis->getBalance();
+    
+    $balance=balance("api.smsfeedback.ru", 80, $smsOption['login_smsfeedback'], 
+                                           $crypt->decrypt($smsOption['password_smsfeedback']));
+    return $balance;
     
 }
-//echo status("api.smsfeedback.ru", 80, "VladimirWebMonitor", "wV6z7PwvpAAkuRa", "A133541BC");
+function cutBalance($balance)
+{
+    if (strlen($balance)<40)
+    {
+        $balanceArr=explode(';', $balance);    
+        $balance=$balanceArr[1];
+        return $balance;   
+    }
+    else 
+    {
+        return 'нет данных';
+    }
+}

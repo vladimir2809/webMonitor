@@ -6,7 +6,7 @@
  */
 class modelDataServis
 {
-    public function getSmsBalanceSubmit()
+    public function getSmsBalanceSubmit()// получить флаг отправки смс о балансе
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -17,7 +17,7 @@ class modelDataServis
         if (isset($error[2])) die($error[2]);
         return $result;
     }
-    public function updateSmsBalanceSubmit($value)
+    public function updateSmsBalanceSubmit($value) // обновить флаг отпрвки о смс о балансе
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -27,7 +27,7 @@ class modelDataServis
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
     }
-    public function getCheckAllTime()
+    public function getCheckAllTime()// получить время обработки скрипта cgeckAll
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -39,7 +39,7 @@ class modelDataServis
         
         return $result;
     }
-    public function updateCheckAllTime($value)
+    public function updateCheckAllTime($value)// обновить время обработки скрипта cgeckAll
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -49,7 +49,7 @@ class modelDataServis
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
     }
-        public function getTimeForCheckAll()
+        public function getTimeForCheckAll()// получить время за которое максимум дозволенно обрабатывать скрипт checkAll
     {
         require_once 'functions.php';
         $conn= connectDB();
@@ -61,26 +61,5 @@ class modelDataServis
         
         return $result;
     }
-     public function getBalance()
-    {
-        require_once 'functions.php';
-        $conn= connectDB();
-        $sql="SELECT balance  FROM data_servis LIMIT 1";
-        //debug( $sql);
-        $result=$conn->query($sql)->fetchColumn(); ;
-        $error=$conn->errorInfo();
-        if (isset($error[2])) die($error[2]);
-        
-        return $result;
-    }
-    public function updateBalance($value)
-    {
-        require_once 'functions.php';
-        $conn= connectDB();
-        $sql="UPDATE data_servis SET balance={$value} LIMIT 1";
-        //debug( $sql);
-        $result=$conn->query($sql)->fetchColumn(); ;
-        $error=$conn->errorInfo();
-        if (isset($error[2])) die($error[2]);
-    }
+
 }

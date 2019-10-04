@@ -1,12 +1,11 @@
 <?php
-//$GLOBALS['balance']=100;
-function debug($arrValue)
+function debug($arrValue)// для вывода массив в удобном виде
 {
        echo "<pre>";
        print_r($arrValue);
        echo "</pre>";
 }
-function connectDB()
+function connectDB()// функция подключения к бд
 {    
     static $conn=null;
     require_once ("config/bd.php");
@@ -47,7 +46,7 @@ function checkUrl($url)// функция проверки URL корректно
      return false; 
      
 }
-function checkStrInt($str)
+function checkStrInt($str)// проверят что строка это целое число
 {
     if (is_numeric($str) && is_int($str+0) && ($str+0 <= 2147483647)&&($str[0]!='-')
                 && ( ($str[0]!='0') || ($str=='0') && (strlen($str)==1) )   
@@ -80,14 +79,6 @@ function varietyStr($patern,$str)// фунцкция которая провер
     }
     return true;
 }
-//function init()
-//{
-//    
-//    if (!isset($_SESSION['balance']))
-//    {
-//        $_SESSION['balance']=100;
-//    }
-//}
 		
 	
 

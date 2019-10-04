@@ -1,4 +1,6 @@
 <?php
+//ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+//error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
 session_start();
 if (!(isset($_SESSION['authorized']) && $_SESSION['authorized']=='Benny Bennasy'))
 {
@@ -17,11 +19,15 @@ if (!isset($_SESSION['resultSearch']))
     $journal=new Journal();
     $message=$journal->getArrMessage();
     unset($_SESSION['resultSearch']);
-    unset($_SESSION['querySearch']);
+    //unset($_SESSION['querySearch']);
 }
 else
 {
    $message=$_SESSION['resultSearch']; 
+}
+if ($_SESSION['querySearch']!='')
+{
+    
 }
 
 //debug($message);
@@ -43,7 +49,7 @@ if (!isset($_GET['numpage']) || is_numeric($_GET['numpage'])==false || (int)$_GE
     header("Location: "."journal.php?numpage=1");
     exit;
 }   
-if ((int)$_GET['numpage']>$paginPageAll)
+if ((int)$_GET['numpage']>$paginPageAll && $paginPageAll>0)
 {
     //echo '111';
     header("Location: "."journal.php?numpage={$paginPageAll}");
@@ -54,10 +60,6 @@ if ((int)$_GET['numpage']>$paginPageAll)
 $recordBegin=$recordInPage*($numPaginPage-1);// начала отчета записей
 $recordEnb=$recordBegin+$recordInPage;// конец отчета записей
 if ($recordEnb>=$countRecords)$recordEnb=$countRecords;
-//debug ($message);
-//debug ($countRecords);
-//debug ($recordBegin);
-//debug ($recordEnb);
 //расчет номеров пагинации
 if ($numPaginPage-2<=1)
 {
@@ -116,7 +118,8 @@ if ($numPaginPage+2>=$paginPageAll)
             <ul>
                 <li><div><a href="/enterUrlPage.php"><p>Добавить сайт</p></a></li></div>
             
-            <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
+            <li><div> <a href="https://www.smsfeedback.ru/users/invoices/addinvoiceform.php">
+                        <p>Пополнить баланс</p></a> </li></div>
             
             <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
             <li><div> <a href="serverFunc.php?exit=true"><p>Выход</p></a></li></div>
@@ -136,15 +139,18 @@ if ($numPaginPage+2>=$paginPageAll)
                         <input type="submit" name="btnSearchJournal" value="Поиск">
                     </form>
                 </div>
-
-               <?php for ($i=$recordBegin;$i<$recordEnb;$i++):
-                  // for ($i=0;$i<count($message);$i++):
-                ?>
-                    <div class="divMessageJournal">
-                        <h5><?= $message[$i]['time']?> </h5>
-                        <p><?= $message[$i]['message']?></p>
-                    </div>
-                <?php endfor?>
+                <?php if ($_SESSION['querySearch']!='' && !isset($_SESSION['resultSearch'])):?>
+                    <h4 style="margin-left: 150px"> по вашему запросу ни чего не найдено</h4>
+                 <?php else: ?>
+                    <?php for ($i=$recordBegin;$i<$recordEnb;$i++):
+                       // for ($i=0;$i<count($message);$i++):
+                     ?>
+                         <div class="divMessageJournal">
+                             <h5><?= $message[$i]['time']?> </h5>
+                             <p><?= $message[$i]['message']?></p>
+                         </div>
+                     <?php endfor?>
+                <?php endif;?> 
             <?php endif?>
             <?php if ($paginPageAll>1):?>
                 <div id="paginator">

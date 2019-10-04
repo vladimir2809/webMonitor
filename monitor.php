@@ -142,10 +142,6 @@ class monitor
         $h1Doc=$doc->getElementsByTagName('h1');
         //debug($h1Doc);
         $h1=$h1Doc->item(0)->nodeValue;
-//        echo "H1: $h1";
-//        echo "Title: $title". '<br/><br/>';
-//        echo "Description: $description". '<br/><br/>';
-//        echo "Keywords: $keywords"."<br>";
         $this->meta=["url"=>$this->url, "h1"=>$h1,"title"=>$title,"keywords"=>$keywords,
             "description"=>$description];
         return $this->meta;
@@ -153,9 +149,6 @@ class monitor
 
    public function checkH1()// проверить заголовок
    {
-       //require_once 'functions.php';
-      // debug($this->meta['h1']);
-       //debug($this->h1);
        if (strcmp(str_replace(chr(13),'',$this->meta['h1']), str_replace(chr(13),'',$this->h1))==0) 
                return true; else return false;
    } 
@@ -241,6 +234,3 @@ class monitor
    }
 
 }
-//$monitor=new Monitor;
-//$monitor->setUrl("https://www.sberbank.ru/ru/person");
-//$monitor->getHeader();

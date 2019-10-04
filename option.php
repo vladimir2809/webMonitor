@@ -58,7 +58,8 @@
             <ul>
                 <li><div><a href="/enterUrlPage.php"><p>Добавить сайт</p></a></li></div>
             
-            <li><div> <a href="#"><p>Пополнить баланс</p></a> </li></div>
+            <li><div> <a href="https://www.smsfeedback.ru/users/invoices/addinvoiceform.php">
+                        <p>Пополнить баланс</p></a> </li></div>
             
             <li><div> <a href="journal.php"><p>Журнал</p></a></li></div>
             <li><div> <a href="serverFunc.php?exit=true"><p>Выход</p></a></li></div>
@@ -144,7 +145,7 @@
                 <br>
                 <input type="submit" id="btnDeleteAccount" name="btnDeleteAccount" value="Удалить аккаунт"> 
             </form>   
-        </div>>    
+        </div>    
         </main>    
         <?php if (isset($error)):?>
         <div id="divScreen">
