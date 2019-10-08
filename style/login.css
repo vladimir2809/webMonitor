@@ -14,6 +14,21 @@ main{
         background-color: rgb(200,200,255);
         border-radius: 15px;
 }
+#mainLogin{
+    width:420px;
+    height:180px;
+    background-color: rgb(200,200,255);
+     
+}
+#mainLogin>h3{
+    text-align: center;
+}
+#mainLogin form{
+    margin-left: 30px;
+}
+#mainLogin form p{
+    margin-bottom: 3px;
+}
 main>h3{
     text-align: center;
 }

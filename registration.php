@@ -20,6 +20,7 @@
 ?>
 
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -34,6 +35,7 @@
             <h1> WEB MONITOR</h1>   
         </header>   
         <main>
+        <div id="main">
             <div id="divInform">
                 <p>
                     Вас приветствует WebMonitor! Это программа предназначена для того что-бы отслеживать
@@ -86,7 +88,7 @@
                 <input type="submit" name="btnRegistration" id="submitReg" value="Зарегистрироваться">
                 
             </form>
-          
+        </div> 
         </main>  
         <?php if (isset($error)):?>
         <div id="divScreen">

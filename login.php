@@ -18,14 +18,21 @@
     unset($_SESSION['data']);
 ?>
 <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]--> 
 <html>
     <head>
         <meta charset="UTF-8">
         <title> WebMonitor</title>   
         <link rel="stylesheet" href="style/login.css" type="text/css">
+        <script src="scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+        <script src="scripts/position.js" type="text/javascript"></script>
     </head>    
     <body>
         <main>
+        <div id="mainLogin">
             <h3>Добро пожаловать в WebMonitor</h3>
             <form id="formLogin" action="serverFunc.php" method="post">
                 <p> Логин</p>
@@ -40,7 +47,7 @@
                     </p>
                  <?php endif?>
             </form>
-                
+        </div>       
         </main>
     </body>
 </html>

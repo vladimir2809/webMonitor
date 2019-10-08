@@ -13,6 +13,9 @@ jQuery(document).ready(function(){
     {
         $('#main').css({"position":"absolute"});
         $('#main').css({"left":left+90+'px',"top":95+'px'});
+        $('#mainLogin').css({"position":"absolute"}); 
+        var leftLogin=(viewportWidth/2)-$('#mainLogin').innerWidth()/2;
+        $('#mainLogin').css({"left":leftLogin+'px',"top":95+'px'});
     }
     $(window).resize(function(){
         var viewportWidth = $(window).width();

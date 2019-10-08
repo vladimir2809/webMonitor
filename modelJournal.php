@@ -108,27 +108,27 @@ class Journal
         }
         if ($code[1]=='0') 
         {
-            $result.="Размер страницы вышел за допустимый диапозон; ";
+            $result.="Размер неверен; ";
             //return $result;
         }
         if ($code[2]=='0') 
         {
-            $result.="h1 не верен; ";
+            $result.="h1 неверен; ";
         //    return $result;
         }
         if ($code[3]=='0') 
         {
-            $result.="title не верен; ";
+            $result.="title неверен; ";
         //    return $result;
         }
         if ($code[4]=='0') 
         {
-            $result.="keywords не верен; ";
+            $result.="keywords неверен; ";
         //    return $result;
         }
         if ($code[5]=='0') 
         {
-            $result.="description не верен; ";
+            $result.="description неверен;";
         //    return $result;
         }
         return $result;
