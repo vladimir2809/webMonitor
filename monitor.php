@@ -21,11 +21,8 @@ class monitor
    
    public function checkUrlForMonitor($url)// функция проверки URL коорректность и на сушествование
    {
-         
-
-        // Remove all illegal characters from a url
+         // Remove all illegal characters from a url
         $url = filter_var($url, FILTER_SANITIZE_URL);
-
         // Validate url
         if (!filter_var($url, FILTER_VALIDATE_URL) === false) // если URL валиден
         {
@@ -48,7 +45,6 @@ class monitor
         }
         return false; 
    }
-      
    public function getHeader()// получить заголовки страницы
    {
          if ($this->checkUrlForMonitor($this->url))
@@ -67,8 +63,7 @@ class monitor
        $this->getHeader();
        $response=$this->header[0];
      //  debug($response);
-       if ($response!==0)$responseNum= mb_strcut($response,9,3,"UTF-8");  else $responseNum=0; 
-           
+       if ($response!==0)$responseNum= mb_strcut($response,9,3,"UTF-8");  else $responseNum=0;          
        return $responseNum;
    }
    public function checkResponse()// проверить ответ от сервера
@@ -110,24 +105,19 @@ class monitor
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-
         $data = curl_exec($ch);
         curl_close($ch);
-
         return $data;
    }
    public function getMetaPage()// получить мета данные старницы h1, title, keywords, description
     {
         $html = $this->file_get_contents_curl($this->url);
-
         //parsing begins here:
         $doc = new DOMDocument();
         @$doc->loadHTML($html);
         $nodes = $doc->getElementsByTagName('title');
-
         //get and display what you need:
         $title = $nodes->item(0)->nodeValue;
-
         $metas = $doc->getElementsByTagName('meta');
         $keywords='';
         $description='';
@@ -146,7 +136,6 @@ class monitor
             "description"=>$description];
         return $this->meta;
    }
-
    public function checkH1()// проверить заголовок
    {
        if (strcmp(str_replace(chr(13),'',$this->meta['h1']), str_replace(chr(13),'',$this->h1))==0) 
@@ -187,8 +176,7 @@ class monitor
        {
            $data=['url'=>$this->url,"message"=>$this->message];
        }
-       return $data;
-       
+       return $data;   
    }
    public function getUrl()// получить URL
    {

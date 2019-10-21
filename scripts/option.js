@@ -26,8 +26,7 @@
         }else{
            $('.SMS').prop('disabled',true); 
         }
-        
-            
+     
     });
      $(':submit[name=btnDeleteData]').bind('click', function(event){
         if (confirm("Вы действительно хотите удалить все данные о страницах. Удалятся все раннее"+

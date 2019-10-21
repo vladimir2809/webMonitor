@@ -56,13 +56,7 @@ $(window).load(function(){
             $(this).css({'border':"1px solid rgb(128,255,0)"});
         }else{
             $(this).css({'border':"1px solid red"});
-        }
-//        if ($('input:text[name="nameUser"]').val().length>=3){
-//            $('input:text[name="nameUser"]').css({'border':"1px solid rgb(128,255,0)"});
-//        }else{
-//            $('input:text[name="nameUser"]').css({'border':"1px solid black"});
-//        }
-            
+        }    
     });
     // подсветка пароля
     $(':password[name="password"]').focusout(function(event){

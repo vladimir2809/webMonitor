@@ -1,8 +1,9 @@
-/* 
-    Created on : 19.09.2019, 14:26:15
-    Author     : Владимир
-*/
-main{
+
+body{
+    
+    width: 1100px;
+}
+#mainLogin{
        position: relative;
         top: 50%;
         left: 50%;
@@ -14,12 +15,6 @@ main{
         background-color: rgb(200,200,255);
         border-radius: 15px;
 }
-#mainLogin{
-    width:420px;
-    height:180px;
-    background-color: rgb(200,200,255);
-     
-}
 #mainLogin>h3{
     text-align: center;
 }
@@ -28,18 +23,4 @@ main{
 }
 #mainLogin form p{
     margin-bottom: 3px;
-}
-main>h3{
-    text-align: center;
-}
-main form{
-    margin-left: 30px;
-}
-main form p{
-    margin-bottom: 3px;
-}
-#btnLogin{
-    position:relative;
-    top: -30px;
-    left: 80px;
 }

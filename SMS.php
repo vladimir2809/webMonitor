@@ -1,16 +1,4 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/* 
-* функция передачи сообщения 
-*/
- //require "functions.php";
-// $GLOBALS['balance']=100;
-
 function send($host, $port, $login, $password, $phone, $text, $sender = false, $wapurl = false )
 {
     $fp = fsockopen($host, $port, $errno, $errstr);

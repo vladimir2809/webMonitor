@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 'On'); // сообщения с ошибками будут показываться
+error_reporting(E_ALL); // E_ALL - отображаем ВСЕ ошибки
     session_start();
     require_once 'modelUserOption.php';
     $DBUserOption=new modelUserOption();
@@ -31,7 +33,6 @@
         <script src="scripts/position.js" type="text/javascript"></script>
     </head>    
     <body>
-        <main>
         <div id="mainLogin">
             <h3>Добро пожаловать в WebMonitor</h3>
             <form id="formLogin" action="serverFunc.php" method="post">
@@ -48,6 +49,6 @@
                  <?php endif?>
             </form>
         </div>       
-        </main>
+        
     </body>
 </html>

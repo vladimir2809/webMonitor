@@ -138,7 +138,6 @@ class modelUserOption
         $error=$conn->errorInfo();
         if (isset($error[2])) die($error[2]);
     }
-    
     public function deleteData()// очистить таблицу
     {
          require_once 'functions.php';

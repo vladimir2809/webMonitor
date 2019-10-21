@@ -150,7 +150,7 @@
         <?php if (isset($error)):?>
         <div id="divScreen">
             <div id="divMessageError">
-                <h3>Сообщение об ошибке</h3>
+                <h3>Сообщение</h3>
                 <p>
                    <?=$error?>
                 </p>
